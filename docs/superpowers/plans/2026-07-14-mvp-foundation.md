@@ -1,626 +1,107 @@
-# Personal Intelligence Briefing MVP Foundation Implementation Plan
-
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
-
-**Goal:** Build a cloud-run, testable first-stage pipeline that converts public AI-source candidates into deduplicated GitHub candidate packets for later ChatGPT review.
-
-**Architecture:** Python code stores append-only event history and immutable batch snapshots in the default branch. Deterministic code owns time, URLs, fingerprints, retention and delivery; MiniMax only normalizes ambiguous content, while Kimi is a capped, optional arbitrator. GitHub Actions produces candidate files; ChatGPT consumes them but does not write state in the MVP.
-
-**Tech Stack:** Python 3.12, standard library dataclasses, PyYAML, httpx, pytest, GitHub Actions.
-
-## Global Constraints
-
-- Use the repository's configured default branch dynamically; never assume `main` or `master` in code or workflow logic.
-- All timestamps are timezone-aware `Asia/Shanghai` ISO 8601 values.
-- Retention bands are exactly `0–14`, `15–30`, `31–60`, `61–90`, then history-only after 90 days.
-- Do not store source full text, API keys, private feedback, company material or copyrighted articles.
-- GitHub Actions reads only `MINIMAX_FOR_CODING_API_KEY` and `KIMI_API_KEY` as Secrets; no secret may appear in logs or committed files.
-- Kimi is disabled unless all four non-secret Actions Variables are configured: `KIMI_BRIEFING_MONTHLY_TOKEN_LIMIT`, `KIMI_RATE_WINDOW_SECONDS`, `KIMI_MAX_REQUESTS_PER_WINDOW`, `KIMI_MAX_TOKENS_PER_WINDOW`.
-- A Kimi request is sequential, ≤6,000 input tokens and ≤1,000 output tokens; at most two calls per batch. `429`, exhausted budget or missing configuration produces `uncertain`, never unbounded retries.
-- `delivery/current/` is overwritten only after a complete successful batch; `delivery/archive/YYYY-MM/<batch-id>/` is immutable.
-- Do not change existing ChatGPT scheduled tasks in this plan.
-
----
-
-## Role and Gate Plan
-
-| Gate | Codex | ChatGPT | 铭哥 |
-| --- | --- | --- | --- |
-| G0：计划确认 | 按本计划在功能分支实施；不改计划任务 | 只检查交付接口，不写 GitHub 状态 | 确认计划执行方式；提供 Kimi 控制台的月度与速率数值 |
-| G1：确定性基础 | 完成任务 1—4 与单元测试，不运行云端批次 | 不修改现有晨报/午报 | 无需操作 |
-| G2：模型、交付与手动批次 | 完成任务 5—7；以模拟 API 和受控真实调用验证 | 审阅 `manifest`、候选 JSON 和 Markdown 是否满足最终审稿输入 | 在 Actions Variables 写入 Kimi 限额；手动触发一次工作流并审阅候选包 |
-| G3：云端验收 | 完成任务 8—9，提交 PR 和运行证据 | 在 GitHub 输出稳定后，单独配置 07:30 / 13:30 的计划任务 | 批准 PR；连续一周标记重复、遗漏或低价值项 |
-
-## Planned Files
-
-```text
-pyproject.toml
-config/sources-official-v1.yml
-config/sources-discovery-v1.yml
-config/event-retention-v1.yml
-config/report-selection-v1.yml
-config/model-routing-v1.yml
-config/learning-schedule-v1.yml
-src/intelligence_briefing/{__init__,models,time_window,url_normalization,fingerprints,storage,deduplication,llm,reporting,collectors,cli}.py
-tests/test_{models,time_window,url_normalization,fingerprints,storage,deduplication,llm,reporting,collectors,cli,workflows}.py
-.github/workflows/{test,manual-run,morning-briefing,noon-briefing}.yml
-docs/{operations/runbook,decisions/decision-log}.md
-```
-
-No `collectors/`, `llm/`, `fixtures/`, database, PDF/Word export, feedback writeback or additional long-lived branch is created in this stage.
-
-### Task 1: Initialize the testable project contract
-
-**Files:**
-- Create: `pyproject.toml`
-- Create: `src/intelligence_briefing/__init__.py`
-- Create: `src/intelligence_briefing/models.py`
-- Create: `tests/test_models.py`
-- Create: `config/event-retention-v1.yml`
-- Create: `config/model-routing-v1.yml`
-- Create: `config/report-selection-v1.yml`
-- Create: `config/sources-official-v1.yml`
-- Create: `config/sources-discovery-v1.yml`
-- Create: `config/learning-schedule-v1.yml`
-
-**Interfaces:**
-- Produces: immutable `Event`, `SourceItem`, `Batch`, and `ModelUsage` dataclasses with `to_dict()` / `from_dict()` methods.
-- Consumes: no application code; later tasks import types only from `models.py`.
-
-- [ ] **Step 1: Write failing model-serialization tests**
-
-```python
-from datetime import datetime
-from zoneinfo import ZoneInfo
-
-from intelligence_briefing.models import Event
-
-
-def test_event_round_trip_preserves_timezone_and_status() -> None:
-    event = Event(
-        event_id="evt-openai-codex-20260714",
-        status="new_event",
-        subject="OpenAI",
-        object_name="Codex",
-        action="release",
-        event_at=datetime(2026, 7, 14, 6, 0, tzinfo=ZoneInfo("Asia/Shanghai")),
-        canonical_url="https://example.com/release",
-        fingerprint="openai|codex|release|2026-07-14|parallel",
-    )
-    assert Event.from_dict(event.to_dict()) == event
-```
-
-- [ ] **Step 2: Run the test to verify it fails**
-
-Run: `pytest tests/test_models.py::test_event_round_trip_preserves_timezone_and_status -v`
-Expected: FAIL because `intelligence_briefing.models` does not exist.
-
-- [ ] **Step 3: Implement the minimal dataclasses and configuration schema**
-
-```python
-@dataclass(frozen=True)
-class Event:
-    event_id: str
-    status: str
-    subject: str
-    object_name: str
-    action: str
-    event_at: datetime | None
-    canonical_url: str
-    fingerprint: str
-    # to_dict serializes datetime with isoformat; from_dict uses datetime.fromisoformat.
+# Personal Intelligence Briefing MVP 实施计划
 
+## 1. 目标与实施策略
 
-@dataclass(frozen=True)
-class Batch:
-    batch_id: str
-    kind: Literal["morning", "noon"]
-    status: Literal["success", "partial", "failed"]
-    started_at: datetime
-    completed_at: datetime | None = None
-```
-
-Put the four retention bands and the 90-day history boundary in `event-retention-v1.yml`. Put the four Kimi Action Variable names, per-call caps, two-call batch cap, and MiniMax-first route in `model-routing-v1.yml`.
-
-- [ ] **Step 4: Run focused and full tests**
+MVP 的目标是建立一条可在 GitHub Actions 上运行的公共 AI 信息候选流水线：它持续保存事件状态、过滤跨批次重复，并向 ChatGPT 计划任务提供可审计的 Markdown 与结构化候选包。
 
-Run: `pytest tests/test_models.py -v`
-Expected: PASS.
+本计划规定外部契约、边界和验收结果，不规定类名、函数名、测试框架组织或每次提交的粒度。Codex 可在不改变这些契约的前提下，根据真实来源格式、API 响应和测试结果选择最小可维护实现；任何改变数据格式、目录约定、时间规则、模型职责或用户可见行为的选择，必须先写入决策日志并重新确认。
 
-Run: `pytest -q`
-Expected: PASS with one test.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add pyproject.toml config src/intelligence_briefing tests/test_models.py
-git commit -m "feat: add briefing data contract"
-```
-
-### Task 2: Implement time bands, URLs and stable fingerprints
-
-**Files:**
-- Create: `src/intelligence_briefing/time_window.py`
-- Create: `src/intelligence_briefing/url_normalization.py`
-- Create: `src/intelligence_briefing/fingerprints.py`
-- Create: `tests/test_time_window.py`
-- Create: `tests/test_url_normalization.py`
-- Create: `tests/test_fingerprints.py`
-
-**Interfaces:**
-- Produces: `age_band(event_at, now) -> Literal["hot", "warm", "cold", "archive", "history"]`, `normalize_url(url) -> str`, `event_fingerprint(...) -> str`.
-- Consumes: `Event` from `models.py`.
-
-- [ ] **Step 1: Write failing boundary and normalization tests**
-
-```python
-def test_age_band_has_no_overlap_at_30_days() -> None:
-    now = datetime(2026, 7, 31, tzinfo=ZoneInfo("Asia/Shanghai"))
-    assert age_band(now - timedelta(days=30), now) == "warm"
-    assert age_band(now - timedelta(days=31), now) == "cold"
-
-
-def test_normalize_url_removes_tracking_and_fragment() -> None:
-    assert normalize_url("https://a.example/x?utm_source=x&id=1#top") == "https://a.example/x?id=1"
-```
-
-- [ ] **Step 2: Run tests to verify they fail**
+开发优先在本地 worktree 完成一组可验证的改动后再推送；GitHub Actions 用于手动验收和稳定运行，不作为反复试错的主要环境。这样可减少云端编辑、提交与上下文消耗。
 
-Run: `pytest tests/test_time_window.py tests/test_url_normalization.py tests/test_fingerprints.py -v`
-Expected: FAIL because the modules are absent.
+## 2. 已锁定的 MVP 契约
 
-- [ ] **Step 3: Implement only deterministic behavior**
+- 默认分支保持仓库当前配置；代码、工作流和文档不得假定 `main` 或 `master`，必须动态发现默认分支。
+- 全部业务时间使用 `Asia/Shanghai` 和带时区的 ISO 8601 字符串。
+- 事件历史采用四段媒体回声窗口：0–14、15–30、31–60、61–90 天；90 天后停止日常语义召回，但永久精确标识仍保留。
+- 窗口描述“同一消息再次大规模出现的概率”，不是事件失效期；政策、产品和模型的长期业务意义不因此失效。
+- GitHub 是唯一正式状态中心；ChatGPT 在 MVP 中只读候选包和输出最终报告，不写回事件状态。
+- GitHub Actions 生成 `delivery/current/` 的固定读取入口和 `delivery/archive/YYYY-MM/<batch-id>/` 的不可变快照；成功批次才更新 `current`。
+- 不保存 API Key、全文转载、私人反馈、公司内部资料或客户资料。公开仓库仅保存公开链接、必要元数据、摘要、规则和运行状态。
+- MiniMax 为默认抽取与初筛模型；Kimi 只处理高优先级且仍无法判定的歧义项。二者的使用边界及当前套餐观察基线见 `docs/decisions/decision-log.md`。
+- 本阶段不修改 ChatGPT 既有计划任务，不开发 PDF、Word、复杂前端、反馈自动写回、数据库或额外长期分支。
 
-```python
-def age_band(event_at: datetime | None, now: datetime) -> str:
-    if event_at is None:
-        return "hot"
-    age = max(0, (now.date() - event_at.astimezone(SHANGHAI).date()).days)
-    if age <= 14: return "hot"
-    if age <= 30: return "warm"
-    if age <= 60: return "cold"
-    if age <= 90: return "archive"
-    return "history"
-```
+## 3. 模型与用量控制
 
-Build the fingerprint from normalized lowercase subject, object, action, official event date and normalized core change; hash it with SHA-256 so it is stable but compact.
+MVP 以任务边界而非精确套餐变量限制 Kimi：仅在 MiniMax 无法判定“新事件 / 重复 / 实质更新”，且该不确定性会影响推送时，才进入 Kimi 队列。每次请求只传结构化事件、必要证据摘要和不超过三条近似历史记录；同一时刻顺序执行；每批次最多处理三条。
 
-- [ ] **Step 4: Run focused and full tests**
+模型返回的实际输入、输出 token 与调用结果必须写入运行记录。连续运行两周后，再根据真实用量、429、超时和误判情况决定是否加入更精细的限额变量。当前的套餐能力数字只作为截至 2026-07-14 的观察基线，非官方保证；订阅、模型或提供方规则变化时应复核，避免将旧调研反复当作现行事实。
 
-Run: `pytest tests/test_time_window.py tests/test_url_normalization.py tests/test_fingerprints.py -v`
-Expected: PASS.
+## 4. 阶段与验收门槛
 
-Run: `pytest -q`
-Expected: PASS.
+| 阶段 | Codex 交付 | ChatGPT 职责 | 铭哥职责 | 进入下一阶段的条件 |
+| --- | --- | --- | --- | --- |
+| G1：确定性基础 | 数据契约、配置、时间窗口、URL 规范化、精确标识、事件存储与确定性去重 | 不修改计划任务 | 无需操作 | 本地测试覆盖边界日期、同 URL、同指纹、90 天外精确匹配 |
+| G2：候选流水线 | 最小来源采集、MiniMax 标准化、Kimi 条件复核、候选包与运行记录 | 审核交付接口是否满足二次审稿 | 仅确认产物阅读性 | 本地 dry-run 可生成完整且不含敏感内容的候选包 |
+| G3：云端验收 | 工作流、并发保护、手动触发与首次真实批次 | 不修改计划任务 | 手动触发一次晨间和午间批次 | 两类批次各成功一次，且失败批次不覆盖 `current` |
+| G4：ChatGPT 接入 | 记录运行证据与已知问题 | 配置 07:30 / 13:30 只读审稿与定向查漏 | 连续一周标记重复、遗漏与低价值项 | 候选文件、manifest、归档、重复测试与失败测试均稳定 |
 
-- [ ] **Step 5: Commit**
+## 5. G1：确定性基础
 
-```bash
-git add src/intelligence_briefing tests/test_time_window.py tests/test_url_normalization.py tests/test_fingerprints.py
-git commit -m "feat: add deterministic event identity rules"
-```
+实现可序列化的事件、来源、批次、模型用量和判定结果数据契约，并将可变规则放入扁平配置文件。实现必须支持：
 
-### Task 3: Add append-only state and short-horizon event recall
+- 时间段与事件年龄带判定；
+- URL 去跟踪参数、片段和等价链接处理；
+- 基于主体、对象、动作、官方日期与核心变化的稳定事件标识；
+- 按月追加的事件记录、按次运行记录、活动索引与永久精确标识；
+- 先精确、后有限历史召回的去重路径；
+- 90 天外事件只有在永久精确标识命中时才参与日常判断。
 
-**Files:**
-- Create: `src/intelligence_briefing/storage.py`
-- Create: `src/intelligence_briefing/deduplication.py`
-- Create: `tests/test_storage.py`
-- Create: `tests/test_deduplication.py`
+最低验证包括：四个窗口的无重叠边界、同 URL、同事件标识、不同标题的同事件、预告到正式发布的实质更新，以及旧闻重发不得成为新事件。
 
-**Interfaces:**
-- Consumes: `Event`, `age_band`, normalized URL and fingerprint.
-- Produces: `append_event(root, event)`, `load_recall_candidates(root, event, now)`, `classify_deterministic(candidate, history) -> str`.
+## 6. G2：候选流水线与固定交付
 
-- [ ] **Step 1: Write failing tests for monthly append and 90-day cutoff**
+先接入小范围、高可信来源：官方模型与产品发布源、Claude Code / Codex 发布源、DeepSeek、MiniMax、Kimi、GitHub Trending 和 Hugging Face Daily Papers。发现类来源只能提供线索，不能作为最终事实证据。
 
-```python
-def test_history_older_than_90_days_is_not_returned_without_exact_id(tmp_path) -> None:
-    now = datetime(2026, 7, 14, tzinfo=ZoneInfo("Asia/Shanghai"))
-    append_event(tmp_path, make_event("old", now=now, days_ago=91))
-    append_event(tmp_path, make_event("fresh", now=now, days_ago=10))
-    recalled = load_recall_candidates(tmp_path, make_event("candidate", now=now, days_ago=0), now=now)
-    assert [event.event_id for event in recalled] == ["fresh"]
+流水线必须做到：
 
+- 不保存完整文章正文，只保存必要元数据、官方链接和受控摘要；
+- MiniMax 输出受校验的结构化候选；
+- Kimi 仅按第 3 节的条件接入，失败、429 或无结构化结论时标为 `uncertain`，不无上限重试；
+- `manifest` 记录批次、数据范围、状态、计数、错误、归档路径、提交版本和模型实际用量；
+- 候选初稿由 GitHub Actions 生成，作为 ChatGPT 审核输入，而不是 ChatGPT 先生成；
+- 初稿包含七类固定信息：批次状态与范围、必须关注、其他有效新增、Agentic Coding 与工具链、产品产业政策影响、不确定或迟到项、去重与质量指标；
+- 仅完整成功批次可替换 `delivery/current/`；失败或部分成功必须留下运行记录，但不能伪装成新的当前报告。
 
-def make_event(name: str, now: datetime, days_ago: int) -> Event:
-    return Event(
-        event_id=name,
-        status="new_event",
-        subject="OpenAI",
-        object_name=name,
-        action="release",
-        event_at=now - timedelta(days=days_ago),
-        canonical_url=f"https://example.com/{name}",
-        fingerprint=name,
-    )
-```
+## 7. G3：云端运行与操作验证
 
-- [ ] **Step 2: Run tests to verify they fail**
+建立测试、手动运行、晨间和午间工作流。定时工作流应为北京 06:20 和 12:20 预留缓冲，实际 cron 以 GitHub 的 UTC 调度语义实现；同一批次必须有并发锁，且只有工作流拥有生成状态的写入权。
 
-Run: `pytest tests/test_storage.py tests/test_deduplication.py -v`
-Expected: FAIL because storage and recall functions are absent.
+云端验收按以下顺序进行：
 
-- [ ] **Step 3: Implement append-only JSONL and exact first-pass deduplication**
+1. 本地完整测试与 dry-run；
+2. GitHub 手动 dry-run，确认无密钥泄漏且不写入生产状态；
+3. 手动晨间真实批次；
+4. 手动午间真实批次；
+5. 失败批次模拟，确认旧 `current` 未被覆盖；
+6. 重复事件回归验证，确认同一事件不会因标题或媒体变化重新进入候选。
 
-```python
-def event_file(root: Path, observed_at: datetime) -> Path:
-    return root / "data" / "events" / f"events-{observed_at:%Y-%m}.jsonl"
+每个步骤完成后，Codex 只需汇报分支、commit SHA、变更范围、测试/Actions 证据、已知问题和下一步建议。避免为每个内部小改动创建云端 PR 或提交。
 
-def classify_deterministic(candidate: Event, history: Sequence[Event]) -> str:
-    if any(item.canonical_url == candidate.canonical_url for item in history):
-        return "duplicate"
-    if any(item.fingerprint == candidate.fingerprint for item in history):
-        return "duplicate"
-    return "needs_semantic_review"
-```
+## 8. G4：ChatGPT 接入门槛
 
-The recall function may include hot events for semantic comparison, warm events only for same structural identifiers, cold/archive events only for exact keys, and history events only for permanent exact identifiers.
+只有同时满足以下条件，才调整 ChatGPT 计划任务：
 
-- [ ] **Step 4: Run focused and full tests**
+- 晨间、午间候选包均可手动成功生成；
+- `manifest`、当前候选 JSON、近期事件 JSON、初稿 Markdown 和归档快照均可公开读取；
+- 至少通过一次重复事件回归与一次失败批次验证；
+- 固定入口不会把旧批次当作新批次；
+- 运行记录已能说明模型用量、上游错误和批次新鲜度。
 
-Run: `pytest tests/test_storage.py tests/test_deduplication.py -v`
-Expected: PASS.
+接入后，ChatGPT 在 07:30 / 13:30 先检查 manifest，再读取固定候选输入；仅对高影响、证据冲突、价格/地区/API 变化或疑似旧闻做定向官方查漏。它可以删除、重排、解释候选，但不得以聊天记忆替代 GitHub 状态，也不得因候选不足填充旧新闻。
 
-Run: `pytest -q`
-Expected: PASS.
+## 9. 目录与交付边界
 
-- [ ] **Step 5: Commit**
+实现应遵守已批准的仓库结构文档 `docs/architecture/repository-layout.md`。重点不是目录数量，而是每层职责单一：配置保持扁平，运行状态按事件或批次分开，ChatGPT 只读取固定入口，历史以月度目录和批次名回溯。后续如需新增目录或改变命名约定，必须先更新该结构文档与决策日志。
 
-```bash
-git add src/intelligence_briefing tests/test_storage.py tests/test_deduplication.py
-git commit -m "feat: add bounded event state recall"
-```
+## 10. MVP 完成定义
 
-### Task 4: Implement capped model routing and safe fallbacks
+MVP 完成时，系统应能在不依赖 Mac mini 常开情况下：
 
-**Files:**
-- Create: `src/intelligence_briefing/llm.py`
-- Create: `tests/test_llm.py`
-
-**Interfaces:**
-- Produces: `ModelRouter.route(candidate, history) -> ArbitrationResult`.
-- Consumes: normalized candidate, recalled events and API usage returned by provider clients.
-
-- [ ] **Step 1: Write failing routing tests**
-
-```python
-EVENT = Event(
-    event_id="evt-1", status="new_event", subject="OpenAI", object_name="Codex",
-    action="release", event_at=None, canonical_url="https://example.com/1", fingerprint="evt-1",
-)
-
-
-class FakeKimi:
-    def __init__(self) -> None:
-        self.calls = 0
-
-    def arbitrate(self, payload: dict[str, object]) -> ArbitrationResult:
-        self.calls += 1
-        return ArbitrationResult(status="new_event", reason="fake")
-
-
-class FakeMiniMax:
-    def extract(self, candidate: Event, history: list[Event]) -> ArbitrationResult:
-        return ArbitrationResult(status="new_event", reason="clear")
-
-
-class LowConfidenceMiniMax(FakeMiniMax):
-    def extract(self, candidate: Event, history: list[Event]) -> ArbitrationResult:
-        return ArbitrationResult(status="uncertain", reason="low_confidence", needs_kimi=True)
-
-
-def test_kimi_is_not_called_without_all_budget_variables(monkeypatch) -> None:
-    router = ModelRouter(minimax=FakeMiniMax(), kimi=FakeKimi(), settings=missing_kimi_limits())
-    result = router.route(candidate=EVENT, history=[])
-    assert result.status == "uncertain"
-    assert router.kimi.calls == 0
-
-
-def test_kimi_stops_after_two_calls_in_one_batch() -> None:
-    router = ModelRouter(minimax=LowConfidenceMiniMax(), kimi=FakeKimi(), settings=valid_limits())
-    [router.route(candidate=EVENT, history=[]) for _ in range(3)]
-    assert router.kimi.calls == 2
-```
-
-- [ ] **Step 2: Run tests to verify they fail**
-
-Run: `pytest tests/test_llm.py -v`
-Expected: FAIL because `ModelRouter` is absent.
-
-- [ ] **Step 3: Implement provider-neutral routing**
-
-```python
-class ModelRouter:
-    def route(self, candidate: Event, history: list[Event]) -> ArbitrationResult:
-        normalized = self.minimax.extract(candidate, history[:3])
-        if not normalized.needs_kimi:
-            return normalized
-        if not self.budget.can_call_kimi(max_input=6000, max_output=1000):
-            return ArbitrationResult(status="uncertain", reason="kimi_budget_unavailable")
-        return self.kimi.arbitrate(normalized.compact_payload())
-```
-
-The Kimi client must make one request at a time, inspect provider usage, stop on `429`, and never log authorization headers or request bodies containing credentials. MiniMax remains the default route.
-
-- [ ] **Step 4: Run focused and full tests**
-
-Run: `pytest tests/test_llm.py -v`
-Expected: PASS.
-
-Run: `pytest -q`
-Expected: PASS.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add src/intelligence_briefing/llm.py tests/test_llm.py config/model-routing-v1.yml
-git commit -m "feat: add budgeted model arbitration"
-```
-
-### Task 5: Render immutable candidate packets and stable current pointers
-
-**Files:**
-- Create: `src/intelligence_briefing/reporting.py`
-- Create: `tests/test_reporting.py`
-
-**Interfaces:**
-- Produces: `write_batch(root, batch, events) -> Path`.
-- Consumes: classified events and `ModelUsage` records.
-- Guarantees: `delivery/current/` changes only after all archive files and `manifest.json` are complete.
-
-- [ ] **Step 1: Write failing delivery tests**
-
-```python
-def test_successful_batch_writes_archive_then_current_pointer(tmp_path) -> None:
-    current_batch = Batch(
-        batch_id="morning-20260714T062000+0800",
-        kind="morning",
-        status="success",
-        started_at=datetime(2026, 7, 14, 6, 20, tzinfo=ZoneInfo("Asia/Shanghai")),
-    )
-    write_batch(tmp_path, current_batch, [EVENT])
-    assert (tmp_path / "delivery/archive/2026-07/morning-20260714T062000+0800/manifest.json").exists()
-    current = json.loads((tmp_path / "delivery/current/manifest.json").read_text())
-    assert current["archive_path"].endswith("morning-20260714T062000+0800")
-
-
-def test_failed_batch_does_not_replace_current(tmp_path) -> None:
-    successful = Batch(
-        batch_id="morning-20260714T062000+0800",
-        kind="morning",
-        status="success",
-        started_at=datetime(2026, 7, 14, 6, 20, tzinfo=ZoneInfo("Asia/Shanghai")),
-    )
-    failed = Batch(
-        batch_id="noon-20260714T122000+0800",
-        kind="noon",
-        status="failed",
-        started_at=datetime(2026, 7, 14, 12, 20, tzinfo=ZoneInfo("Asia/Shanghai")),
-    )
-    write_batch(tmp_path, successful, [EVENT])
-    write_failed_batch(tmp_path, failed, "collector timeout")
-    assert read_current_batch_id(tmp_path) == successful.batch_id
-```
-
-- [ ] **Step 2: Run tests to verify they fail**
-
-Run: `pytest tests/test_reporting.py -v`
-Expected: FAIL because the reporting module is absent.
-
-- [ ] **Step 3: Implement the seven candidate sections and manifest**
-
-```python
-def write_batch(root: Path, batch: Batch, events: list[Event]) -> Path:
-    archive = root / "delivery" / "archive" / batch.started_at.strftime("%Y-%m") / batch.batch_id
-    archive.mkdir(parents=True, exist_ok=False)
-    payload = build_candidate_payload(batch, events)
-    write_json(archive / "candidates.json", payload)
-    write_text(archive / "preliminary.md", render_preliminary(payload))
-    write_json(archive / "manifest.json", build_manifest(batch, archive, payload))
-    if batch.status == "success":
-        replace_current_from_archive(root, archive, batch.kind)
-    return archive
-```
-
-The preliminary Markdown and JSON must contain exactly: batch state/range, high-priority candidates, other valid candidates, Agentic Coding/tool-chain candidates, product/industry/policy candidates, uncertain/late candidates, and quality metrics. `manifest.json` includes batch ID, status, time range, archive path, commit SHA placeholder filled by workflow, counts, error list and model usage.
-
-- [ ] **Step 4: Run focused and full tests**
-
-Run: `pytest tests/test_reporting.py -v`
-Expected: PASS.
-
-Run: `pytest -q`
-Expected: PASS.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add src/intelligence_briefing/reporting.py tests/test_reporting.py
-git commit -m "feat: add versioned candidate delivery"
-```
-
-### Task 6: Add limited source collection and a manual CLI path
-
-**Files:**
-- Create: `src/intelligence_briefing/collectors.py`
-- Create: `src/intelligence_briefing/cli.py`
-- Create: `tests/test_collectors.py`
-- Create: `tests/test_cli.py`
-
-**Interfaces:**
-- Produces: `collect_sources(config) -> list[SourceItem]`, `python -m intelligence_briefing.cli --batch morning --dry-run`.
-- Consumes: official/discovery YAML source lists; only source URLs and metadata.
-
-- [ ] **Step 1: Write failing tests with local HTTP transport mocks**
-
-```python
-def test_collector_returns_metadata_without_storing_full_article() -> None:
-    transport = httpx.MockTransport(lambda request: httpx.Response(
-        200,
-        text="<rss><channel><item><link>https://example.com/release</link></item></channel></rss>",
-    ))
-    item = collect_sources(source_config(), client=httpx.Client(transport=transport))[0]
-    assert item.url == "https://example.com/release"
-    assert not hasattr(item, "full_article")
-```
-
-- [ ] **Step 2: Run tests to verify they fail**
-
-Run: `pytest tests/test_collectors.py tests/test_cli.py -v`
-Expected: FAIL because collector and CLI are absent.
-
-- [ ] **Step 3: Implement the minimum initial source set**
-
-Implement RSS/Atom and JSON endpoint collection only for the MVP's official OpenAI, Anthropic, Claude Code, Codex, DeepSeek, MiniMax, Kimi, GitHub Trending and Hugging Face Daily Papers configurations. Discovery sources only create candidates; they never become the final factual source without a configured official URL.
-
-- [ ] **Step 4: Run focused and full tests**
-
-Run: `pytest tests/test_collectors.py tests/test_cli.py -v`
-Expected: PASS.
-
-Run: `pytest -q`
-Expected: PASS.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add src/intelligence_briefing tests/test_collectors.py tests/test_cli.py config/sources-*.yml
-git commit -m "feat: add controlled source collection"
-```
-
-### Task 7: Add cloud workflows and prove the manual batch
-
-**Files:**
-- Create: `.github/workflows/test.yml`
-- Create: `.github/workflows/manual-run.yml`
-- Create: `.github/workflows/morning-briefing.yml`
-- Create: `.github/workflows/noon-briefing.yml`
-- Modify: `README.md`
-- Modify: `docs/operations/runbook.md`
-
-**Interfaces:**
-- Produces: manual `workflow_dispatch` with `morning|noon` and `dry_run` inputs; scheduled runs at 06:20 and 12:20 China time expressed correctly in UTC cron.
-- Consumes: repository Secrets and optional Kimi Actions Variables.
-
-- [ ] **Step 1: Write workflow assertions as repository-level checks**
-
-```python
-def test_scheduled_workflows_have_write_lock_and_distinct_cron() -> None:
-    morning = yaml.load(Path(".github/workflows/morning-briefing.yml").read_text(), Loader=yaml.BaseLoader)
-    noon = yaml.load(Path(".github/workflows/noon-briefing.yml").read_text(), Loader=yaml.BaseLoader)
-    assert morning["permissions"]["contents"] == "write"
-    assert morning["concurrency"]["cancel-in-progress"] == "false"
-    assert morning["on"]["schedule"][0]["cron"] != noon["on"]["schedule"][0]["cron"]
-```
-
-Use cron `20 22 * * *` for the 06:20 Beijing morning run and `20 4 * * *` for the 12:20 Beijing noon run. Also assert that each workflow text contains neither `echo ${{ secrets.` nor a hardcoded `refs/heads/main` / `refs/heads/master`.
-
-- [ ] **Step 2: Run workflow assertions to verify they fail**
-
-Run: `pytest tests/test_workflows.py -v`
-Expected: FAIL because workflow files do not exist.
-
-- [ ] **Step 3: Implement workflows with one write authority**
-
-```yaml
-permissions:
-  contents: write
-concurrency:
-  group: briefing-${{ inputs.batch || 'scheduled' }}
-  cancel-in-progress: false
-```
-
-The action must run tests before a non-dry-run write, execute the CLI, commit only changed generated state, and use the GitHub-configured default branch rather than a hardcoded branch name. The scheduled workflow must not overwrite `delivery/current/` when the batch is partial or failed.
-
-- [ ] **Step 4: Run tests and manually dispatch a dry run**
-
-Run: `pytest -q`
-Expected: PASS.
-
-Run in GitHub: `manual-run.yml` with `batch=morning`, `dry_run=true`.
-Expected: a successful run that logs no secret and creates no repository commit.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add .github/workflows README.md docs/operations/runbook.md tests/test_workflows.py
-git commit -m "ci: add briefing workflow controls"
-```
-
-### Task 8: Perform the first controlled live batch and hand off to ChatGPT
-
-**Files:**
-- Modify: `docs/operations/runbook.md`
-- Modify: `docs/decisions/decision-log.md`
-- Generated: `data/`, `delivery/current/`, `delivery/archive/YYYY-MM/<batch-id>/`
-
-**Interfaces:**
-- Produces: one verifiable successful candidate packet and a documented readiness decision for ChatGPT.
-- Consumes: a user-triggered production-mode manual workflow and the user-configured API limits.
-
-- [ ] **Step 1: Add a readiness checklist before running live**
-
-The checklist requires: Secrets exist, Kimi Variables are either complete or Kimi is intentionally disabled, manual dry run succeeded, at least one duplicate fixture passed, and the default branch remains `master`.
-
-- [ ] **Step 2: Run the first live manual batch**
-
-Run in GitHub: `manual-run.yml` with `batch=morning`, `dry_run=false`.
-Expected: one archive packet, a current manifest pointing to it, a JSONL event append or explicit no-change state, and no leaked credential.
-
-- [ ] **Step 3: Verify against the delivery contract**
-
-Check the six fixed inputs:
-
-```text
-delivery/current/manifest.json
-delivery/current/morning-candidates.json
-delivery/current/noon-candidates.json
-delivery/current/recent-events.json
-delivery/current/morning-preliminary.md
-delivery/current/noon-preliminary.md
-```
-
-The morning run must populate only its relevant candidate/preliminary fields and record absent noon output explicitly; it must not present stale noon data as current.
-
-- [ ] **Step 4: Record the gate outcome and commit only operational documentation**
-
-```bash
-git add docs/operations/runbook.md docs/decisions/decision-log.md
-git commit -m "docs: record first briefing validation"
-```
-
-### Task 9: ChatGPT scheduling gate and one-week quality loop
-
-**Files:**
-- Modify: `docs/operations/runbook.md`
-- Future external change: existing ChatGPT scheduled tasks, only after the gate passes.
-
-**Interfaces:**
-- Produces: an explicit decision whether ChatGPT may consume the GitHub fixed inputs.
-- Consumes: at least one successful morning batch, one successful noon batch, one failed-batch simulation and one duplicate regression test.
-
-- [ ] **Step 1: Verify the eight scheduling prerequisites**
-
-Confirm all of the following: manual Actions success; stable manifest; both candidate files generated; `recent-events.json` present; public raw links accessible; duplicate test passed; failed-batch test passed; no API secret appears in files or logs.
-
-- [ ] **Step 2: Hand off the exact scope to ChatGPT**
-
-ChatGPT reads only the fixed `delivery/current/` inputs, checks manifest freshness and status first, then does targeted official-source gap checking. It may delete, reorder and explain candidates but must not write GitHub state, fill with old news, or treat commentary as a fact.
-
-- [ ] **Step 3: Run the seven-day feedback loop**
-
-铭哥 marks each final item as `useful`, `duplicate`, `late`, `missed`, or `low_value`. Codex aggregates only these labels and batch metrics; ChatGPT adjusts task wording only after a documented decision. No automatic feedback writeback is added in this stage.
-
-- [ ] **Step 4: Commit the documented gate result**
-
-```bash
-git add docs/operations/runbook.md docs/decisions/decision-log.md
-git commit -m "docs: define ChatGPT briefing handoff"
-```
-
-## Plan Self-Review
-
-- Spec coverage: deterministic identity, four shortened time bands, 90-day cutoff, Kimi context/rate/month budgets, immutable/current delivery, cloud scheduling, ChatGPT read-only boundary and role gates are covered by Tasks 1—9.
-- Placeholder scan: no deferred implementation markers are used; user-owned Kimi limit values are explicitly designated as Actions Variables rather than guessed constants.
-- Type consistency: `Event`, `ModelUsage`, `ArbitrationResult`, `ModelRouter`, `write_batch`, and all test targets are introduced before later tasks consume them.
+- 运行两类批次并保存可追溯状态；
+- 在 90 天媒体回声窗口内对重复事件做结构化处理，并保留永久精确标识；
+- 使用 MiniMax 完成默认处理、仅条件调用 Kimi，并记录真实用量；
+- 输出结构清晰、可供 ChatGPT 二次审核的 Markdown 与 JSON 候选包；
+- 保持失败可追溯、秘密不泄漏、当前报告不被失败批次覆盖；
+- 为后续 ChatGPT 计划任务的只读审核与一周质量反馈提供稳定接口。
+
+达到上述定义后，才讨论第二阶段的 ChatGPT 审核反馈受控写回、长期学习主题、HTML/PDF/Word、私有上下文或更精细的模型预算治理。
