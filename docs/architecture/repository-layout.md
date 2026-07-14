@@ -26,7 +26,7 @@ personal-intelligence-briefing/
 │   │   ├── report-selection-v1.yml        # 推送阈值、来源等级和状态映射
 │   │   └── model-routing-v1.yml           # MiniMax 默认、Kimi 升级条件
 │   └── learning/
-│       └── weekly-schedule-v1.yml         # 周内主题、时段与间隔复习规则
+│       └── weekly-schedule-v1.yml         # 独立学习任务、时段与间隔复习规则
 │
 ├── src/intelligence_briefing/             # 可测试的应用代码
 │   ├── cli.py                             # 运行入口：morning / noon / manual
@@ -55,7 +55,9 @@ personal-intelligence-briefing/
 │   ├── events/YYYY/MM/events-YYYY-MM.jsonl
 │   ├── runs/YYYY/MM/run-<batch-id>.json
 │   ├── watermarks/source-watermarks.json  # 各来源最后成功采集位置
-│   └── indexes/active-events.json         # 可重建：只含热/温窗口事件
+│   └── indexes/
+│       ├── active-events.json              # 可重建：只含热/温窗口事件
+│       └── permanent-identifiers.json      # 永久精确键，不参与宽泛语义比对
 │
 ├── delivery/                              # 对 ChatGPT 和人工阅读的交付层
 │   ├── current/                           # 固定文件名，成功批次后覆盖
@@ -64,7 +66,11 @@ personal-intelligence-briefing/
 │   │   ├── noon-candidates.json
 │   │   ├── recent-events.json
 │   │   ├── morning-preliminary.md
-│   │   └── noon-preliminary.md
+│   │   ├── noon-preliminary.md
+│   │   └── learning/                       # 独立学习任务的机器可读卡片
+│   │       ├── next-audio.json
+│   │       ├── reflection-prompt.json
+│   │       └── weekly-review.json
 │   └── archive/YYYY/MM/DD/<batch-id>/     # 不可变批次快照
 │       ├── manifest.json
 │       ├── candidates.json
@@ -93,7 +99,8 @@ personal-intelligence-briefing/
 | `config/`、`src/`、`tests/`、`docs/` | 仅通过人工提交或 PR 修改 | 规则和代码必须可审阅、可回滚 |
 | `data/events/YYYY/MM/*.jsonl` | 向当月文件追加新状态记录 | 保留事件首次发现和后续状态演化 |
 | `data/runs/YYYY/MM/*.json` | 每个批次新建一个文件 | 让失败、重跑和时间边界可追溯 |
-| `data/watermarks/`、`data/indexes/` | 覆盖更新，可由历史重建 | 只保存当前运行所需的派生状态 |
+| `data/watermarks/`、`data/indexes/active-events.json` | 覆盖更新，可由历史重建 | 只保存当前运行所需的派生状态 |
+| `data/indexes/permanent-identifiers.json` | 追加或受控合并 | 保存跨归档期仍可精确查询的 ID，不参与宽泛语义比较 |
 | `delivery/archive/` | 仅创建，不修改 | 保留每次候选包的审计快照 |
 | `delivery/current/` | 仅在批次完整成功后覆盖 | 为 ChatGPT 提供稳定、短路径的读取入口 |
 
@@ -101,14 +108,15 @@ personal-intelligence-briefing/
 
 ## 3. 事件保留与比较边界
 
-- **热窗口（默认 14 天）：** 进入严格去重索引；
-- **温窗口（默认至 90 天）：** 只作为关联和实质更新的候选；
-- **冷归档（90 天后）：** 保留 JSONL 记录，不进入日常自动比较。
+- **热窗口（默认 0—14 天）：** 进入严格 URL、哈希、实体和语义去重；
+- **温窗口（默认 15—120 天）：** 只按事件链和结构化实体关联，不做宽泛历史语义搜索；
+- **冷窗口（默认 121—365 天）：** 只按精确 ID、规范化 URL 和重大例外查询；
+- **归档期（365 天后）：** 不进入日常召回，但永久精确键仍可查询。
 
 窗口数值集中在 `config/policies/event-retention-v1.yml`，并按来源类别配置。每次变更必须同步更新 `docs/decisions/decision-log.md` 的日期、依据、旧值和新值。这样 2026 年 7 月的规则与后续规则可清楚区分。
 
 ## 4. ChatGPT 与 Codex 的同步边界
 
-ChatGPT 只读取 `delivery/current/`，并先以 `manifest.json` 的 `git_commit_sha` 和 `archive_path` 锁定本次审核版本。它的文字重排不改写 GitHub 状态。
+ChatGPT 的 AI 晨报和午报只读取 `delivery/current/`，并先以 `manifest.json` 的 `git_commit_sha` 和 `archive_path` 锁定本次审核版本。独立学习任务只读取 `delivery/current/learning/` 的对应卡片；其一键直达链接必须指向原始单集或原始页面。ChatGPT 的文字重排不改写 GitHub 状态。
 
 若 ChatGPT 发现系统性错误，应产生带 `batch_id`、`git_commit_sha`、`event_id`、期望状态和证据链接的结构化缺陷说明，再由 Codex 修复代码、配置和测试。未来自动写回只允许进入独立的 `feedback/chatgpt-review/` 目录，且不属于 MVP。
