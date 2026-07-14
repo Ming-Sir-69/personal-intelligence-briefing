@@ -1,0 +1,14 @@
+version: 1
+sources:
+  - id: openai-news
+    url: https://openai.com/news/rss.xml
+    source_type: official
+    enabled: true
+  - id: openai-codex-releases
+    url: https://github.com/openai/codex/releases.atom
+    source_type: official
+    enabled: true
+  - id: anthropic-claude-code-releases
+    url: https://github.com/anthropics/claude-code/releases.atom
+    source_type: official
+    enabled: true

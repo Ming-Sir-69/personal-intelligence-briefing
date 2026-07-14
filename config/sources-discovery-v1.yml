@@ -1,0 +1,12 @@
+version: 1
+sources:
+  - id: github-trending
+    url: https://github.com/trending
+    source_type: discovery
+    enabled: false
+    note: Enable only after adding a metadata-only collector and regression tests.
+  - id: hugging-face-daily-papers
+    url: https://huggingface.co/papers
+    source_type: discovery
+    enabled: false
+    note: Discovery only; final factual evidence must link to an official or primary source.
