@@ -1,0 +1,64 @@
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+from intelligence_briefing.collectors import collect_feeds, fetch_url
+
+
+RSS = b"""<?xml version='1.0'?>
+<rss><channel><item>
+  <title>Codex release</title>
+  <link>https://openai.com/news/codex?utm_source=rss</link>
+  <pubDate>Mon, 14 Jul 2026 06:00:00 +0800</pubDate>
+</item></channel></rss>"""
+
+ATOM = b"""<?xml version='1.0'?>
+<feed xmlns='http://www.w3.org/2005/Atom'><entry>
+  <title>Claude Code update</title>
+  <link href='https://github.com/anthropics/claude-code/releases/tag/v1?utm_source=atom'/>
+  <updated>2026-07-14T01:00:00Z</updated>
+</entry></feed>"""
+
+
+def test_collect_feeds_extracts_public_metadata_without_article_body() -> None:
+    sources = [{"id": "openai-news", "url": "https://openai.com/news/rss.xml", "source_type": "official"}]
+
+    items = collect_feeds(sources, fetch=lambda _url: RSS)
+
+    assert len(items) == 1
+    assert items[0].source_id == "openai-news"
+    assert items[0].url == "https://openai.com/news/codex"
+    assert items[0].published_at == datetime(2026, 7, 14, 6, 0, tzinfo=ZoneInfo("Asia/Shanghai"))
+    assert not hasattr(items[0], "article_body")
+
+
+def test_collect_feeds_extracts_atom_metadata_from_configured_release_feed() -> None:
+    sources = [{"id": "claude-code", "url": "https://github.com/anthropics/claude-code/releases.atom", "source_type": "official"}]
+
+    items = collect_feeds(sources, fetch=lambda _url: ATOM)
+
+    assert items[0].title == "Claude Code update"
+    assert items[0].url == "https://github.com/anthropics/claude-code/releases/tag/v1"
+    assert items[0].published_at == datetime(2026, 7, 14, 9, 0, tzinfo=ZoneInfo("Asia/Shanghai"))
+
+
+def test_fetch_url_uses_a_metadata_only_public_request() -> None:
+    observed: dict[str, str] = {}
+
+    class Response:
+        def read(self) -> bytes:
+            return b"<rss/>"
+
+        def __enter__(self) -> "Response":
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+    def opener(request: object, *, timeout: int) -> Response:
+        observed["url"] = request.full_url  # type: ignore[attr-defined]
+        observed["user_agent"] = request.get_header("User-agent")  # type: ignore[attr-defined]
+        assert timeout == 20
+        return Response()
+
+    assert fetch_url("https://example.com/feed", opener=opener) == b"<rss/>"
+    assert observed == {"url": "https://example.com/feed", "user_agent": "personal-intelligence-briefing/0.1"}

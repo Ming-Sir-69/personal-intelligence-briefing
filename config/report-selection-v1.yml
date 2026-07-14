@@ -1,0 +1,10 @@
+version: 1
+status_policy:
+  new_event: candidate
+  substantive_update: candidate
+  late_discovery: candidate_with_label
+  duplicate: exclude
+  uncertain: review_queue
+source_levels:
+  official: factual_evidence
+  discovery: lead_only
