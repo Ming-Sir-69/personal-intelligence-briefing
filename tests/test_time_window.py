@@ -19,11 +19,12 @@ def test_age_bands_are_non_overlapping_at_all_boundaries() -> None:
     assert age_band(NOW - timedelta(days=91), NOW) == "history"
 
 
-def test_report_windows_use_china_time_and_allow_discovery_overlap() -> None:
+def test_report_windows_never_claim_a_future_data_boundary() -> None:
     morning = report_window("morning", NOW)
     noon = report_window("noon", NOW)
 
     assert morning.end <= NOW
-    assert noon.end > morning.end
+    assert noon.end <= NOW
+    assert noon.start <= noon.end
     assert morning.lookback_start < morning.start
     assert morning.start.tzinfo == SHANGHAI

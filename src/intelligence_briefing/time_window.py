@@ -40,12 +40,12 @@ def report_window(kind: str, now: datetime, overlap: timedelta = timedelta(hours
     local_now = now.astimezone(SHANGHAI)
     if kind == "morning":
         planned_end = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
-        end = min(planned_end, local_now)
-        start = (planned_end - timedelta(days=1)).replace(hour=13, minute=10)
+        planned_start = (planned_end - timedelta(days=1)).replace(hour=13, minute=10)
     elif kind == "noon":
         planned_end = local_now.replace(hour=13, minute=10, second=0, microsecond=0)
-        end = planned_end
-        start = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
+        planned_start = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
     else:
         raise ValueError(f"unsupported batch kind: {kind}")
+    end = min(planned_end, local_now)
+    start = min(planned_start, end)
     return ReportWindow(kind=kind, start=start, end=end, lookback_start=start - overlap)
