@@ -18,12 +18,12 @@ from .url_normalization import normalize_url
 
 
 def event_from_source(source: SourceItem, discovered_at: datetime) -> Event:
-    event_at = source.published_at or discovered_at
-    fingerprint = event_fingerprint(source.source_id, source.title, "published", event_at.date(), source.title)
+    event_at = None
+    fingerprint = event_fingerprint(source.source_id, source.title, "published", None, source.title)
     canonical_url = normalize_url(source.url)
     return Event(
         event_id=f"evt-{sha256((fingerprint + canonical_url).encode()).hexdigest()[:16]}",
-        status="new_event",
+        status="uncertain",
         subject=source.source_id,
         object_name=source.title,
         action="published",
@@ -48,11 +48,13 @@ def run_batch(
     *,
     normalizer: MiniMaxNormalizer | None = None,
     kimi_arbitrator: KimiArbitrator | None = None,
+    collection_errors: tuple[str, ...] = (),
 ) -> Path:
     store = StateStore(root)
     classified: list[Event] = []
     usage = []
-    errors: list[str] = []
+    errors: list[str] = list(collection_errors)
+    normalization_failures = 0
     for source in sources:
         if normalizer:
             try:
@@ -60,11 +62,12 @@ def run_batch(
                 usage.append(model_usage)
             except (RuntimeError, ValueError) as error:
                 event = replace(event_from_source(source, discovered_at), status="uncertain")
+                normalization_failures += 1
                 errors.append(f"minimax normalization failed for {source.source_id}: {error}")
         else:
             event = event_from_source(source, discovered_at)
-        status = classify_candidate(event, recall_history(store, event, discovered_at))
-        if status == "needs_semantic_review":
+        status = classify_candidate(event, recall_history(store, event, discovered_at), discovered_at)
+        if event.event_at is None and status != "duplicate":
             status = "uncertain"
         classified.append(replace(event, status=status))
     if kimi_arbitrator:
@@ -72,14 +75,37 @@ def run_batch(
             status, model_usage = kimi_arbitrator.arbitrate_safely(candidate, recall_history(store, candidate, discovered_at))
             if model_usage:
                 usage.append(model_usage)
+            else:
+                errors.append(f"kimi arbitration failed for {candidate.event_id}")
             classified = [replace(event, status=status) if event.event_id == candidate.event_id else event for event in classified]
+    classified = [
+        replace(event, status="uncertain") if event.status == "needs_semantic_review" else event
+        for event in classified
+    ]
     batch_id = f"{kind}-{discovered_at:%Y%m%dT%H%M%S%z}"
-    batch = Batch(batch_id, kind, "success", discovered_at, discovered_at, tuple(errors), tuple(usage))
+    if normalizer and sources and normalization_failures == len(sources):
+        batch_status = "failed"
+    elif errors:
+        batch_status = "partial"
+    else:
+        batch_status = "success"
+    batch = Batch(batch_id, kind, batch_status, discovered_at, discovered_at, tuple(errors), tuple(usage))
     for event in classified:
         store.append_event(event)
     store.write_run(batch)
     store.rebuild_active_events(discovered_at)
-    return DeliveryWriter(root).write(batch, classified, git_commit_sha=os.environ.get("GITHUB_SHA", "local-dry-run"))
+    writer = DeliveryWriter(root)
+    recent_events = store.recent_gpt_handoffs(discovered_at)
+    archive = writer.write(
+        batch,
+        classified,
+        source_commit_sha=os.environ.get("GITHUB_SHA", "local-dry-run"),
+        workflow_run_id=os.environ.get("GITHUB_RUN_ID"),
+        recent_events=recent_events,
+    )
+    if batch.status == "success":
+        store.append_gpt_handoffs(batch, classified)
+    return archive
 
 
 def run_sample_batch(root: Path, kind: str, discovered_at: datetime) -> Path:

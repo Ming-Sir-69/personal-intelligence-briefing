@@ -20,7 +20,7 @@ class ReportWindow:
 
 def age_band(event_at: datetime | None, now: datetime) -> str:
     if event_at is None:
-        return "hot"
+        return "unknown"
     local_event = event_at.astimezone(SHANGHAI).date()
     local_now = now.astimezone(SHANGHAI).date()
     age = max(0, (local_now - local_event).days)

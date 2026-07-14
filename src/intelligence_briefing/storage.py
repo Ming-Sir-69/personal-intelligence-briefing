@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Iterable
 
 from .models import Batch, Event
 
@@ -45,6 +46,44 @@ class StateStore:
             encoding="utf-8",
         )
         return destination
+
+    def append_gpt_handoffs(self, batch: Batch, events: Iterable[Event]) -> Path:
+        """Record only events that reached a successful GitHub candidate packet."""
+        submitted_at_datetime = batch.completed_at or batch.started_at
+        destination = self.root / "data" / "gpt-handoffs" / f"handoffs-{submitted_at_datetime:%Y-%m}.jsonl"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        submitted_at = submitted_at_datetime.isoformat()
+        with destination.open("a", encoding="utf-8") as handle:
+            for event in events:
+                if event.status == "duplicate":
+                    continue
+                payload = event.to_dict()
+                payload.update({"batch_id": batch.batch_id, "submitted_to_gpt_at": submitted_at})
+                handle.write(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+                handle.write("\n")
+        return destination
+
+    def recent_gpt_handoffs(self, now: object, days: int = 30) -> list[dict[str, object]]:
+        from datetime import datetime, timedelta
+
+        if not isinstance(now, datetime):
+            raise TypeError("now must be a datetime")
+        cutoff = now - timedelta(days=days)
+        latest_by_event: dict[str, dict[str, object]] = {}
+        directory = self.root / "data" / "gpt-handoffs"
+        for path in sorted(directory.glob("handoffs-*.jsonl")) if directory.exists() else []:
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                payload = json.loads(line)
+                submitted_at = payload.get("submitted_to_gpt_at")
+                if not isinstance(submitted_at, str):
+                    continue
+                if datetime.fromisoformat(submitted_at) < cutoff:
+                    continue
+                event_id = str(payload["event_id"])
+                latest_by_event[event_id] = payload
+        return sorted(latest_by_event.values(), key=lambda item: str(item["submitted_to_gpt_at"]), reverse=True)
 
     def rebuild_active_events(self, now: object) -> list[Event]:
         from datetime import datetime

@@ -55,6 +55,29 @@ def test_minimax_normalizer_validates_structured_public_event_and_usage() -> Non
     assert "article_body" not in json.dumps(client.requests[0])
 
 
+def test_minimax_normalizer_marks_missing_event_time_as_uncertain_without_using_publish_time() -> None:
+    reply = json.dumps(
+        {
+            "status": "new_event",
+            "subject": "OpenAI",
+            "object_name": "Codex",
+            "action": "release",
+            "core_change": "new coding capability",
+            "event_at": None,
+            "importance": "high",
+            "event_phase": "released",
+        }
+    )
+    published_at = datetime(2026, 7, 14, 6, 0, tzinfo=SHANGHAI)
+    source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", published_at, "official")
+
+    event, _usage = MiniMaxNormalizer(FakeClient(reply)).normalize(source, datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI))
+
+    assert event.event_at is None
+    assert event.published_at == published_at
+    assert event.status == "uncertain"
+
+
 def test_kimi_arbitrator_receives_at_most_three_compact_history_records() -> None:
     client = FakeClient(json.dumps({"status": "duplicate", "reason": "same official event"}))
     candidate = Event(
@@ -116,7 +139,7 @@ def test_kimi_is_selected_only_for_high_priority_unresolved_events() -> None:
 def test_kimi_queue_is_limited_to_three_eligible_candidates_per_batch() -> None:
     candidates = [
         Event(
-            f"candidate-{index}", "uncertain", "OpenAI", "Codex", "release", "change", None, None,
+            f"candidate-{index}", "needs_semantic_review", "OpenAI", "Codex", "release", "change", None, None,
             datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI), f"https://example.com/{index}", str(index),
             (f"https://example.com/{index}",), "official", "high", "released",
         )
