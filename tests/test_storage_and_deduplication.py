@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -70,6 +71,45 @@ def test_release_after_preview_is_a_substantive_update(tmp_path) -> None:
     candidate = make_event("release", phase="released", change="generally available")
 
     assert classify_candidate(candidate, recall_history(store, candidate, NOW)) == "substantive_update"
+
+
+def test_history_recall_uses_distinct_rules_for_all_four_media_echo_bands(tmp_path) -> None:
+    store = StateStore(tmp_path)
+    candidate = make_event("candidate", fingerprint="candidate")
+
+    for days_ago in (14, 15, 30):
+        prior = make_event(f"chain-{days_ago}", days_ago=days_ago)
+        store.append_event(prior)
+        assert prior.event_id in {event.event_id for event in recall_history(store, candidate, NOW)}
+
+    for days_ago in (31, 60, 61, 90):
+        prior = make_event(f"not-recalled-{days_ago}", days_ago=days_ago)
+        store.append_event(prior)
+        assert prior.event_id not in {event.event_id for event in recall_history(store, candidate, NOW)}
+
+
+def test_unknown_event_time_never_enters_chain_based_history_recall(tmp_path) -> None:
+    store = StateStore(tmp_path)
+    unknown_time = replace(make_event("unknown-time"), event_at=None, published_at=NOW, discovered_at=NOW)
+    store.append_event(unknown_time)
+
+    candidate = make_event("candidate", fingerprint="candidate")
+
+    assert recall_history(store, candidate, NOW) == []
+
+
+def test_hot_chain_can_escalate_to_semantic_review_but_warm_chain_cannot(tmp_path) -> None:
+    store = StateStore(tmp_path)
+    candidate = make_event("candidate", fingerprint="candidate", change="different capability")
+    hot = make_event("hot", days_ago=14, change="earlier capability")
+    warm = make_event("warm", days_ago=15, change="earlier capability")
+
+    store.append_event(hot)
+    assert classify_candidate(candidate, recall_history(store, candidate, NOW), NOW) == "needs_semantic_review"
+
+    isolated_store = StateStore(tmp_path / "warm-only")
+    isolated_store.append_event(warm)
+    assert classify_candidate(candidate, recall_history(isolated_store, candidate, NOW), NOW) == "uncertain"
 
 
 def test_run_records_and_active_index_are_rebuildable_from_event_history(tmp_path) -> None:

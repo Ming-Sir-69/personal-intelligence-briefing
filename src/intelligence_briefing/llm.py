@@ -96,11 +96,14 @@ class OpenAICompatibleClient:
         )
 
 
-def _event_datetime(value: object, fallback: datetime) -> datetime:
+def _event_datetime(value: object, timezone: object) -> datetime | None:
     if not isinstance(value, str) or not value:
-        return fallback
-    parsed = datetime.fromisoformat(value)
-    return parsed if parsed.tzinfo else parsed.replace(tzinfo=fallback.tzinfo)
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone)  # type: ignore[arg-type]
 
 
 class MiniMaxNormalizer:
@@ -120,19 +123,19 @@ class MiniMaxNormalizer:
         missing = required - payload.keys()
         if missing:
             raise ValueError(f"model response missing fields: {sorted(missing)}")
-        event_at = _event_datetime(payload.get("event_at"), source.published_at or discovered_at)
+        event_at = _event_datetime(payload.get("event_at"), discovered_at.tzinfo)
         fingerprint = event_fingerprint(
             str(payload["subject"]),
             str(payload["object_name"]),
             str(payload["action"]),
-            event_at.date(),
+            event_at.date() if event_at else None,
             str(payload["core_change"]),
         )
         event_id = f"evt-{sha256((fingerprint + source.url).encode()).hexdigest()[:16]}"
         return (
             Event(
                 event_id=event_id,
-                status=str(payload["status"]),
+                status=str(payload["status"]) if event_at else "uncertain",
                 subject=str(payload["subject"]),
                 object_name=str(payload["object_name"]),
                 action=str(payload["action"]),
@@ -193,4 +196,8 @@ def should_use_kimi(candidate: Event, *, minimax_unresolved: bool, affects_deliv
 
 
 def select_kimi_candidates(candidates: list[Event]) -> list[Event]:
-    return [candidate for candidate in candidates if should_use_kimi(candidate, minimax_unresolved=True, affects_delivery=True)][:3]
+    return [
+        candidate
+        for candidate in candidates
+        if candidate.status == "needs_semantic_review" and should_use_kimi(candidate, minimax_unresolved=True, affects_delivery=True)
+    ][:3]

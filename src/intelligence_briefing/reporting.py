@@ -26,7 +26,16 @@ class DeliveryWriter:
     def __init__(self, root: Path) -> None:
         self.root = root
 
-    def write(self, batch: Batch, events: Iterable[Event], *, git_commit_sha: str, errors: tuple[str, ...] = ()) -> Path:
+    def write(
+        self,
+        batch: Batch,
+        events: Iterable[Event],
+        *,
+        source_commit_sha: str,
+        workflow_run_id: str | None = None,
+        recent_events: Iterable[dict[str, object]] = (),
+        errors: tuple[str, ...] = (),
+    ) -> Path:
         effective_batch = replace(batch, errors=errors or batch.errors)
         archive = self.root / "delivery" / "archive" / f"{effective_batch.started_at:%Y-%m}" / effective_batch.batch_id
         archive.mkdir(parents=True, exist_ok=False)
@@ -41,7 +50,10 @@ class DeliveryWriter:
             "completed_at": effective_batch.completed_at.isoformat() if effective_batch.completed_at else None,
             "data_range": payload["data_range"],
             "archive_path": archive_path,
-            "git_commit_sha": git_commit_sha,
+            "schema_version": 1,
+            "rules_version": "event-retention-v1",
+            "source_commit_sha": source_commit_sha,
+            "workflow_run_id": workflow_run_id,
             "counts": payload["counts"],
             "errors": list(effective_batch.errors),
             "model_usage": [usage.to_dict() for usage in effective_batch.model_usage],
@@ -50,7 +62,7 @@ class DeliveryWriter:
         self._write_json(archive / "manifest.json", manifest)
         (archive / "preliminary.md").write_text(self._render_markdown(payload), encoding="utf-8")
         if effective_batch.status == "success":
-            self._replace_current(effective_batch.kind, archive, manifest, payload)
+            self._replace_current(effective_batch.kind, archive, manifest, payload, recent_events)
         return archive
 
     def _candidate_payload(self, batch: Batch, events: list[Event]) -> dict[str, object]:
@@ -86,18 +98,20 @@ class DeliveryWriter:
         }
         return {"sections": sections, "counts": sections["quality_metrics"], "data_range": data_range}
 
-    def _replace_current(self, kind: str, archive: Path, manifest: dict[str, object], payload: dict[str, object]) -> None:
+    def _replace_current(
+        self,
+        kind: str,
+        archive: Path,
+        manifest: dict[str, object],
+        payload: dict[str, object],
+        recent_events: Iterable[dict[str, object]],
+    ) -> None:
         current = self.root / "delivery" / "current"
         current.mkdir(parents=True, exist_ok=True)
         self._write_json(current / "manifest.json", manifest)
         self._write_json(current / f"{kind}-candidates.json", payload)
         (current / f"{kind}-preliminary.md").write_text(self._render_markdown(payload), encoding="utf-8")
-        recent = [
-            item
-            for key in ("must_know", "other_valid", "uncertain_or_late")
-            for item in payload["sections"][key]  # type: ignore[index]
-        ]
-        self._write_json(current / "recent-events.json", recent)
+        self._write_json(current / "recent-events.json", list(recent_events))
 
     @staticmethod
     def _write_json(path: Path, payload: object) -> None:

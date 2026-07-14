@@ -19,12 +19,14 @@ def recall_history(store: StateStore, candidate: Event, now: datetime) -> list[E
         if exact_match:
             recalled.append(event)
             continue
-        if age_band(event.event_at, now) != "history" and event.chain_key == candidate.chain_key:
+        if candidate.event_at is None or event.event_at is None:
+            continue
+        if age_band(event.event_at, now) in {"hot", "warm"} and event.chain_key == candidate.chain_key:
             recalled.append(event)
     return recalled
 
 
-def classify_candidate(candidate: Event, history: list[Event]) -> str:
+def classify_candidate(candidate: Event, history: list[Event], now: datetime | None = None) -> str:
     for event in history:
         if event.canonical_url == candidate.canonical_url or event.fingerprint == candidate.fingerprint:
             return "duplicate"
@@ -35,5 +37,9 @@ def classify_candidate(candidate: Event, history: list[Event]) -> str:
         current_phase = PHASE_ORDER.get(candidate.event_phase or "", 0)
         if current_phase > previous_phase:
             return "substantive_update"
-        return "needs_semantic_review"
-    return "new_event"
+        if now and event.event_at and age_band(event.event_at, now) == "hot":
+            return "needs_semantic_review"
+        if event.core_change.strip().casefold() == candidate.core_change.strip().casefold():
+            return "duplicate"
+        return "uncertain"
+    return "uncertain" if candidate.event_at is None else "new_event"

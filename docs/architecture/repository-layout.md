@@ -1,6 +1,6 @@
 # 仓库目录、命名与归档约定
 
-**状态：** MVP 目标结构。当前仅设计文档存在；应用代码和运行数据需在实施计划获批后创建。
+**状态：** G1/G2 基础实现已存在；G3 将首次创建工作流与真实运行数据。目录树同时说明已实现部分和后续阶段的预留边界。
 
 ## 1. 目录树
 
@@ -57,7 +57,9 @@ personal-intelligence-briefing/
 │   ├── runs/run-<batch-id>.json            # 每个批次一个运行与用量记录
 │   ├── source-watermarks.json              # 各来源最后成功采集位置
 │   ├── active-events.json                  # 可重建：只含 0—30 天事件
-│   └── permanent-identifiers.json          # 永久精确键，不参与宽泛语义比对
+│   ├── permanent-identifiers.json          # 永久精确键，不参与宽泛语义比对
+│   └── gpt-handoffs/                       # 成功候选包进入 GPT 审核入口的追加记录
+│       └── handoffs-YYYY-MM.jsonl
 │
 ├── delivery/                              # 对 ChatGPT 和人工阅读的交付层
 │   ├── current/                           # 固定文件名，成功批次后覆盖
@@ -101,6 +103,7 @@ personal-intelligence-briefing/
 | `data/runs/run-<batch-id>.json` | 每个批次新建一个文件，并记录 MiniMax/Kimi 的输入、输出和限额状态 | 让失败、重跑、时间边界与模型用量可追溯 |
 | `data/source-watermarks.json`、`data/active-events.json` | 覆盖更新，可由历史重建 | 只保存当前运行所需的派生状态 |
 | `data/permanent-identifiers.json` | 追加或受控合并 | 保存跨归档期仍可精确查询的 ID，不参与宽泛语义比较 |
+| `data/gpt-handoffs/handoffs-YYYY-MM.jsonl` | 仅在成功候选包生成后追加 | 为下一批和 GPT 提供最近 30 天已提交审核的跨批次历史 |
 | `delivery/archive/` | 仅创建，不修改 | 保留每次候选包的审计快照 |
 | `delivery/current/` | 仅在批次完整成功后覆盖 | 为 ChatGPT 提供稳定、短路径的读取入口 |
 
@@ -118,8 +121,8 @@ personal-intelligence-briefing/
 
 ## 4. ChatGPT 与 Codex 的同步边界
 
-ChatGPT 的 AI 晨报和午报只读取 `delivery/current/`，并先以 `manifest.json` 的 `git_commit_sha` 和 `archive_path` 锁定本次审核版本。独立学习任务只读取 `delivery/current/learning/` 的对应卡片；其一键直达链接必须指向原始单集或原始页面。ChatGPT 的文字重排不改写 GitHub 状态。
+ChatGPT 的 AI 晨报和午报只读取 `delivery/current/`，先检查 `manifest.json` 的 `source_commit_sha`、`workflow_run_id` 和 `archive_path`。实际包含 manifest 的输出提交由 GitHub 文件提交元数据确定，不能在 manifest 内自指为 `output_commit_sha`。`recent-events.json` 是最近 30 天已进入成功 GitHub 候选包的跨批次历史，不是当前候选的复制。独立学习任务只读取 `delivery/current/learning/` 的对应卡片；其一键直达链接必须指向原始单集或原始页面。ChatGPT 的文字重排不改写 GitHub 状态。
 
 默认分支不假定为 `main`：工作流、运行说明和人工脚本必须从仓库元数据或 `origin/HEAD` 读取当前默认分支。当前仓库默认分支为 `master`；它是唯一长期默认分支，功能分支在合并后删除。
 
-若 ChatGPT 发现系统性错误，应产生带 `batch_id`、`git_commit_sha`、`event_id`、期望状态和证据链接的结构化缺陷说明，再由 Codex 修复代码、配置和测试。未来自动写回只允许进入独立的 `feedback/chatgpt-review/` 目录，且不属于 MVP。
+若 ChatGPT 发现系统性错误，应产生带 `batch_id`、`source_commit_sha`、`workflow_run_id`、`event_id`、期望状态和证据链接的结构化缺陷说明，再由 Codex 修复代码、配置和测试。未来自动写回只允许进入独立的 `feedback/chatgpt-review/` 目录，且不属于 MVP。
