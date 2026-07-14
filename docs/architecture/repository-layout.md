@@ -98,7 +98,7 @@ personal-intelligence-briefing/
 | --- | --- | --- |
 | `config/`、`src/`、`tests/`、`docs/` | 仅通过人工提交或 PR 修改 | 规则和代码必须可审阅、可回滚 |
 | `data/events/YYYY/MM/*.jsonl` | 向当月文件追加新状态记录 | 保留事件首次发现和后续状态演化 |
-| `data/runs/YYYY/MM/*.json` | 每个批次新建一个文件 | 让失败、重跑和时间边界可追溯 |
+| `data/runs/YYYY/MM/*.json` | 每个批次新建一个文件，并记录 MiniMax/Kimi 的输入、输出和限额状态 | 让失败、重跑、时间边界与模型用量可追溯 |
 | `data/watermarks/`、`data/indexes/active-events.json` | 覆盖更新，可由历史重建 | 只保存当前运行所需的派生状态 |
 | `data/indexes/permanent-identifiers.json` | 追加或受控合并 | 保存跨归档期仍可精确查询的 ID，不参与宽泛语义比较 |
 | `delivery/archive/` | 仅创建，不修改 | 保留每次候选包的审计快照 |
@@ -118,5 +118,7 @@ personal-intelligence-briefing/
 ## 4. ChatGPT 与 Codex 的同步边界
 
 ChatGPT 的 AI 晨报和午报只读取 `delivery/current/`，并先以 `manifest.json` 的 `git_commit_sha` 和 `archive_path` 锁定本次审核版本。独立学习任务只读取 `delivery/current/learning/` 的对应卡片；其一键直达链接必须指向原始单集或原始页面。ChatGPT 的文字重排不改写 GitHub 状态。
+
+默认分支不假定为 `main`：工作流、运行说明和人工脚本必须从仓库元数据或 `origin/HEAD` 读取当前默认分支。当前仓库默认分支为 `master`；它是唯一长期默认分支，功能分支在合并后删除。
 
 若 ChatGPT 发现系统性错误，应产生带 `batch_id`、`git_commit_sha`、`event_id`、期望状态和证据链接的结构化缺陷说明，再由 Codex 修复代码、配置和测试。未来自动写回只允许进入独立的 `feedback/chatgpt-review/` 目录，且不属于 MVP。
