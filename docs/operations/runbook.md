@@ -35,12 +35,13 @@
 
 ## G3 Actions 操作顺序
 
-1. 先运行 `Manual briefing batch` 的 `dry-run`，它使用临时目录、不会读取 API Key 或写入仓库；
-2. 依次运行 `morning`、`noon` 的 `live`，只有两者完整成功才更新对应 `delivery/current/` 文件；
-3. 运行 `simulate-failed`，确认失败归档存在且 `delivery/current/manifest.json` 保持上一成功批次；
-4. 由 Codex 记录工作流 URL、运行 ID、提交 SHA 和公开 Raw 入口；ChatGPT 只在这四项齐备后开始 G4 审核。
+1. PR 分支先由 `Tests` 的 `push` 和 `pull_request` 触发自动测试；它不读取 Secrets，也不写入仓库状态；
+2. GitHub 将 `workflow_dispatch` 入口注册在默认分支后，运行 `Manual briefing batch` 的 `dry-run`，它使用临时目录、不会读取 API Key 或写入仓库；
+3. 依次运行 `morning`、`noon` 的 `live`，只有两者完整成功才更新对应 `delivery/current/` 文件；
+4. 运行 `simulate-failed`，确认失败归档存在且 `delivery/current/manifest.json` 保持上一成功批次；
+5. 由 Codex 记录工作流 URL、运行 ID、提交 SHA 和公开 Raw 入口；ChatGPT 只在这四项齐备后开始 G4 审核。
 
-`Morning briefing batch` 和 `Noon briefing batch` 的定时表达式分别是 06:20 与 12:20（北京时间）。GitHub 的计划工作流只从默认分支触发；因此在 PR 合并前，G3 使用 `Manual briefing batch` 在功能分支完成验证。
+`workflow_dispatch` 的 GitHub 手动触发入口需要工作流文件已存在于默认分支。因此当前 PR 合并前只做无密钥 CI 验证；合并后才执行真实批次和失败模拟。`Morning briefing batch` 和 `Noon briefing batch` 的定时表达式分别是 06:20 与 12:20（北京时间），且 GitHub 的计划工作流也只从默认分支触发。
 
 ## 待确认的 G4 调研边界
 
