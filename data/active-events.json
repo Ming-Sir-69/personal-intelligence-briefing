@@ -169,5 +169,157 @@
     ],
     "status": "new_event",
     "subject": "anthropic"
+  },
+  {
+    "action": "published a briefing",
+    "canonical_url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
+    "core_change": "Describes how data science teams use ChatGPT Work to accelerate workflows such as code generation, data analysis, and collaboration.",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-14T08:00:00+08:00",
+    "event_id": "evt-d64936fd13e8741d",
+    "event_phase": "informational",
+    "fingerprint": "8b74d46d9c0d300fb037686e3954015906d21c6ddff497bfcb50b55ee263c058",
+    "importance": "low",
+    "object_name": "ChatGPT Work (Codex for Work)",
+    "published_at": "2026-07-14T08:00:00+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.11",
+    "core_change": "Version 0.145.0-alpha.11 released",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-15T00:02:56+08:00",
+    "event_id": "evt-6d97605087cd8754",
+    "event_phase": "announced",
+    "fingerprint": "4527a7bfa89126435649911f9c11a105733db7b5defa9d5e2b8c5d784817751b",
+    "importance": "low",
+    "object_name": "OpenAI Codex",
+    "published_at": "2026-07-15T00:02:56+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.11"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI Codex"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.10",
+    "core_change": "Alpha.10 pre-release of OpenAI Codex Rust build (version 0.145.0-alpha.10)",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-14T15:58:04+08:00",
+    "event_id": "evt-de9770c4ef3e53f2",
+    "event_phase": "alpha",
+    "fingerprint": "684c2b1a0cac3cceca78c8b856f38b24e95dd7d8a3ebf4338c18243202e79240",
+    "importance": "low",
+    "object_name": "rust-v0.145.0-alpha.10",
+    "published_at": "2026-07-14T15:58:04+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.10"
+    ],
+    "status": "duplicate",
+    "subject": "openai-codex"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.4",
+    "core_change": "Version 0.144.4 of the Codex CLI (Rust) released",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-14T13:09:37+08:00",
+    "event_id": "evt-34a8d3a090c76484",
+    "event_phase": "post-release",
+    "fingerprint": "15214cdb24b200bd20c7b491dd7b04e435273bf2420bfa30404ef616e25d3fc1",
+    "importance": "low",
+    "object_name": "Codex CLI (Rust)",
+    "published_at": "2026-07-14T13:09:37+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.144.4"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.9",
+    "core_change": "Release of version 0.145.0-alpha.9 (rust-v0.145.0-alpha.9)",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-14T11:09:51+08:00",
+    "event_id": "evt-1d47b682fa9c231e",
+    "event_phase": "prerelease",
+    "fingerprint": "fb691b0058c7cdc4223804438eea8ab556cb78fe48ab0622c53d4915c1a5092c",
+    "importance": "minor",
+    "object_name": "0.145.0-alpha.9",
+    "published_at": "2026-07-14T11:09:51+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.9"
+    ],
+    "status": "duplicate",
+    "subject": "openai-codex"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.8",
+    "core_change": "rust-v0.145.0-alpha.8",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-14T10:13:59+08:00",
+    "event_id": "evt-19bdcc8460130e8d",
+    "event_phase": "alpha",
+    "fingerprint": "eae1bf9976748cd9f0f165f463b76b70cca47f3063ed5b5e95ba53697be20f58",
+    "importance": "minor",
+    "object_name": "0.145.0-alpha.8",
+    "published_at": "2026-07-14T10:13:59+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.8"
+    ],
+    "status": "duplicate",
+    "subject": "openai-codex-releases"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.209",
+    "core_change": "Version 2.1.209 released",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-14T14:36:28+08:00",
+    "event_id": "evt-441d2e6bf4bf94f0",
+    "event_phase": "announced",
+    "fingerprint": "d9944dd319eff8fd70fa96dd4c65c79913a120637aac0d7df20674d3eff37620",
+    "importance": "routine",
+    "object_name": "Claude Code",
+    "published_at": "2026-07-14T14:36:28+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.209"
+    ],
+    "status": "duplicate",
+    "subject": "Anthropic"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.208",
+    "core_change": "new version v2.1.208 published",
+    "discovered_at": "2026-07-15T18:47:40.572088+08:00",
+    "event_at": "2026-07-14T09:10:42+08:00",
+    "event_id": "evt-336abc575ffc68d0",
+    "event_phase": "released",
+    "fingerprint": "29939f791ae5224b35024eaa86acd7b0d8fc729c48f716d114e8aea80d4a6484",
+    "importance": "normal",
+    "object_name": "v2.1.208",
+    "published_at": "2026-07-14T09:10:42+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.208"
+    ],
+    "status": "duplicate",
+    "subject": "anthropic-claude-code"
   }
 ]
