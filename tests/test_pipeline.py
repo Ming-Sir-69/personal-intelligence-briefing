@@ -46,8 +46,14 @@ def test_all_normalization_failures_create_failed_archive_without_replacing_curr
     failed_archive = run_batch(tmp_path, "noon", now, [source], normalizer=FailingNormalizer())
 
     failed_manifest = json.loads((failed_archive / "manifest.json").read_text(encoding="utf-8"))
+    failed_candidates = json.loads((failed_archive / "candidates.json").read_text(encoding="utf-8"))
     current_manifest = json.loads((tmp_path / "delivery/current/manifest.json").read_text(encoding="utf-8"))
     assert failed_manifest["status"] == "failed"
+    normalization_audit = failed_candidates["normalization_audit"]
+    assert normalization_audit["events_with_flags"] == 1
+    assert normalization_audit["flag_counts"] == {"normalization_failed": 1}
+    assert normalization_audit["events"][0]["event_id"].startswith("evt-")
+    assert normalization_audit["events"][0]["flags"] == ["normalization_failed"]
     assert current_manifest["kind"] == "morning"
 
 
