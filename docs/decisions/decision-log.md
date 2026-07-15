@@ -78,6 +78,22 @@ MVP 不设置 Kimi 的精确套餐限额变量。MiniMax 是默认模型；Kimi 
 
 ---
 
+## 2026-07-15｜Kimi For Coding 路由实测修正
+
+### 决策
+
+`KIMI_API_KEY` 采用 Kimi For Coding 会员 Key，不使用 Moonshot 开放平台入口。MVP 的 Kimi 条件复核路由固定为 `https://api.kimi.com/coding/v1` 与 `kimi-for-coding`。因该模型只接受 `temperature: 1`，在版本化配置中显式覆盖共享客户端的默认 `0.1`；同时将 `max_tokens` 限为 512。
+
+### 验证证据
+
+2026-07-15 的最小真实仲裁调用返回合法 `new_event`，用量为 291 输入 / 335 输出 token。此前对 `https://api.moonshot.cn/v1` 的 HTTP 401 保留为两类 Key/服务隔离的证据，不再视为 Kimi 条件复核不可用。
+
+### 影响
+
+Kimi 仍仅处理高优先级且会影响推送判断的歧义项，每批最多三条、顺序执行；本次不改变其用量控制边界或 GitHub Actions 的 Secrets 名称。
+
+---
+
 ## 2026-07-14｜G2 验收后的事件时间、召回与 GPT 交接修复
 
 ### 决策
