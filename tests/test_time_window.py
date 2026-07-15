@@ -28,3 +28,15 @@ def test_report_windows_never_claim_a_future_data_boundary() -> None:
     assert noon.start <= noon.end
     assert morning.lookback_start < morning.start
     assert morning.start.tzinfo == SHANGHAI
+
+
+def test_scheduled_for_uses_github_action_start_time_not_data_window_end() -> None:
+    now = datetime(2026, 7, 14, 18, 50, tzinfo=SHANGHAI)
+
+    morning = report_window("morning", now)
+    noon = report_window("noon", now)
+
+    assert morning.scheduled_for == datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI)
+    assert noon.scheduled_for == datetime(2026, 7, 14, 12, 20, tzinfo=SHANGHAI)
+    assert morning.end == datetime(2026, 7, 14, 7, 10, tzinfo=SHANGHAI)
+    assert noon.end == datetime(2026, 7, 14, 13, 10, tzinfo=SHANGHAI)

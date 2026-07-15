@@ -51,9 +51,11 @@ def report_window(
     """
     local_now = now.astimezone(SHANGHAI)
     if kind == "morning":
+        scheduled_for = local_now.replace(hour=6, minute=20, second=0, microsecond=0)
         planned_end = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
         planned_start = (planned_end - timedelta(days=1)).replace(hour=13, minute=10)
     elif kind == "noon":
+        scheduled_for = local_now.replace(hour=12, minute=20, second=0, microsecond=0)
         planned_end = local_now.replace(hour=13, minute=10, second=0, microsecond=0)
         planned_start = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
     else:
@@ -68,5 +70,5 @@ def report_window(
         start=start,
         end=end,
         lookback_start=start - overlap,
-        scheduled_for=planned_end,
+        scheduled_for=scheduled_for,
     )

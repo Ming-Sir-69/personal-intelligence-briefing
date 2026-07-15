@@ -118,7 +118,7 @@ Kimi 仍仅处理高优先级且会影响推送判断的歧义项，每批最多
 
 `data/events/` 记录“系统曾观察到”的公开事件，失败与部分成功批次也可写入，以保留诊断证据；但后续重复抑制只读取此前已经进入成功 GitHub 候选包的 `data/gpt-handoffs/`。因此，一个事件不会因只出现过失败或部分成功批次而失去第一次交付机会。
 
-每份 manifest 增加触发和覆盖语义：`trigger_type`、`coverage_mode`、`scheduled_for`、`actual_started_at`、`is_backfill`、`is_zero_length_window`。候选 JSON 在根层提供最小 `duplicate_audit`，而 `counts` 保持纯数值以便机器读取。
+每份 manifest 增加触发和覆盖语义：`trigger_type`、`coverage_mode`、`scheduled_for`、`actual_started_at`、`is_backfill`、`is_zero_length_window`。其中 `scheduled_for` 表示 GitHub Actions 计划启动时刻（晨间 06:20、午间 12:20），计划数据截止仍由 `data_range.end` 表示（晨间 07:10、午间 13:10）。候选 JSON 在根层提供最小 `duplicate_audit`，而 `counts` 保持纯数值以便机器读取。
 
 ### 依据
 
