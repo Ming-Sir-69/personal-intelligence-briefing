@@ -31,7 +31,7 @@ def run_live_batch(
     environment: Mapping[str, str] | None = None,
 ) -> Path:
     """Collect configured public metadata and send it through the live routes."""
-    environment = environment or os.environ
+    environment = os.environ if environment is None else environment
     sources = load_enabled_sources(root / "config" / "sources-official-v1.yml")
     collected, collection_errors = collect_feeds_safely(sources, fetch=fetch)
     minimax_route = load_model_route(root / "config" / "model-routing-v1.yml", "minimax")

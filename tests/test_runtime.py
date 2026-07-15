@@ -54,8 +54,21 @@ def test_live_runtime_uses_configured_feed_and_minimax_secret(tmp_path, monkeypa
     assert manifest["model_usage"] == [{"provider": "minimax", "model": "MiniMax-M3", "input_tokens": 11, "output_tokens": 7, "request_id": "minimax-test"}]
 
 
-def test_live_runtime_missing_minimax_secret_creates_failed_archive(tmp_path) -> None:
+def test_live_runtime_missing_minimax_secret_does_not_fall_back_to_process_environment(tmp_path, monkeypatch) -> None:
     _write_runtime_config(tmp_path)
+    monkeypatch.setenv("MINIMAX_FOR_CODING_API_KEY", "ambient-test-key")
+
+    def unexpected_provider_call(_url, _headers, _payload):
+        return 200, {
+            "choices": [{"message": {"content": json.dumps({
+                "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
+                "action": "release", "core_change": "update", "event_at": "2026-07-14T06:00:00+08:00",
+                "importance": "high", "event_phase": "released",
+            })}}],
+            "usage": {},
+        }
+
+    monkeypatch.setattr("intelligence_briefing.runtime.http_post_json", unexpected_provider_call)
 
     archive = run_live_batch(
         tmp_path,
