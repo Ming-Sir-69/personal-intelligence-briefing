@@ -115,6 +115,20 @@ class StateStore:
                 latest_by_event[event_id] = payload
         return sorted(latest_by_event.values(), key=lambda item: str(item["submitted_to_gpt_at"]), reverse=True)
 
+    def successful_handoff_events(self) -> list[Event]:
+        """Return only events that reached an earlier successful candidate packet.
+
+        The append-only observation log is intentionally broader: failed and partial
+        batches remain there for diagnosis, but must not suppress first delivery.
+        """
+        events: list[Event] = []
+        directory = self.root / "data" / "gpt-handoffs"
+        for path in sorted(directory.glob("handoffs-*.jsonl")) if directory.exists() else []:
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    events.append(Event.from_dict(json.loads(line)))
+        return events
+
     def rebuild_active_events(self, now: object) -> list[Event]:
         from datetime import datetime
         from .time_window import age_band

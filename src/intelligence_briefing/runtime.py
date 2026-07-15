@@ -32,6 +32,7 @@ def run_live_batch(
     *,
     fetch: Callable[[str], bytes] = fetch_url,
     environment: Mapping[str, str] | None = None,
+    trigger_type: str = "manual",
 ) -> Path:
     """Collect configured public metadata and send it through the live routes."""
     environment = os.environ if environment is None else environment
@@ -81,4 +82,5 @@ def run_live_batch(
         normalizer=normalizer,  # type: ignore[arg-type]
         kimi_arbitrator=kimi_arbitrator,
         collection_errors=collection_errors,
+        trigger_type=trigger_type,
     )

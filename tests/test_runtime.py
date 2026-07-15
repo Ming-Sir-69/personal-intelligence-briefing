@@ -50,6 +50,7 @@ def test_live_runtime_uses_configured_feed_and_minimax_secret(tmp_path, monkeypa
         datetime(2026, 7, 14, 6, 20, tzinfo=ZoneInfo("Asia/Shanghai")),
         fetch=lambda _url: RSS,
         environment={"MINIMAX_FOR_CODING_API_KEY": "test-key"},
+        trigger_type="schedule",
     )
 
     manifest = json.loads((archive / "manifest.json").read_text(encoding="utf-8"))
@@ -58,6 +59,8 @@ def test_live_runtime_uses_configured_feed_and_minimax_secret(tmp_path, monkeypa
     assert observed["thinking"] == {"type": "disabled"}
     assert observed["max_tokens"] == 512
     assert observed["timeout_seconds"] == 30
+    assert manifest["trigger_type"] == "schedule"
+    assert manifest["coverage_mode"] == "scheduled_increment"
 
 
 def test_live_runtime_missing_minimax_secret_does_not_fall_back_to_process_environment(tmp_path, monkeypatch) -> None:

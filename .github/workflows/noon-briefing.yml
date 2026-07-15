@@ -28,7 +28,7 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install ".[dev]"
       - run: python -m pytest -q
-      - run: python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch noon --live
+      - run: python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch noon --trigger-type schedule --live
       - name: Commit generated state
         shell: bash
         run: |

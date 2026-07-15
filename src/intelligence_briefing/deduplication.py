@@ -14,7 +14,7 @@ PHASE_ORDER = {"preview": 1, "announced": 1, "beta": 2, "released": 3, "generall
 
 def recall_history(store: StateStore, candidate: Event, now: datetime) -> list[Event]:
     recalled: list[Event] = []
-    for event in store.all_events():
+    for event in store.successful_handoff_events():
         exact_match = event.canonical_url == candidate.canonical_url or event.fingerprint == candidate.fingerprint
         if exact_match:
             recalled.append(event)
