@@ -44,6 +44,7 @@ def test_minimax_normalizer_validates_structured_public_event_and_usage() -> Non
             "event_at": "2026-07-14T06:00:00+08:00",
             "importance": "high",
             "event_phase": "released",
+            "fact_type": "software_release",
         }
     )
     client = FakeClient(reply)
@@ -57,6 +58,42 @@ def test_minimax_normalizer_validates_structured_public_event_and_usage() -> Non
     assert "article_body" not in json.dumps(client.requests[0])
 
 
+def test_minimax_normalizer_keeps_company_policy_position_and_feed_time_provenance() -> None:
+    published_at = datetime(2026, 7, 15, 20, 0, tzinfo=SHANGHAI)
+    reply = json.dumps(
+        {
+            "status": "new_event",
+            "subject": "United States government",
+            "object_name": "US frontier AI safety policy",
+            "action": "policy_analysis",
+            "core_change": "OpenAI describes emerging state and federal safety frameworks.",
+            "event_at": published_at.isoformat(),
+            "importance": "medium",
+            "event_phase": "ongoing",
+            "fact_type": "company_policy_position",
+        }
+    )
+    client = FakeClient(reply)
+    source = SourceItem(
+        "openai-news",
+        "Advancing AI safety through state and federal action",
+        "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action",
+        published_at,
+        "official",
+    )
+
+    event, _usage = MiniMaxNormalizer(client).normalize(
+        source,
+        datetime(2026, 7, 16, 1, 50, tzinfo=SHANGHAI),
+    )
+
+    assert event.subject == "OpenAI"
+    assert event.fact_type == "company_policy_position"
+    assert event.event_time_precision == "datetime"
+    assert event.event_time_source == "rss"
+    assert client.requests[0]["publisher_hint"] == "OpenAI"
+
+
 def test_minimax_normalizer_accepts_json_after_provider_reasoning_preamble() -> None:
     reply = "<think>internal reasoning omitted</think>\n" + json.dumps(
         {
@@ -68,6 +105,7 @@ def test_minimax_normalizer_accepts_json_after_provider_reasoning_preamble() -> 
             "event_at": "2026-07-14T06:00:00+08:00",
             "importance": "high",
             "event_phase": "released",
+            "fact_type": "software_release",
         }
     )
     source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", None, "official")
@@ -90,6 +128,7 @@ def test_minimax_normalizer_marks_missing_event_time_as_uncertain_without_using_
             "event_at": None,
             "importance": "high",
             "event_phase": "released",
+            "fact_type": "software_release",
         }
     )
     published_at = datetime(2026, 7, 14, 6, 0, tzinfo=SHANGHAI)
@@ -114,6 +153,7 @@ def test_minimax_normalizer_retries_once_after_an_incomplete_json_response() -> 
             "event_at": "2026-07-14T06:00:00+08:00",
             "importance": "high",
             "event_phase": "released",
+            "fact_type": "software_release",
         }
     )
 

@@ -8,11 +8,29 @@ from hashlib import sha256
 import json
 from typing import Callable, Protocol
 from urllib.error import HTTPError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from .fingerprints import event_fingerprint
 from .models import Event, ModelUsage, SourceItem
 from .url_normalization import normalize_url
+
+
+FACT_TYPES = {
+    "official_government_action",
+    "company_policy_position",
+    "research_result",
+    "product_release",
+    "software_release",
+    "security_disclosure",
+    "other",
+}
+
+PUBLISHER_HINTS = {
+    "openai-news": "OpenAI",
+    "openai-codex-releases": "OpenAI",
+    "anthropic-claude-code-releases": "Anthropic",
+}
 
 
 def http_post_json(
@@ -112,18 +130,42 @@ def _event_datetime(value: object, timezone: object) -> datetime | None:
     return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone)  # type: ignore[arg-type]
 
 
+def _publisher_hint(source: SourceItem) -> str:
+    if source.source_id in PUBLISHER_HINTS:
+        return PUBLISHER_HINTS[source.source_id]
+    return urlsplit(source.url).hostname or source.source_id
+
+
+def _event_time_precision(value: object, parsed: datetime | None) -> str:
+    if parsed is None or not isinstance(value, str):
+        return "unknown"
+    return "date" if len(value.strip()) == 10 else "datetime"
+
+
 class MiniMaxNormalizer:
     def __init__(self, client: StructuredClient) -> None:
         self.client = client
 
     def normalize(self, source: SourceItem, discovered_at: datetime) -> tuple[Event, ModelUsage]:
+        publisher_hint = _publisher_hint(source)
         request = {
             "task": "normalize_public_briefing_event",
-            "required_fields": ["status", "subject", "object_name", "action", "core_change", "event_at", "importance", "event_phase"],
+            "required_fields": [
+                "status", "subject", "object_name", "action", "core_change", "event_at",
+                "importance", "event_phase", "fact_type",
+            ],
             "source": source.to_dict(),
-            "constraints": ["do not invent an official date", "do not request or return article body"],
+            "publisher_hint": publisher_hint,
+            "allowed_fact_types": sorted(FACT_TYPES),
+            "constraints": [
+                "do not invent an official date",
+                "do not request or return article body",
+                "a company-authored policy or analysis article is company_policy_position unless it directly reports a sourced government action",
+                "for company_policy_position use publisher_hint as subject, not the government being discussed",
+                "an RSS or Atom timestamp is publication metadata, not proof of the exact event occurrence time",
+            ],
         }
-        required = {"status", "subject", "object_name", "action", "core_change", "importance"}
+        required = {"status", "subject", "object_name", "action", "core_change", "importance", "fact_type"}
         replies: list[ModelReply] = []
         for attempt in range(2):
             reply = self.client.complete(request)
@@ -133,6 +175,8 @@ class MiniMaxNormalizer:
                 missing = required - payload.keys()
                 if missing:
                     raise ValueError(f"model response missing fields: {sorted(missing)}")
+                if payload["fact_type"] not in FACT_TYPES:
+                    raise ValueError("model response returned an unsupported fact_type")
             except (ValueError, json.JSONDecodeError):
                 if attempt == 1:
                     raise
@@ -140,9 +184,12 @@ class MiniMaxNormalizer:
             break
         else:  # pragma: no cover - the final attempt always raises or breaks
             raise RuntimeError("normalization retry loop did not complete")
-        event_at = _event_datetime(payload.get("event_at"), discovered_at.tzinfo)
+        raw_event_at = payload.get("event_at")
+        event_at = _event_datetime(raw_event_at, discovered_at.tzinfo)
+        fact_type = str(payload["fact_type"])
+        subject = publisher_hint if fact_type == "company_policy_position" else str(payload["subject"])
         fingerprint = event_fingerprint(
-            str(payload["subject"]),
+            subject,
             str(payload["object_name"]),
             str(payload["action"]),
             event_at.date() if event_at else None,
@@ -153,7 +200,7 @@ class MiniMaxNormalizer:
             Event(
                 event_id=event_id,
                 status=str(payload["status"]) if event_at else "uncertain",
-                subject=str(payload["subject"]),
+                subject=subject,
                 object_name=str(payload["object_name"]),
                 action=str(payload["action"]),
                 core_change=str(payload["core_change"]),
@@ -166,6 +213,9 @@ class MiniMaxNormalizer:
                 source_type=source.source_type,
                 importance=str(payload["importance"]),
                 event_phase=str(payload.get("event_phase") or ""),
+                fact_type=fact_type,
+                event_time_precision=_event_time_precision(raw_event_at, event_at),
+                event_time_source="rss" if event_at and source.published_at else "inferred" if event_at else "unknown",
             ),
             ModelUsage(
                 provider=reply.usage.provider,
