@@ -38,7 +38,7 @@ def test_live_runtime_uses_configured_feed_and_minimax_secret(tmp_path, monkeypa
             "choices": [{"message": {"content": json.dumps({
                 "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
                 "action": "release", "core_change": "update", "event_at": "2026-07-14T06:00:00+08:00",
-                "importance": "high", "event_phase": "released",
+                "importance": "high", "event_phase": "released", "fact_type": "software_release",
             })}}],
             "usage": {"prompt_tokens": 11, "completion_tokens": 7},
         }
@@ -72,7 +72,7 @@ def test_live_runtime_missing_minimax_secret_does_not_fall_back_to_process_envir
             "choices": [{"message": {"content": json.dumps({
                 "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
                 "action": "release", "core_change": "update", "event_at": "2026-07-14T06:00:00+08:00",
-                "importance": "high", "event_phase": "released",
+                "importance": "high", "event_phase": "released", "fact_type": "software_release",
             })}}],
             "usage": {},
         }
