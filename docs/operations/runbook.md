@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-- 当前阶段：G3 本地真实运行已通过，待 GitHub Actions 云端验证。
+- 当前阶段：G3 本地真实运行已通过；云端模型调用已验证，但状态提交修复待合并后复验。
 - 最近验收：ChatGPT G2 复核结论为“允许进入 G3”。
 - 已关闭的 G3 前置问题：四档召回、未知事件时间、批次状态、跨批次 `recent-events.json`。
 - G3 已实现：测试、手动运行、晨间/午间工作流；成功批次水位线；按来源隔离的采集错误；离线失败/部分失败模拟。
@@ -50,6 +50,7 @@
 - 公开 feed 采集总计 1,055 条历史条目；经 `lookback_start` 窗口筛选和每源最多 20 条保护后，晨间实际交给 MiniMax 的候选为 10 条，午间为 2 条。
 - MiniMax `MiniMax-M3` 的结构化抽取使用 `thinking: {type: disabled}`、`max_tokens: 512`、`reasoning_split: true` 与 45 秒请求超时。真实单条验证返回完整 JSON；晨间和午间集成批次均成功，且失败模拟未覆盖 `delivery/current/`。
 - Kimi For Coding 会员 Key 对 Moonshot 开放平台 API 返回 HTTP 401，符合两种 Key 的隔离边界。改用 `https://api.kimi.com/coding/v1`、`kimi-for-coding`、`temperature: 1` 和 `max_tokens: 512` 后，真实条件仲裁成功，返回 `new_event`，实际使用 291 输入 / 335 输出 token。云端工作流应沿用 Coding 路由，不得误用 Moonshot 开放平台入口。
+- 2026-07-15 的云端晨间 live、午间 live 与失败模拟均完成模型/状态运行步骤，但首次生成的 `data/`、`delivery/` 文件是 Git 未跟踪文件；三个工作流错误地使用 `git diff --quiet`，导致提交步骤无差异退出。修复已改为 `git status --porcelain -- data delivery` 并有回归测试；修复合并后必须重新运行三项云端验证，确认公开交付文件与失败保护实际落库。
 
 ## 待确认的 G4 调研边界
 

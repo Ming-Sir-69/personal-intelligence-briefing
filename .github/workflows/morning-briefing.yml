@@ -32,7 +32,7 @@ jobs:
       - name: Commit generated state
         shell: bash
         run: |
-          if git diff --quiet -- data delivery; then
+          if [ -z "$(git status --porcelain -- data delivery)" ]; then
             exit 0
           fi
           git config user.name "github-actions[bot]"
