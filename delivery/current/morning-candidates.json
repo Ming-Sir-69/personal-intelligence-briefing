@@ -1,35 +1,116 @@
 {
   "counts": {
-    "duplicate_events": 10,
-    "input_events": 10,
-    "selected_events": 0,
+    "duplicate_events": 0,
+    "input_events": 3,
+    "selected_events": 3,
     "uncertain_events": 0
   },
   "data_range": {
-    "end": "2026-07-15T07:10:00+08:00",
-    "lookback_start": "2026-07-14T07:10:00+08:00",
-    "start": "2026-07-14T13:10:00+08:00"
+    "end": "2026-07-16T01:50:38.565715+08:00",
+    "lookback_start": "2026-07-15T12:50:16.975023+08:00",
+    "start": "2026-07-15T18:50:16.975023+08:00"
   },
+  "duplicate_audit": [],
   "sections": {
-    "agentic_coding_and_toolchain": [],
+    "agentic_coding_and_toolchain": [
+      {
+        "action": "release",
+        "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.13",
+        "core_change": "openai-codex révélée en version 0.145.0-alpha.13",
+        "discovered_at": "2026-07-16T01:50:38.565715+08:00",
+        "event_at": "2026-07-15T15:51:51+08:00",
+        "event_id": "evt-2265da421f6f07cd",
+        "event_phase": "pre-release",
+        "fingerprint": "8bf401336ed5287140727b89879c21ca40b0a197d44e29ef4f20e8c21eeb84e5",
+        "importance": "minor",
+        "object_name": "openai-codex",
+        "published_at": "2026-07-15T15:51:51+08:00",
+        "source_type": "official",
+        "source_urls": [
+          "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.13"
+        ],
+        "status": "new_event",
+        "subject": "openai"
+      }
+    ],
     "batch_state_and_range": {
-      "batch_id": "morning-20260715T184740+0800",
-      "completed_at": "2026-07-15T18:47:40.572088+08:00",
+      "batch_id": "morning-20260716T015038+0800",
+      "completed_at": "2026-07-16T01:50:38.565715+08:00",
       "data_range": {
-        "end": "2026-07-15T07:10:00+08:00",
-        "lookback_start": "2026-07-14T07:10:00+08:00",
-        "start": "2026-07-14T13:10:00+08:00"
+        "end": "2026-07-16T01:50:38.565715+08:00",
+        "lookback_start": "2026-07-15T12:50:16.975023+08:00",
+        "start": "2026-07-15T18:50:16.975023+08:00"
       },
       "kind": "morning",
-      "started_at": "2026-07-15T18:47:40.572088+08:00"
+      "started_at": "2026-07-16T01:50:38.565715+08:00",
+      "trigger_type": "workflow_dispatch"
     },
-    "must_know": [],
-    "other_valid": [],
+    "must_know": [
+      {
+        "action": "research_release",
+        "canonical_url": "https://openai.com/index/unlocking-self-improvement-gpt-red",
+        "core_change": "OpenAI introduced GPT-Red, a method aimed at enabling self-improvement for robustness in language models.",
+        "discovered_at": "2026-07-16T01:50:38.565715+08:00",
+        "event_at": "2026-07-15T18:00:00+08:00",
+        "event_id": "evt-1d666ef77a7b47c5",
+        "event_phase": "announcement",
+        "fingerprint": "45c8afe20ae7b11aea769c21151bb4dad6f2f769367ad6c8687704e07c11abe2",
+        "importance": "high",
+        "object_name": "GPT-Red",
+        "published_at": "2026-07-15T18:00:00+08:00",
+        "source_type": "official",
+        "source_urls": [
+          "https://openai.com/index/unlocking-self-improvement-gpt-red"
+        ],
+        "status": "new_event",
+        "subject": "OpenAI"
+      }
+    ],
+    "other_valid": [
+      {
+        "action": "advancing",
+        "canonical_url": "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action",
+        "core_change": "The US government is advancing AI safety through coordinated state and federal action.",
+        "discovered_at": "2026-07-16T01:50:38.565715+08:00",
+        "event_at": "2026-07-15T20:00:00+08:00",
+        "event_id": "evt-5a61abf20b8bd589",
+        "event_phase": "ongoing",
+        "fingerprint": "f7c8e1f6044fd26171d8c081e5439c5e67ee99b0a946e4ee1aa25caaad6c5fb5",
+        "importance": "medium",
+        "object_name": "AI safety policy",
+        "published_at": "2026-07-15T20:00:00+08:00",
+        "source_type": "official",
+        "source_urls": [
+          "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action"
+        ],
+        "status": "new_event",
+        "subject": "United States government"
+      },
+      {
+        "action": "release",
+        "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.13",
+        "core_change": "openai-codex révélée en version 0.145.0-alpha.13",
+        "discovered_at": "2026-07-16T01:50:38.565715+08:00",
+        "event_at": "2026-07-15T15:51:51+08:00",
+        "event_id": "evt-2265da421f6f07cd",
+        "event_phase": "pre-release",
+        "fingerprint": "8bf401336ed5287140727b89879c21ca40b0a197d44e29ef4f20e8c21eeb84e5",
+        "importance": "minor",
+        "object_name": "openai-codex",
+        "published_at": "2026-07-15T15:51:51+08:00",
+        "source_type": "official",
+        "source_urls": [
+          "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.13"
+        ],
+        "status": "new_event",
+        "subject": "openai"
+      }
+    ],
     "product_industry_policy": [],
     "quality_metrics": {
-      "duplicate_events": 10,
-      "input_events": 10,
-      "selected_events": 0,
+      "duplicate_events": 0,
+      "input_events": 3,
+      "selected_events": 3,
       "uncertain_events": 0
     },
     "uncertain_or_late": []
