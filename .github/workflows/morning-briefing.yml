@@ -1,0 +1,42 @@
+name: Morning briefing batch
+
+on:
+  schedule:
+    - cron: "20 22 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: briefing-state-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      MINIMAX_FOR_CODING_API_KEY: ${{ secrets.MINIMAX_FOR_CODING_API_KEY }}
+      KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install ".[dev]"
+      - run: python -m pytest -q
+      - run: python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch morning --live
+      - name: Commit generated state
+        shell: bash
+        run: |
+          if git diff --quiet -- data delivery; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data delivery
+          git commit -m "chore: record morning briefing batch"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

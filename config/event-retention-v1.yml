@@ -1,0 +1,14 @@
+version: 1
+media_echo_bands:
+  hot:
+    min_age_days: 0
+    max_age_days: 14
+  warm:
+    min_age_days: 15
+    max_age_days: 30
+  cold:
+    min_age_days: 31
+    max_age_days: 60
+  archive:
+    min_age_days: 61
+    max_age_days: 90
