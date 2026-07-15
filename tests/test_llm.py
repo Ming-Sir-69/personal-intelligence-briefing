@@ -141,6 +141,45 @@ def test_openai_compatible_client_sends_structured_request_and_records_usage() -
     assert reply.usage == ModelUsage("minimax", "MiniMax-M3", 8, 5, "provider-request")
 
 
+def test_openai_compatible_client_merges_configured_request_options() -> None:
+    observed: dict[str, object] = {}
+
+    def request_json(url: str, headers: dict[str, str], payload: dict[str, object]) -> tuple[int, dict[str, object]]:
+        observed.update(url=url, headers=headers, payload=payload)
+        return 200, {
+            "id": "provider-request",
+            "choices": [{"message": {"content": '{"status":"new_event"}'}}],
+            "usage": {"prompt_tokens": 8, "completion_tokens": 5},
+        }
+
+    client = OpenAICompatibleClient(
+        "minimax",
+        "https://api.example/v1",
+        "MiniMax-M3",
+        "secret-value",
+        request_json,
+        request_options={
+            "max_tokens": 512,
+            "reasoning_split": True,
+            "thinking": {"type": "disabled"},
+        },
+    )
+
+    client.complete({"task": "normalize_public_briefing_event"})
+
+    assert observed["payload"] == {
+        "model": "MiniMax-M3",
+        "messages": [
+            {"role": "system", "content": "Return only valid JSON for the requested public-information task."},
+            {"role": "user", "content": '{"task": "normalize_public_briefing_event"}'},
+        ],
+        "temperature": 0.1,
+        "max_tokens": 512,
+        "reasoning_split": True,
+        "thinking": {"type": "disabled"},
+    }
+
+
 def test_kimi_is_selected_only_for_high_priority_unresolved_events() -> None:
     high_uncertain = Event(
         "candidate", "uncertain", "OpenAI", "Codex", "release", "change", None, None,

@@ -21,10 +21,11 @@ def http_post_json(
     payload: dict[str, object],
     *,
     opener: Callable[..., object] = urlopen,
+    timeout_seconds: int = 30,
 ) -> tuple[int, dict[str, object]]:
     request = Request(url, data=json.dumps(payload, ensure_ascii=False).encode("utf-8"), headers=headers, method="POST")
     try:
-        with opener(request, timeout=30) as response:  # type: ignore[attr-defined]
+        with opener(request, timeout=timeout_seconds) as response:  # type: ignore[attr-defined]
             return int(response.status), json.loads(response.read())  # type: ignore[attr-defined]
     except HTTPError as error:
         body = error.read().decode("utf-8", errors="replace")
@@ -55,12 +56,14 @@ class OpenAICompatibleClient:
         model: str,
         api_key: str,
         request_json: Callable[[str, dict[str, str], dict[str, object]], tuple[int, dict[str, object]]],
+        request_options: dict[str, object] | None = None,
     ) -> None:
         self.provider = provider
         self.base_url = base_url.rstrip("/")
         self.model = model
         self._api_key = api_key
         self._request_json = request_json
+        self._request_options = request_options or {}
 
     def complete(self, payload: dict[str, object]) -> ModelReply:
         body = {
@@ -71,6 +74,7 @@ class OpenAICompatibleClient:
             ],
             "temperature": 0.1,
         }
+        body.update(self._request_options)
         status, response = self._request_json(
             f"{self.base_url}/chat/completions",
             {"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"},
