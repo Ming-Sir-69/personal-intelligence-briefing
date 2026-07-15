@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 
 from intelligence_briefing.models import Batch, Event, ModelUsage
 from intelligence_briefing.reporting import DeliveryWriter
+from intelligence_briefing.time_window import report_window
 
 
 SHANGHAI = ZoneInfo("Asia/Shanghai")
@@ -34,6 +35,53 @@ def test_successful_delivery_writes_immutable_archive_and_current_seven_sections
     assert current["source_commit_sha"] == "test-sha"
     assert current["data_range"]["start"] < current["data_range"]["end"]
     assert (tmp_path / "delivery/current/morning-candidates.json").exists()
+
+
+def test_manifest_marks_manual_zero_length_window_as_backfill(tmp_path) -> None:
+    writer = DeliveryWriter(tmp_path)
+    zero_window_batch = Batch(
+        "noon-20260714T185000+0800", "noon", "success",
+        datetime(2026, 7, 14, 18, 50, tzinfo=SHANGHAI),
+        datetime(2026, 7, 14, 18, 50, tzinfo=SHANGHAI), (), (),
+        trigger_type="workflow_dispatch",
+    )
+
+    archive = writer.write(
+        zero_window_batch,
+        [event()],
+        source_commit_sha="test-sha",
+        window=report_window(
+            "noon",
+            zero_window_batch.started_at,
+            previous_success_at=datetime(2026, 7, 14, 18, 47, tzinfo=SHANGHAI),
+        ),
+    )
+
+    manifest = json.loads((archive / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["trigger_type"] == "workflow_dispatch"
+    assert manifest["coverage_mode"] == "backfill"
+    assert manifest["scheduled_for"] == "2026-07-14T12:20:00+08:00"
+    assert manifest["actual_started_at"] == "2026-07-14T18:50:00+08:00"
+    assert manifest["data_range"]["end"] == "2026-07-14T13:10:00+08:00"
+    assert manifest["is_backfill"] is True
+    assert manifest["is_zero_length_window"] is True
+
+
+def test_candidate_payload_keeps_a_minimal_audit_record_for_suppressed_duplicates(tmp_path) -> None:
+    writer = DeliveryWriter(tmp_path)
+
+    archive = writer.write(batch(), [event(status="duplicate")], source_commit_sha="test-sha")
+
+    payload = json.loads((archive / "candidates.json").read_text(encoding="utf-8"))
+    audit = payload["duplicate_audit"]
+    assert audit == [{
+        "canonical_url": "https://openai.com/codex",
+        "event_id": "evt-1",
+        "event_at": "2026-07-14T06:20:00+08:00",
+        "fingerprint": "fingerprint",
+        "object_name": "Codex",
+        "subject": "OpenAI",
+    }]
 
 
 def test_failed_delivery_keeps_the_last_successful_current_packet(tmp_path) -> None:

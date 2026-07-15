@@ -44,7 +44,8 @@ def test_same_url_is_duplicate_even_when_found_again_after_90_days(tmp_path) -> 
     store = StateStore(tmp_path)
     prior = make_event("old", days_ago=91, url="https://example.com/release", fingerprint="old")
     candidate = make_event("new", url="https://example.com/release", fingerprint="new")
-    store.append_event(prior)
+    batch = Batch("morning-20260714T062000+0800", "morning", "success", NOW, NOW, (), ())
+    store.append_gpt_handoffs(batch, [prior])
 
     assert classify_candidate(candidate, recall_history(store, candidate, NOW)) == "duplicate"
 
@@ -59,7 +60,9 @@ def test_unrelated_history_older_than_90_days_is_not_recalled(tmp_path) -> None:
 
 def test_same_fingerprint_is_duplicate_when_title_or_media_changes(tmp_path) -> None:
     store = StateStore(tmp_path)
-    store.append_event(make_event("official", fingerprint="same-event"))
+    prior = make_event("official", fingerprint="same-event")
+    batch = Batch("morning-20260714T062000+0800", "morning", "success", NOW, NOW, (), ())
+    store.append_gpt_handoffs(batch, [prior])
     candidate = make_event("translated-title", fingerprint="same-event", url="https://news.example/codex")
 
     assert classify_candidate(candidate, recall_history(store, candidate, NOW)) == "duplicate"
@@ -67,7 +70,9 @@ def test_same_fingerprint_is_duplicate_when_title_or_media_changes(tmp_path) -> 
 
 def test_release_after_preview_is_a_substantive_update(tmp_path) -> None:
     store = StateStore(tmp_path)
-    store.append_event(make_event("preview", days_ago=1, phase="preview", change="preview announced"))
+    preview = make_event("preview", days_ago=1, phase="preview", change="preview announced")
+    batch = Batch("morning-20260714T062000+0800", "morning", "success", NOW, NOW, (), ())
+    store.append_gpt_handoffs(batch, [preview])
     candidate = make_event("release", phase="released", change="generally available")
 
     assert classify_candidate(candidate, recall_history(store, candidate, NOW)) == "substantive_update"
@@ -79,12 +84,14 @@ def test_history_recall_uses_distinct_rules_for_all_four_media_echo_bands(tmp_pa
 
     for days_ago in (14, 15, 30):
         prior = make_event(f"chain-{days_ago}", days_ago=days_ago)
-        store.append_event(prior)
+        batch = Batch("morning-20260714T062000+0800", "morning", "success", NOW, NOW, (), ())
+        store.append_gpt_handoffs(batch, [prior])
         assert prior.event_id in {event.event_id for event in recall_history(store, candidate, NOW)}
 
     for days_ago in (31, 60, 61, 90):
         prior = make_event(f"not-recalled-{days_ago}", days_ago=days_ago)
-        store.append_event(prior)
+        batch = Batch("morning-20260714T062000+0800", "morning", "success", NOW, NOW, (), ())
+        store.append_gpt_handoffs(batch, [prior])
         assert prior.event_id not in {event.event_id for event in recall_history(store, candidate, NOW)}
 
 
@@ -104,12 +111,23 @@ def test_hot_chain_can_escalate_to_semantic_review_but_warm_chain_cannot(tmp_pat
     hot = make_event("hot", days_ago=14, change="earlier capability")
     warm = make_event("warm", days_ago=15, change="earlier capability")
 
-    store.append_event(hot)
+    batch = Batch("morning-20260714T062000+0800", "morning", "success", NOW, NOW, (), ())
+    store.append_gpt_handoffs(batch, [hot])
     assert classify_candidate(candidate, recall_history(store, candidate, NOW), NOW) == "needs_semantic_review"
 
     isolated_store = StateStore(tmp_path / "warm-only")
-    isolated_store.append_event(warm)
+    isolated_store.append_gpt_handoffs(batch, [warm])
     assert classify_candidate(candidate, recall_history(isolated_store, candidate, NOW), NOW) == "uncertain"
+
+
+def test_observed_event_from_partial_batch_does_not_suppress_first_successful_delivery(tmp_path) -> None:
+    store = StateStore(tmp_path)
+    observed = make_event("observed-only", fingerprint="same-event")
+    candidate = make_event("first-success", fingerprint="same-event")
+
+    store.append_event(observed)
+
+    assert classify_candidate(candidate, recall_history(store, candidate, NOW), NOW) == "new_event"
 
 
 def test_run_records_and_active_index_are_rebuildable_from_event_history(tmp_path) -> None:
