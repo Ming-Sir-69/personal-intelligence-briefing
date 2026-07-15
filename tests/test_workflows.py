@@ -14,3 +14,16 @@ def test_manual_dry_run_does_not_receive_provider_secrets() -> None:
     assert steps["Run selected batch"]["if"] == "${{ inputs.mode != 'live' }}"
     assert steps["Run live batch"]["if"] == "${{ inputs.mode == 'live' }}"
     assert "MINIMAX_FOR_CODING_API_KEY" in steps["Run live batch"]["env"]
+
+
+def test_state_commits_detect_new_untracked_delivery_files() -> None:
+    commit_steps = []
+    for workflow_path in Path(".github/workflows").glob("*.yml"):
+        workflow = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
+        for job in workflow["jobs"].values():
+            for step in job.get("steps", []):
+                if isinstance(step, dict) and step.get("name") == "Commit generated state":
+                    commit_steps.append(step)
+
+    assert len(commit_steps) == 3
+    assert all("git status --porcelain -- data delivery" in step["run"] for step in commit_steps)
