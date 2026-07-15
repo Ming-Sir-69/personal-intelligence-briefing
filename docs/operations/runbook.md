@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-- 当前阶段：G4 内容溯源修复已通过真实批次验证；确定性标准化守门和 ChatGPT 有界二次研究计划已完成本地接入与无密钥 dry-run。合并后再跑一个真实批次，随后配置正式定时任务。
+- 当前阶段：PR #10 已合并；确定性标准化守门和 ChatGPT 有界二次研究计划已通过晨间、午间真实批次。下一步配置 ChatGPT 07:30 / 13:30 正式计划任务，并用首次自然新增候选复核 `required` 路径。
 - 最近验收：ChatGPT G2 复核结论为“允许进入 G3”。
 - 已关闭的 G3 前置问题：四档召回、未知事件时间、批次状态、跨批次 `recent-events.json`。
 - G3 已实现：测试、手动运行、晨间/午间工作流；成功批次水位线；按来源隔离的采集错误；离线失败/部分失败模拟。
@@ -91,3 +91,10 @@ G4 通过公开 Raw 入口确认：手动迟到午间批次可产生零长度正
 - Key 继续只从进程环境读取，错误信息不得包含响应正文、Authorization 或环境值。
 
 连续预发布版本流降噪和 AI HOT 二级线索源接入均登记为后续优化，不阻塞当前 MVP 完整闭环。AI HOT 接入前先用匿名只读接口做小样本覆盖率、重复率和署名合同验证，不安装 MCP，也不新增 Secret。
+
+## 2026-07-16 G4 二次研究契约真实验证
+
+- PR #10 合并提交为 `3523812`。手动晨间 live [run 29458938350](https://github.com/Ming-Sir-69/personal-intelligence-briefing/actions/runs/29458938350) 生成批次 `morning-20260716T073438+0800`，状态为 `success`；候选包输出晨间补录上限 3、官方源查漏查询上限 4、最大扩散一层。
+- 手动午间 live [run 29459013203](https://github.com/Ming-Sir-69/personal-intelligence-briefing/actions/runs/29459013203) 生成批次 `noon-20260716T073606+0800`，状态为 `success`；候选包输出午间补录上限 2、官方源查漏查询上限 3、最大扩散一层。
+- 两个批次各处理 2 条输入并均被成功 handoff 历史判为重复，因此 `candidate_reviews` 为空，没有人为制造新闻验证 `required`。该路径已有回归测试；下一条真实新增、未确定、高重要性或带标准化标记的候选必须进入 `required`，再作为计划任务自然运行验收。
+- 晨间真实审计记录 2 次 `feed_time_metadata` 和 1 次 `model_retry`；午间记录 1 次 `model_retry`。两个批次的 `counts` 均保持纯整数，公开 archive、current 和 run 文件未发现 Authorization、Bearer Token、API Key 值或环境变量值。
