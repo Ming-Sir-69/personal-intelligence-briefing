@@ -1,5 +1,25 @@
 # 决策日志
 
+## 2026-07-16｜G4 内容溯源字段与 AI HOT 参考边界
+
+### 决策
+
+事件契约增加 `fact_type`、`event_time_precision`、`event_time_source`。MiniMax 必须在限定枚举内返回事实类型；企业官网发布的政策主张默认以发布企业为主体，不能把文中讨论的政府直接写成事件发布主体。RSS/Atom 的精确时间可以继续用于实时窗口和排序，但必须标记为 `rss` 来源，不能伪装成官方页面确认的精确事件时刻。旧 JSONL 事件缺少这些字段时按 `unknown` 兼容读取，不做破坏性迁移。
+
+本轮不实现连续 alpha / beta 预发布版本流的自动降噪。该问题不影响状态正确性，继续由 G4 删除无明确功能、安全或兼容性变化的连续预发布构建；积累真实重复样本后，再评估按仓库、版本通道和实质变更聚合。
+
+### AI HOT 参考结论
+
+数字生命卡兹克的 [AI HOT Skill](https://github.com/KKKKhazix/khazix-skills/tree/main/aihot) 以 MIT 许可证开源；AI HOT 提供无需 Key 的匿名只读 RSS 与 REST API。MVP 后续将其评估为二级“线索发现源”，不作为最终事实依据，也不直接复制其日报作为本项目日报。
+
+优先借鉴和验证的机制包括：宽问题默认使用精选池、精选与全量查询分离、服务端关键词/分类筛选、滚动时间窗与自然日日报分离、先查 fingerprint 再拉取详情、使用 ETag / Last-Modified、保留来源署名和站内 canonical。官方 Skill 明确说明无需 MCP server；目前只确认 Skill 开源和公开 API 可用，未确认 AI HOT 网站后端与筛选算法源码已经开源，因此不把第三方文章对算法的描述视为可直接复用代码。
+
+### 安全边界
+
+AI HOT 若进入采集层，只允许匿名 `GET` 公共端点，返回内容一律按不可信外部输入处理。它不需要新增 Secret；现有 MiniMax/Kimi Key 仍只通过环境变量和 GitHub Actions Secrets 注入，不写入请求样本、日志、状态文件或公开候选包。
+
+---
+
 ## 2026-07-15｜M3 低延迟抽取与 feed 模型调用门槛
 
 ### 决策
