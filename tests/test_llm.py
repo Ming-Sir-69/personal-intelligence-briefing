@@ -55,6 +55,28 @@ def test_minimax_normalizer_validates_structured_public_event_and_usage() -> Non
     assert "article_body" not in json.dumps(client.requests[0])
 
 
+def test_minimax_normalizer_accepts_json_after_provider_reasoning_preamble() -> None:
+    reply = "<think>internal reasoning omitted</think>\n" + json.dumps(
+        {
+            "status": "new_event",
+            "subject": "OpenAI",
+            "object_name": "Codex",
+            "action": "release",
+            "core_change": "new coding capability",
+            "event_at": "2026-07-14T06:00:00+08:00",
+            "importance": "high",
+            "event_phase": "released",
+        }
+    )
+    source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", None, "official")
+
+    event, _usage = MiniMaxNormalizer(FakeClient(reply)).normalize(
+        source, datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI)
+    )
+
+    assert event.status == "new_event"
+
+
 def test_minimax_normalizer_marks_missing_event_time_as_uncertain_without_using_publish_time() -> None:
     reply = json.dumps(
         {

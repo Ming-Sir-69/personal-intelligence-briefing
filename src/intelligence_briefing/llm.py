@@ -118,7 +118,7 @@ class MiniMaxNormalizer:
             "constraints": ["do not invent an official date", "do not request or return article body"],
         }
         reply = self.client.complete(request)
-        payload = json.loads(reply.content)
+        payload = _load_json_object(reply.content)
         required = {"status", "subject", "object_name", "action", "core_change", "importance"}
         missing = required - payload.keys()
         if missing:
@@ -179,7 +179,7 @@ class KimiArbitrator:
                 "allowed_statuses": ["new_event", "duplicate", "substantive_update", "late_discovery", "uncertain"],
             }
         )
-        status = json.loads(reply.content).get("status")
+        status = _load_json_object(reply.content).get("status")
         if status not in {"new_event", "duplicate", "substantive_update", "late_discovery", "uncertain"}:
             raise ValueError("model arbitration returned an unsupported status")
         return status, reply.usage
@@ -201,3 +201,15 @@ def select_kimi_candidates(candidates: list[Event]) -> list[Event]:
         for candidate in candidates
         if candidate.status == "needs_semantic_review" and should_use_kimi(candidate, minimax_unresolved=True, affects_delivery=True)
     ][:3]
+
+
+def _load_json_object(content: str) -> dict[str, object]:
+    """Accept provider preambles while still rejecting non-object responses."""
+    start = content.find("{")
+    end = content.rfind("}")
+    if start == -1 or end == -1 or end < start:
+        raise json.JSONDecodeError("no JSON object found", content, 0)
+    payload = json.loads(content[start : end + 1])
+    if not isinstance(payload, dict):
+        raise ValueError("model response must be a JSON object")
+    return payload

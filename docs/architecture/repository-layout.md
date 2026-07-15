@@ -12,7 +12,7 @@ personal-intelligence-briefing/
 │
 ├── .github/
 │   └── workflows/
-│       ├── test.yml                       # 单元测试和静态检查
+│       ├── tests.yml                      # 单元测试和静态检查
 │       ├── manual-run.yml                 # workflow_dispatch，仅用于受控测试
 │       ├── morning-briefing.yml           # 晨间定时批次
 │       └── noon-briefing.yml              # 午间定时批次
@@ -36,7 +36,8 @@ personal-intelligence-briefing/
 │   ├── learning_schedule.py               # 学习槽位选择，不保存个人数据
 │   ├── reporting.py                       # JSON/Markdown/manifest 渲染
 │   ├── collectors.py                      # 官方源与发现源采集器
-│   └── llm.py                             # MiniMax、Kimi 客户端和结构化校验
+│   ├── llm.py                             # MiniMax、Kimi 客户端和结构化校验
+│   └── runtime.py                         # GitHub Actions 的真实来源与模型装配
 │
 ├── tests/                                 # 与 src 模块一一对应的测试
 │   ├── test_models.py
@@ -55,7 +56,7 @@ personal-intelligence-briefing/
 ├── data/                                  # GitHub Actions 写入的结构化状态，不存全文
 │   ├── events/events-YYYY-MM.jsonl         # 按月追加的事件历史
 │   ├── runs/run-<batch-id>.json            # 每个批次一个运行与用量记录
-│   ├── source-watermarks.json              # 各来源最后成功采集位置
+│   ├── source-watermarks.json              # 最后完整成功批次的连续采集边界
 │   ├── active-events.json                  # 可重建：只含 0—30 天事件
 │   ├── permanent-identifiers.json          # 永久精确键，不参与宽泛语义比对
 │   └── gpt-handoffs/                       # 成功候选包进入 GPT 审核入口的追加记录
@@ -101,7 +102,7 @@ personal-intelligence-briefing/
 | `config/`、`src/`、`tests/`、`docs/` | 仅通过人工提交或 PR 修改 | 规则和代码必须可审阅、可回滚 |
 | `data/events/events-YYYY-MM.jsonl` | 向当月文件追加新状态记录 | 保留事件首次发现和后续状态演化 |
 | `data/runs/run-<batch-id>.json` | 每个批次新建一个文件，并记录 MiniMax/Kimi 的输入、输出和限额状态 | 让失败、重跑、时间边界与模型用量可追溯 |
-| `data/source-watermarks.json`、`data/active-events.json` | 覆盖更新，可由历史重建 | 只保存当前运行所需的派生状态 |
+| `data/source-watermarks.json`、`data/active-events.json` | 覆盖更新，可由历史重建 | 前者仅在完整成功批次后推进，用于下一批连续边界；后者是当前活动索引 |
 | `data/permanent-identifiers.json` | 追加或受控合并 | 保存跨归档期仍可精确查询的 ID，不参与宽泛语义比较 |
 | `data/gpt-handoffs/handoffs-YYYY-MM.jsonl` | 仅在成功候选包生成后追加 | 为下一批和 GPT 提供最近 30 天已提交审核的跨批次历史 |
 | `delivery/archive/` | 仅创建，不修改 | 保留每次候选包的审计快照 |

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -20,6 +21,35 @@ class StateStore:
     @property
     def permanent_identifiers_path(self) -> Path:
         return self.root / "data" / "permanent-identifiers.json"
+
+    @property
+    def source_watermarks_path(self) -> Path:
+        return self.root / "data" / "source-watermarks.json"
+
+    def last_successful_completed_at(self) -> datetime | None:
+        """Return the durable boundary from the last fully successful batch."""
+        if not self.source_watermarks_path.exists():
+            return None
+        payload = json.loads(self.source_watermarks_path.read_text(encoding="utf-8"))
+        value = payload.get("last_successful_batch", {}).get("completed_at")
+        return datetime.fromisoformat(value) if isinstance(value, str) else None
+
+    def write_successful_watermark(self, batch: Batch) -> Path:
+        if batch.status != "success" or batch.completed_at is None:
+            raise ValueError("only completed successful batches may advance the watermark")
+        self.source_watermarks_path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "schema_version": 1,
+            "last_successful_batch": {
+                "batch_id": batch.batch_id,
+                "completed_at": batch.completed_at.isoformat(),
+            },
+        }
+        self.source_watermarks_path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        return self.source_watermarks_path
 
     def append_event(self, event: Event) -> Path:
         self.events_dir.mkdir(parents=True, exist_ok=True)
@@ -64,7 +94,7 @@ class StateStore:
         return destination
 
     def recent_gpt_handoffs(self, now: object, days: int = 30) -> list[dict[str, object]]:
-        from datetime import datetime, timedelta
+        from datetime import timedelta
 
         if not isinstance(now, datetime):
             raise TypeError("now must be a datetime")

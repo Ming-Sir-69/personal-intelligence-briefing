@@ -35,8 +35,19 @@ def age_band(event_at: datetime | None, now: datetime) -> str:
     return "history"
 
 
-def report_window(kind: str, now: datetime, overlap: timedelta = timedelta(hours=6)) -> ReportWindow:
-    """Return the planned report boundary in China time, with discovery overlap."""
+def report_window(
+    kind: str,
+    now: datetime,
+    overlap: timedelta = timedelta(hours=6),
+    *,
+    previous_success_at: datetime | None = None,
+) -> ReportWindow:
+    """Return a report boundary with discovery overlap.
+
+    The first successful batch uses the planned delivery cadence.  Afterwards,
+    the previous successful batch is the authoritative boundary.  This lets a
+    delayed GitHub Actions run catch up without leaving a gap between batches.
+    """
     local_now = now.astimezone(SHANGHAI)
     if kind == "morning":
         planned_end = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
@@ -48,4 +59,7 @@ def report_window(kind: str, now: datetime, overlap: timedelta = timedelta(hours
         raise ValueError(f"unsupported batch kind: {kind}")
     end = min(planned_end, local_now)
     start = min(planned_start, end)
+    if previous_success_at is not None:
+        previous_local = previous_success_at.astimezone(SHANGHAI)
+        start = min(previous_local, end)
     return ReportWindow(kind=kind, start=start, end=end, lookback_start=start - overlap)
