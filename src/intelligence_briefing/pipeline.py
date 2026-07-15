@@ -64,7 +64,11 @@ def run_batch(
                 event, model_usage = normalizer.normalize(source, discovered_at)
                 usage.append(model_usage)
             except (RuntimeError, ValueError) as error:
-                event = replace(event_from_source(source, discovered_at), status="uncertain")
+                event = replace(
+                    event_from_source(source, discovered_at),
+                    status="uncertain",
+                    normalization_flags=("normalization_failed",),
+                )
                 normalization_failures += 1
                 errors.append(f"minimax normalization failed for {source.source_id}: {error}")
         else:

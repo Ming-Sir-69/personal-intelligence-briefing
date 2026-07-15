@@ -27,6 +27,7 @@ def test_event_round_trip_preserves_timezone_and_public_metadata() -> None:
         fact_type="software_release",
         event_time_precision="datetime",
         event_time_source="rss",
+        normalization_flags=("feed_time_metadata",),
     )
 
     restored = Event.from_dict(event.to_dict())
@@ -58,6 +59,7 @@ def test_event_from_legacy_payload_defaults_missing_provenance_fields() -> None:
     assert restored.fact_type == "unknown"
     assert restored.event_time_precision == "unknown"
     assert restored.event_time_source == "unknown"
+    assert restored.normalization_flags == ()
 
 
 def test_model_usage_round_trip_records_only_usage_metadata() -> None:

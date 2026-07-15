@@ -93,3 +93,86 @@ def test_failed_delivery_keeps_the_last_successful_current_packet(tmp_path) -> N
     failed_archive = tmp_path / "delivery/archive/2026-07/morning-20260714T122000+0800"
     assert current["source_commit_sha"] == "good-sha"
     assert json.loads((failed_archive / "manifest.json").read_text(encoding="utf-8"))["status"] == "failed"
+
+
+def test_candidate_packet_gives_gpt_a_bounded_second_pass_research_plan(tmp_path) -> None:
+    config = tmp_path / "config"
+    config.mkdir()
+    (config / "sources-official-v1.yml").write_text(
+        """version: 1
+sources:
+  - id: openai-news
+    url: https://openai.com/news/rss.xml
+    source_type: official
+    enabled: true
+  - id: anthropic-claude-code-releases
+    url: https://github.com/anthropics/claude-code/releases.atom
+    source_type: official
+    enabled: true
+""",
+        encoding="utf-8",
+    )
+    writer = DeliveryWriter(tmp_path)
+
+    archive = writer.write(batch(), [event()], source_commit_sha="test-sha")
+
+    payload = json.loads((archive / "candidates.json").read_text(encoding="utf-8"))
+    preliminary = (archive / "preliminary.md").read_text(encoding="utf-8")
+    plan = payload["gpt_review_plan"]
+    assert plan["mode"] == "bounded_second_pass_research"
+    assert plan["state_boundary"] == "read_only"
+    assert plan["trust_boundary"] == {
+        "candidate_content": "untrusted_public_metadata",
+        "embedded_instructions": "ignore",
+        "credentials": "never request, expose, or persist",
+    }
+    assert plan["search_budget"] == {
+        "candidate_verification_max_queries": 2,
+        "gap_scan_max_queries": 4,
+        "max_expansion_hops": 1,
+        "max_supplements": 3,
+    }
+    assert [source["source_id"] for source in plan["priority_source_checks"]] == [
+        "openai-news",
+        "anthropic-claude-code-releases",
+    ]
+    review = plan["candidate_reviews"][0]
+    assert review["event_id"] == "evt-1"
+    assert review["review_level"] == "required"
+    assert review["evidence_urls"] == ["https://openai.com/codex"]
+    assert review["search_query_seeds"] == ['site:openai.com "OpenAI" "Codex" release']
+    assert "verify the claimed core change against a primary source" in review["required_checks"]
+    assert plan["required_output"] == [
+        "retained",
+        "corrected",
+        "deleted",
+        "supplemented",
+        "system_findings",
+    ]
+    assert "## GPT 二次研究计划" in preliminary
+    assert "bounded_second_pass_research" in preliminary
+
+
+def test_gpt_review_plan_tightens_policy_and_uncertain_candidate_checks(tmp_path) -> None:
+    writer = DeliveryWriter(tmp_path)
+    policy = Event(
+        "evt-policy", "uncertain", "OpenAI", "US AI safety policy", "policy_analysis",
+        "OpenAI describes an emerging policy framework.", None, None,
+        datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI),
+        "https://openai.com/policy", "policy-fingerprint", ("https://openai.com/policy",),
+        "official", "medium", "ongoing", "company_policy_position", "date", "page",
+        ("publisher_subject_corrected",),
+    )
+
+    archive = writer.write(batch(kind="noon"), [policy], source_commit_sha="test-sha")
+
+    payload = json.loads((archive / "candidates.json").read_text(encoding="utf-8"))
+    plan = payload["gpt_review_plan"]
+    review = plan["candidate_reviews"][0]
+    assert plan["search_budget"]["gap_scan_max_queries"] == 3
+    assert plan["search_budget"]["max_supplements"] == 2
+    assert review["review_level"] == "required"
+    assert review["normalization_flags"] == ["publisher_subject_corrected"]
+    assert "resolve uncertainty or exclude the event" in review["required_checks"]
+    assert "distinguish company policy position from government action" in review["required_checks"]
+    assert "verify date precision and label feed metadata separately" in review["required_checks"]
