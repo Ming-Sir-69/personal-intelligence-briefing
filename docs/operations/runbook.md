@@ -2,10 +2,11 @@
 
 ## 当前状态
 
-- 当前阶段：G2 验收修复，G3 尚未启动。
-- 最近验收：ChatGPT G2 只读验收为“有条件通过”。
+- 当前阶段：G3 已实现，待 GitHub Actions 云端验证。
+- 最近验收：ChatGPT G2 复核结论为“允许进入 G3”。
 - 已关闭的 G3 前置问题：四档召回、未知事件时间、批次状态、跨批次 `recent-events.json`。
-- 尚待 G3 验证：工作流、Secrets 注入、公开 Raw 读取、晨/午真实批次、失败批次保护。
+- G3 已实现：测试、手动运行、晨间/午间工作流；成功批次水位线；按来源隔离的采集错误；离线失败/部分失败模拟。
+- 尚待 G3 验证：GitHub Secrets 注入、公开 Raw 读取、晨/午真实批次、失败批次保护和 Actions 日志中的无敏感信息检查。
 
 ## 每阶段交接规则
 
@@ -31,6 +32,15 @@
 - 历史追溯：`delivery/archive/YYYY-MM/<batch-id>/`。
 
 候选初稿服务于上游审计和 GPT 交接；最终面向铭哥阅读的自然语言简报由 G4 ChatGPT 任务输出。
+
+## G3 Actions 操作顺序
+
+1. 先运行 `Manual briefing batch` 的 `dry-run`，它使用临时目录、不会读取 API Key 或写入仓库；
+2. 依次运行 `morning`、`noon` 的 `live`，只有两者完整成功才更新对应 `delivery/current/` 文件；
+3. 运行 `simulate-failed`，确认失败归档存在且 `delivery/current/manifest.json` 保持上一成功批次；
+4. 由 Codex 记录工作流 URL、运行 ID、提交 SHA 和公开 Raw 入口；ChatGPT 只在这四项齐备后开始 G4 审核。
+
+`Morning briefing batch` 和 `Noon briefing batch` 的定时表达式分别是 06:20 与 12:20（北京时间）。GitHub 的计划工作流只从默认分支触发；因此在 PR 合并前，G3 使用 `Manual briefing batch` 在功能分支完成验证。
 
 ## 待确认的 G4 调研边界
 

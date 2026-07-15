@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from zoneinfo import ZoneInfo
 
@@ -90,3 +90,26 @@ def test_recent_events_are_prior_successful_gpt_handoffs_not_a_copy_of_current_b
     current = json.loads((tmp_path / "delivery/current/noon-candidates.json").read_text(encoding="utf-8"))
     assert [item["batch_id"] for item in recent] == ["morning-20260714T062000+0800"]
     assert current["sections"]["batch_state_and_range"]["batch_id"] == "noon-20260714T122000+0800"
+
+
+def test_failed_collection_with_no_sources_creates_failed_batch(tmp_path) -> None:
+    now = datetime(2026, 7, 14, 6, 20, tzinfo=ZoneInfo("Asia/Shanghai"))
+
+    archive = run_batch(tmp_path, "morning", now, [], collection_errors=("openai-news: HTTP 503",))
+
+    manifest = json.loads((archive / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["status"] == "failed"
+    assert not (tmp_path / "delivery/current/manifest.json").exists()
+
+
+def test_successful_batch_advances_watermark_and_next_batch_uses_it_as_range_start(tmp_path) -> None:
+    morning = datetime(2026, 7, 14, 6, 20, tzinfo=ZoneInfo("Asia/Shanghai"))
+    noon = morning + timedelta(hours=6)
+    source = SourceItem("openai-news", "First update", "https://example.com/first", morning, "official")
+
+    run_batch(tmp_path, "morning", morning, [source])
+    archive = run_batch(tmp_path, "noon", noon, [])
+
+    manifest = json.loads((archive / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["data_range"]["start"] == morning.isoformat()
+    assert manifest["data_range"]["end"] == noon.isoformat()

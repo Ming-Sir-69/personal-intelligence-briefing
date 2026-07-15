@@ -1,7 +1,7 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from intelligence_briefing.collectors import collect_feeds, fetch_url
+from intelligence_briefing.collectors import collect_feeds, collect_feeds_safely, fetch_url
 
 
 RSS = b"""<?xml version='1.0'?>
@@ -62,3 +62,20 @@ def test_fetch_url_uses_a_metadata_only_public_request() -> None:
 
     assert fetch_url("https://example.com/feed", opener=opener) == b"<rss/>"
     assert observed == {"url": "https://example.com/feed", "user_agent": "personal-intelligence-briefing/0.1"}
+
+
+def test_safe_collection_keeps_healthy_sources_when_one_source_fails() -> None:
+    sources = [
+        {"id": "unavailable", "url": "https://example.com/unavailable", "source_type": "official"},
+        {"id": "openai-news", "url": "https://example.com/healthy", "source_type": "official"},
+    ]
+
+    def fetch(url: str) -> bytes:
+        if "unavailable" in url:
+            raise TimeoutError("feed timeout")
+        return RSS
+
+    items, errors = collect_feeds_safely(sources, fetch=fetch)
+
+    assert [item.source_id for item in items] == ["openai-news"]
+    assert errors == ("unavailable: TimeoutError: feed timeout",)

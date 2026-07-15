@@ -14,6 +14,7 @@ from .llm import KimiArbitrator, MiniMaxNormalizer, select_kimi_candidates
 from .models import Batch, Event, SourceItem
 from .reporting import DeliveryWriter
 from .storage import StateStore
+from .time_window import report_window
 from .url_normalization import normalize_url
 
 
@@ -51,6 +52,7 @@ def run_batch(
     collection_errors: tuple[str, ...] = (),
 ) -> Path:
     store = StateStore(root)
+    window = report_window(kind, discovered_at, previous_success_at=store.last_successful_completed_at())
     classified: list[Event] = []
     usage = []
     errors: list[str] = list(collection_errors)
@@ -83,7 +85,9 @@ def run_batch(
         for event in classified
     ]
     batch_id = f"{kind}-{discovered_at:%Y%m%dT%H%M%S%z}"
-    if normalizer and sources and normalization_failures == len(sources):
+    if not sources and collection_errors:
+        batch_status = "failed"
+    elif normalizer and sources and normalization_failures == len(sources):
         batch_status = "failed"
     elif errors:
         batch_status = "partial"
@@ -102,9 +106,11 @@ def run_batch(
         source_commit_sha=os.environ.get("GITHUB_SHA", "local-dry-run"),
         workflow_run_id=os.environ.get("GITHUB_RUN_ID"),
         recent_events=recent_events,
+        window=window,
     )
     if batch.status == "success":
         store.append_gpt_handoffs(batch, classified)
+        store.write_successful_watermark(batch)
     return archive
 
 

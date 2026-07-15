@@ -41,34 +41,55 @@ def collect_feeds(sources: Iterable[dict[str, str]], fetch: Callable[[str], byte
     """Collect RSS/Atom metadata. No page body is fetched or retained."""
     collected: list[SourceItem] = []
     for source in sources:
-        root = ElementTree.fromstring(fetch(source["url"]))
-        for item in root.findall(".//item"):
-            link = _child_text(item, "link")
-            title = _child_text(item, "title")
-            if not link or not title:
-                continue
-            collected.append(
-                SourceItem(
-                    source_id=source["id"],
-                    title=title,
-                    url=normalize_url(link),
-                    published_at=_published_at(_child_text(item, "pubDate")),
-                    source_type=source.get("source_type", "discovery"),
-                )
+        collected.extend(_collect_feed(source, fetch))
+    return collected
+
+
+def collect_feeds_safely(
+    sources: Iterable[dict[str, str]],
+    fetch: Callable[[str], bytes],
+) -> tuple[list[SourceItem], tuple[str, ...]]:
+    """Collect each configured source independently, preserving usable results."""
+    collected: list[SourceItem] = []
+    errors: list[str] = []
+    for source in sources:
+        try:
+            collected.extend(_collect_feed(source, fetch))
+        except (KeyError, OSError, TimeoutError, ValueError, ElementTree.ParseError) as error:
+            errors.append(f"{source.get('id', 'unknown')}: {type(error).__name__}: {error}")
+    return collected, tuple(errors)
+
+
+def _collect_feed(source: dict[str, str], fetch: Callable[[str], bytes]) -> list[SourceItem]:
+    collected: list[SourceItem] = []
+    root = ElementTree.fromstring(fetch(source["url"]))
+    for item in root.findall(".//item"):
+        link = _child_text(item, "link")
+        title = _child_text(item, "title")
+        if not link or not title:
+            continue
+        collected.append(
+            SourceItem(
+                source_id=source["id"],
+                title=title,
+                url=normalize_url(link),
+                published_at=_published_at(_child_text(item, "pubDate")),
+                source_type=source.get("source_type", "discovery"),
             )
-        for entry in root.findall(".//{*}entry"):
-            title = _child_text(entry, "{*}title")
-            link_element = entry.find("{*}link")
-            link = link_element.get("href") if link_element is not None else None
-            if not link or not title:
-                continue
-            collected.append(
-                SourceItem(
-                    source_id=source["id"],
-                    title=title,
-                    url=normalize_url(link),
-                    published_at=_atom_datetime(_child_text(entry, "{*}updated") or _child_text(entry, "{*}published")),
-                    source_type=source.get("source_type", "discovery"),
-                )
+        )
+    for entry in root.findall(".//{*}entry"):
+        title = _child_text(entry, "{*}title")
+        link_element = entry.find("{*}link")
+        link = link_element.get("href") if link_element is not None else None
+        if not link or not title:
+            continue
+        collected.append(
+            SourceItem(
+                source_id=source["id"],
+                title=title,
+                url=normalize_url(link),
+                published_at=_atom_datetime(_child_text(entry, "{*}updated") or _child_text(entry, "{*}published")),
+                source_type=source.get("source_type", "discovery"),
             )
+        )
     return collected

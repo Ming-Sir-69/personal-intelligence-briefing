@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .models import Batch, Event
-from .time_window import report_window
+from .time_window import ReportWindow, report_window
 
 
 SECTION_KEYS = (
@@ -35,12 +35,13 @@ class DeliveryWriter:
         workflow_run_id: str | None = None,
         recent_events: Iterable[dict[str, object]] = (),
         errors: tuple[str, ...] = (),
+        window: ReportWindow | None = None,
     ) -> Path:
         effective_batch = replace(batch, errors=errors or batch.errors)
         archive = self.root / "delivery" / "archive" / f"{effective_batch.started_at:%Y-%m}" / effective_batch.batch_id
         archive.mkdir(parents=True, exist_ok=False)
         event_list = list(events)
-        payload = self._candidate_payload(effective_batch, event_list)
+        payload = self._candidate_payload(effective_batch, event_list, window=window)
         archive_path = archive.relative_to(self.root).as_posix()
         manifest = {
             "batch_id": effective_batch.batch_id,
@@ -65,9 +66,15 @@ class DeliveryWriter:
             self._replace_current(effective_batch.kind, archive, manifest, payload, recent_events)
         return archive
 
-    def _candidate_payload(self, batch: Batch, events: list[Event]) -> dict[str, object]:
+    def _candidate_payload(
+        self,
+        batch: Batch,
+        events: list[Event],
+        *,
+        window: ReportWindow | None = None,
+    ) -> dict[str, object]:
         sections: dict[str, object] = {key: [] for key in SECTION_KEYS}
-        window = report_window(batch.kind, batch.started_at)
+        window = window or report_window(batch.kind, batch.started_at)
         data_range = {
             "start": window.start.isoformat(),
             "end": window.end.isoformat(),
