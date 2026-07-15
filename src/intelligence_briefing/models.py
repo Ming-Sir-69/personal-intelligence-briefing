@@ -39,7 +39,7 @@ class Event:
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "Event":
-        values = dict(payload)
+        values = {key: value for key, value in payload.items() if key in cls.__dataclass_fields__}
         for field in ("event_at", "published_at", "discovered_at"):
             values[field] = _parse_datetime(values.get(field))
         values["source_urls"] = tuple(values.get("source_urls", ()))
@@ -95,6 +95,7 @@ class Batch:
     completed_at: datetime | None
     errors: tuple[str, ...]
     model_usage: tuple[ModelUsage, ...]
+    trigger_type: str = "manual"
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -105,6 +106,7 @@ class Batch:
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,
             "errors": list(self.errors),
             "model_usage": [usage.to_dict() for usage in self.model_usage],
+            "trigger_type": self.trigger_type,
         }
 
     @classmethod
@@ -114,4 +116,5 @@ class Batch:
         values["completed_at"] = _parse_datetime(values.get("completed_at"))
         values["errors"] = tuple(values.get("errors", ()))
         values["model_usage"] = tuple(ModelUsage.from_dict(item) for item in values.get("model_usage", ()))
+        values.setdefault("trigger_type", "manual")
         return cls(**values)

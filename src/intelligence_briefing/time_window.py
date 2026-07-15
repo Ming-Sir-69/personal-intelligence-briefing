@@ -16,6 +16,7 @@ class ReportWindow:
     start: datetime
     end: datetime
     lookback_start: datetime
+    scheduled_for: datetime | None = None
 
 
 def age_band(event_at: datetime | None, now: datetime) -> str:
@@ -50,9 +51,11 @@ def report_window(
     """
     local_now = now.astimezone(SHANGHAI)
     if kind == "morning":
+        scheduled_for = local_now.replace(hour=6, minute=20, second=0, microsecond=0)
         planned_end = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
         planned_start = (planned_end - timedelta(days=1)).replace(hour=13, minute=10)
     elif kind == "noon":
+        scheduled_for = local_now.replace(hour=12, minute=20, second=0, microsecond=0)
         planned_end = local_now.replace(hour=13, minute=10, second=0, microsecond=0)
         planned_start = local_now.replace(hour=7, minute=10, second=0, microsecond=0)
     else:
@@ -62,4 +65,10 @@ def report_window(
     if previous_success_at is not None:
         previous_local = previous_success_at.astimezone(SHANGHAI)
         start = min(previous_local, end)
-    return ReportWindow(kind=kind, start=start, end=end, lookback_start=start - overlap)
+    return ReportWindow(
+        kind=kind,
+        start=start,
+        end=end,
+        lookback_start=start - overlap,
+        scheduled_for=scheduled_for,
+    )

@@ -27,3 +27,13 @@ def test_state_commits_detect_new_untracked_delivery_files() -> None:
 
     assert len(commit_steps) == 3
     assert all("git status --porcelain -- data delivery" in step["run"] for step in commit_steps)
+
+
+def test_workflows_label_scheduled_and_manual_runs_for_delivery_metadata() -> None:
+    morning = Path(".github/workflows/morning-briefing.yml").read_text(encoding="utf-8")
+    noon = Path(".github/workflows/noon-briefing.yml").read_text(encoding="utf-8")
+    manual = Path(".github/workflows/manual-run.yml").read_text(encoding="utf-8")
+
+    assert "--trigger-type schedule" in morning
+    assert "--trigger-type schedule" in noon
+    assert "--trigger-type workflow_dispatch" in manual

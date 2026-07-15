@@ -16,6 +16,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run a Personal Intelligence Briefing sample batch")
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--batch", choices=("morning", "noon"), required=True)
+    parser.add_argument("--trigger-type", default="manual", help="execution origin recorded in delivery metadata")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--sample", action="store_true", help="run only the offline sample; no network or API key")
     mode.add_argument("--live", action="store_true", help="collect configured public feeds and call configured providers")
@@ -23,15 +24,15 @@ def main(argv: list[str] | None = None) -> int:
     arguments = parser.parse_args(argv)
     discovered_at = datetime.now(SHANGHAI)
     if arguments.sample:
-        run_sample_batch(arguments.root, arguments.batch, discovered_at)
+        run_sample_batch(arguments.root, arguments.batch, discovered_at, trigger_type=arguments.trigger_type)
     elif arguments.live:
-        run_live_batch(arguments.root, arguments.batch, discovered_at)
+        run_live_batch(arguments.root, arguments.batch, discovered_at, trigger_type=arguments.trigger_type)
     else:
-        _run_simulation(arguments.root, arguments.batch, discovered_at, arguments.simulate)
+        _run_simulation(arguments.root, arguments.batch, discovered_at, arguments.simulate, arguments.trigger_type)
     return 0
 
 
-def _run_simulation(root: Path, kind: str, discovered_at: datetime, scenario: str | None) -> None:
+def _run_simulation(root: Path, kind: str, discovered_at: datetime, scenario: str | None, trigger_type: str) -> None:
     source = SourceItem("simulation", "Simulated provider result", "https://example.com/simulated", discovered_at, "official")
 
     class FailingNormalizer:
@@ -39,9 +40,9 @@ def _run_simulation(root: Path, kind: str, discovered_at: datetime, scenario: st
             raise RuntimeError("simulated provider failure")
 
     if scenario == "failed":
-        run_batch(root, kind, discovered_at, [source], normalizer=FailingNormalizer())  # type: ignore[arg-type]
+        run_batch(root, kind, discovered_at, [source], normalizer=FailingNormalizer(), trigger_type=trigger_type)  # type: ignore[arg-type]
     elif scenario == "partial":
-        run_batch(root, kind, discovered_at, [source], collection_errors=("simulation: source timeout",))
+        run_batch(root, kind, discovered_at, [source], collection_errors=("simulation: source timeout",), trigger_type=trigger_type)
     else:
         raise ValueError(f"unsupported simulation scenario: {scenario}")
 
