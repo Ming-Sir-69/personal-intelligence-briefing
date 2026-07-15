@@ -28,6 +28,9 @@ class Event:
     source_type: str
     importance: str
     event_phase: str | None = None
+    fact_type: str = "unknown"
+    event_time_precision: str = "unknown"
+    event_time_source: str = "unknown"
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)
