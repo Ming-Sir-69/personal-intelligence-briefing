@@ -100,6 +100,43 @@ def test_minimax_normalizer_marks_missing_event_time_as_uncertain_without_using_
     assert event.status == "uncertain"
 
 
+def test_minimax_normalizer_retries_once_after_an_incomplete_json_response() -> None:
+    incomplete = json.dumps({"status": "new_event", "event_at": "2026-07-14T06:00:00+08:00"})
+    complete = json.dumps(
+        {
+            "status": "new_event",
+            "subject": "OpenAI",
+            "object_name": "Codex",
+            "action": "release",
+            "core_change": "new coding capability",
+            "event_at": "2026-07-14T06:00:00+08:00",
+            "importance": "high",
+            "event_phase": "released",
+        }
+    )
+
+    class SequencedClient:
+        def __init__(self) -> None:
+            self.contents = [incomplete, complete]
+            self.requests: list[dict[str, object]] = []
+
+        def complete(self, payload: dict[str, object]) -> ModelReply:
+            self.requests.append(payload)
+            return ModelReply(
+                content=self.contents.pop(0),
+                usage=ModelUsage("minimax", "MiniMax-M3", 30, 12),
+            )
+
+    client = SequencedClient()
+    source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", None, "official")
+
+    event, usage = MiniMaxNormalizer(client).normalize(source, datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI))
+
+    assert event.status == "new_event"
+    assert len(client.requests) == 2
+    assert (usage.input_tokens, usage.output_tokens) == (60, 24)
+
+
 def test_kimi_arbitrator_receives_at_most_three_compact_history_records() -> None:
     client = FakeClient(json.dumps({"status": "duplicate", "reason": "same official event"}))
     candidate = Event(
