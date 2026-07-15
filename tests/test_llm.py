@@ -2,6 +2,8 @@ from datetime import datetime
 import json
 from zoneinfo import ZoneInfo
 
+import pytest
+
 from intelligence_briefing.llm import (
     KimiArbitrator,
     MiniMaxNormalizer,
@@ -298,3 +300,17 @@ def test_http_post_json_passes_authorization_without_logging_or_persisting_it() 
     assert status == 200
     assert payload == {"id": "response"}
     assert observed["authorization"] == "Bearer test-token"
+
+
+def test_http_post_json_converts_network_timeout_to_runtime_error() -> None:
+    def opener(_request: object, *, timeout: int) -> object:
+        assert timeout == 30
+        raise TimeoutError("read timed out")
+
+    with pytest.raises(RuntimeError, match="network request failed"):
+        http_post_json(
+            "https://api.example/v1/chat/completions",
+            {"Authorization": "Bearer test-token", "Content-Type": "application/json"},
+            {"model": "test"},
+            opener=opener,
+        )

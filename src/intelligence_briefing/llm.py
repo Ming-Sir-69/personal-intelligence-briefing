@@ -33,6 +33,8 @@ def http_post_json(
             return error.code, json.loads(body)
         except json.JSONDecodeError:
             return error.code, {"error": {"message": body}}
+    except OSError as error:
+        raise RuntimeError("network request failed") from error
 
 
 @dataclass(frozen=True)
