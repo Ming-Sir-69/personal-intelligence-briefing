@@ -51,13 +51,14 @@ class DeliveryWriter:
             "completed_at": effective_batch.completed_at.isoformat() if effective_batch.completed_at else None,
             "data_range": payload["data_range"],
             "archive_path": archive_path,
-            "schema_version": 1,
+            "schema_version": 2,
             "rules_version": "event-retention-v1",
             "source_commit_sha": source_commit_sha,
             "workflow_run_id": workflow_run_id,
             "counts": payload["counts"],
             "errors": list(effective_batch.errors),
             "model_usage": [usage.to_dict() for usage in effective_batch.model_usage],
+            **self._run_context(effective_batch, window or report_window(effective_batch.kind, effective_batch.started_at)),
         }
         self._write_json(archive / "candidates.json", payload)
         self._write_json(archive / "manifest.json", manifest)
@@ -86,6 +87,7 @@ class DeliveryWriter:
             "started_at": batch.started_at.isoformat(),
             "completed_at": batch.completed_at.isoformat() if batch.completed_at else None,
             "data_range": data_range,
+            "trigger_type": batch.trigger_type,
         }
         valid = [event for event in events if event.status not in {"duplicate", "uncertain", "late_discovery"}]
         sections["must_know"] = [event.to_dict() for event in valid if event.importance == "high"]
@@ -97,13 +99,49 @@ class DeliveryWriter:
             event.to_dict() for event in valid if any(token in event.action.casefold() for token in ("policy", "price", "access", "region"))
         ]
         sections["uncertain_or_late"] = [event.to_dict() for event in events if event.status in {"uncertain", "late_discovery"}]
+        duplicate_audit = [
+            {
+                "event_id": event.event_id,
+                "subject": event.subject,
+                "object_name": event.object_name,
+                "event_at": event.event_at.isoformat() if event.event_at else None,
+                "canonical_url": event.canonical_url,
+                "fingerprint": event.fingerprint,
+            }
+            for event in events
+            if event.status == "duplicate"
+        ]
         sections["quality_metrics"] = {
             "input_events": len(events),
             "duplicate_events": sum(event.status == "duplicate" for event in events),
             "uncertain_events": sum(event.status == "uncertain" for event in events),
             "selected_events": len(valid),
         }
-        return {"sections": sections, "counts": sections["quality_metrics"], "data_range": data_range}
+        return {
+            "sections": sections,
+            "counts": sections["quality_metrics"],
+            "data_range": data_range,
+            "duplicate_audit": duplicate_audit,
+        }
+
+    @staticmethod
+    def _run_context(batch: Batch, window: ReportWindow) -> dict[str, object]:
+        is_zero_length_window = window.start >= window.end
+        is_backfill = batch.trigger_type != "schedule"
+        if batch.trigger_type == "schedule" and not is_zero_length_window:
+            coverage_mode = "scheduled_increment"
+        elif is_backfill:
+            coverage_mode = "backfill"
+        else:
+            coverage_mode = "zero_length_scheduled_window"
+        return {
+            "trigger_type": batch.trigger_type,
+            "coverage_mode": coverage_mode,
+            "scheduled_for": (window.scheduled_for or window.end).isoformat(),
+            "actual_started_at": batch.started_at.isoformat(),
+            "is_backfill": is_backfill,
+            "is_zero_length_window": is_zero_length_window,
+        }
 
     def _replace_current(
         self,

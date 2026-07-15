@@ -16,6 +16,7 @@ class ReportWindow:
     start: datetime
     end: datetime
     lookback_start: datetime
+    scheduled_for: datetime | None = None
 
 
 def age_band(event_at: datetime | None, now: datetime) -> str:
@@ -62,4 +63,10 @@ def report_window(
     if previous_success_at is not None:
         previous_local = previous_success_at.astimezone(SHANGHAI)
         start = min(previous_local, end)
-    return ReportWindow(kind=kind, start=start, end=end, lookback_start=start - overlap)
+    return ReportWindow(
+        kind=kind,
+        start=start,
+        end=end,
+        lookback_start=start - overlap,
+        scheduled_for=planned_end,
+    )

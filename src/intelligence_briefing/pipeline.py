@@ -50,6 +50,7 @@ def run_batch(
     normalizer: MiniMaxNormalizer | None = None,
     kimi_arbitrator: KimiArbitrator | None = None,
     collection_errors: tuple[str, ...] = (),
+    trigger_type: str = "manual",
 ) -> Path:
     store = StateStore(root)
     window = report_window(kind, discovered_at, previous_success_at=store.last_successful_completed_at())
@@ -93,7 +94,9 @@ def run_batch(
         batch_status = "partial"
     else:
         batch_status = "success"
-    batch = Batch(batch_id, kind, batch_status, discovered_at, discovered_at, tuple(errors), tuple(usage))
+    batch = Batch(
+        batch_id, kind, batch_status, discovered_at, discovered_at, tuple(errors), tuple(usage), trigger_type=trigger_type,
+    )
     for event in classified:
         store.append_event(event)
     store.write_run(batch)
@@ -114,7 +117,7 @@ def run_batch(
     return archive
 
 
-def run_sample_batch(root: Path, kind: str, discovered_at: datetime) -> Path:
+def run_sample_batch(root: Path, kind: str, discovered_at: datetime, *, trigger_type: str = "sample") -> Path:
     source = SourceItem(
         source_id="sample-official-source",
         title="Sample AI product update",
@@ -122,4 +125,4 @@ def run_sample_batch(root: Path, kind: str, discovered_at: datetime) -> Path:
         published_at=discovered_at,
         source_type="official",
     )
-    return run_batch(root, kind, discovered_at, [source])
+    return run_batch(root, kind, discovered_at, [source], trigger_type=trigger_type)
