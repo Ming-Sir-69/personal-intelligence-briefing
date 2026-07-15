@@ -206,6 +206,10 @@ tempCodeRunnerFile.py
 # Local linked worktrees
 .worktrees/
 
+# Local agent context and macOS metadata must never enter the public repository.
+project_context/
+.DS_Store
+
 # Ruff stuff:
 .ruff_cache/
 

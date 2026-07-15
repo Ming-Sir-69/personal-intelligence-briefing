@@ -1,0 +1,63 @@
+name: Manual briefing batch
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: Batch kind
+        required: true
+        type: choice
+        options: [morning, noon]
+      mode:
+        description: Dry-run never writes repository state; live and simulations do.
+        required: true
+        type: choice
+        default: dry-run
+        options: [dry-run, live, simulate-failed, simulate-partial]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: briefing-state-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      BATCH: ${{ inputs.batch }}
+      MODE: ${{ inputs.mode }}
+      MINIMAX_FOR_CODING_API_KEY: ${{ secrets.MINIMAX_FOR_CODING_API_KEY }}
+      KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install ".[dev]"
+      - run: python -m pytest -q
+      - name: Run selected batch
+        shell: bash
+        run: |
+          case "$MODE" in
+            dry-run) python -m intelligence_briefing.cli --root "$RUNNER_TEMP/briefing-dry-run" --batch "$BATCH" --sample ;;
+            live) python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch "$BATCH" --live ;;
+            simulate-failed) python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch "$BATCH" --simulate failed ;;
+            simulate-partial) python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch "$BATCH" --simulate partial ;;
+          esac
+      - name: Commit generated state
+        if: ${{ inputs.mode != 'dry-run' }}
+        shell: bash
+        run: |
+          if git diff --quiet -- data delivery; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data delivery
+          git commit -m "chore: record ${BATCH} briefing batch"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
