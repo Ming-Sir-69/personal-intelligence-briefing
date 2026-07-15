@@ -9,7 +9,7 @@ from urllib.request import Request, urlopen
 from xml.etree import ElementTree
 
 from .models import SourceItem
-from .time_window import SHANGHAI
+from .time_window import SHANGHAI, ReportWindow
 from .url_normalization import normalize_url
 
 
@@ -58,6 +58,29 @@ def collect_feeds_safely(
         except (KeyError, OSError, TimeoutError, ValueError, ElementTree.ParseError) as error:
             errors.append(f"{source.get('id', 'unknown')}: {type(error).__name__}: {error}")
     return collected, tuple(errors)
+
+
+def select_recent_feed_items(
+    items: Iterable[SourceItem],
+    window: ReportWindow,
+    *,
+    max_items_per_source: int,
+) -> list[SourceItem]:
+    """Keep only dated feed entries in the discovery lookback and cap each source."""
+    selected: list[SourceItem] = []
+    by_source: dict[str, list[SourceItem]] = {}
+    for item in items:
+        if item.published_at is None:
+            continue
+        published_at = item.published_at.astimezone(SHANGHAI)
+        if not window.lookback_start <= published_at <= window.end:
+            continue
+        by_source.setdefault(item.source_id, []).append(item)
+    for source_items in by_source.values():
+        selected.extend(
+            sorted(source_items, key=lambda item: item.published_at or window.lookback_start, reverse=True)[:max_items_per_source]
+        )
+    return selected
 
 
 def _collect_feed(source: dict[str, str], fetch: Callable[[str], bytes]) -> list[SourceItem]:
