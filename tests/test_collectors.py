@@ -1,7 +1,9 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from intelligence_briefing.collectors import collect_feeds, collect_feeds_safely, fetch_url
+from intelligence_briefing.collectors import collect_feeds, collect_feeds_safely, fetch_url, select_recent_feed_items
+from intelligence_briefing.models import SourceItem
+from intelligence_briefing.time_window import SHANGHAI, ReportWindow
 
 
 RSS = b"""<?xml version='1.0'?>
@@ -79,3 +81,23 @@ def test_safe_collection_keeps_healthy_sources_when_one_source_fails() -> None:
 
     assert [item.source_id for item in items] == ["openai-news"]
     assert errors == ("unavailable: TimeoutError: feed timeout",)
+
+
+def test_select_recent_feed_items_keeps_window_items_and_caps_each_source() -> None:
+    window = ReportWindow(
+        "morning",
+        datetime(2026, 7, 14, 13, 10, tzinfo=SHANGHAI),
+        datetime(2026, 7, 15, 7, 10, tzinfo=SHANGHAI),
+        datetime(2026, 7, 14, 7, 10, tzinfo=SHANGHAI),
+    )
+    items = [
+        SourceItem("openai-news", "newest", "https://example.com/newest", datetime(2026, 7, 15, 6, 30, tzinfo=SHANGHAI), "official"),
+        SourceItem("openai-news", "second", "https://example.com/second", datetime(2026, 7, 15, 6, 20, tzinfo=SHANGHAI), "official"),
+        SourceItem("openai-news", "third", "https://example.com/third", datetime(2026, 7, 15, 6, 10, tzinfo=SHANGHAI), "official"),
+        SourceItem("openai-news", "too old", "https://example.com/old", datetime(2026, 7, 13, 6, 0, tzinfo=SHANGHAI), "official"),
+        SourceItem("codex", "undated", "https://example.com/undated", None, "official"),
+    ]
+
+    selected = select_recent_feed_items(items, window, max_items_per_source=2)
+
+    assert [item.title for item in selected] == ["newest", "second"]
