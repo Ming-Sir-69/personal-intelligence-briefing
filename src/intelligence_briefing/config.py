@@ -26,6 +26,15 @@ def load_enabled_sources(path: Path) -> list[dict[str, str]]:
     ]
 
 
+def load_candidate_selection(path: Path) -> dict[str, int]:
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    selection = payload.get("candidate_selection", {})
+    max_items_per_source = int(selection.get("max_items_per_source", 20))
+    if max_items_per_source < 1:
+        raise ValueError("max_items_per_source must be positive")
+    return {"max_items_per_source": max_items_per_source}
+
+
 def load_model_route(path: Path, provider: str) -> dict[str, object]:
     payload = yaml.safe_load(path.read_text(encoding="utf-8"))
     route = payload[provider]
