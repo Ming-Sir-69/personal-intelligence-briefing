@@ -1,0 +1,11 @@
+{
+  "batch_id": "morning-20260715T185147+0800",
+  "completed_at": "2026-07-15T18:51:47.775501+08:00",
+  "errors": [
+    "minimax normalization failed for simulation: simulated provider failure"
+  ],
+  "kind": "morning",
+  "model_usage": [],
+  "started_at": "2026-07-15T18:51:47.775501+08:00",
+  "status": "failed"
+}

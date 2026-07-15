@@ -1,0 +1,27 @@
+{
+  "archive_path": "delivery/archive/2026-07/morning-20260715T185147+0800",
+  "batch_id": "morning-20260715T185147+0800",
+  "completed_at": "2026-07-15T18:51:47.775501+08:00",
+  "counts": {
+    "duplicate_events": 0,
+    "input_events": 1,
+    "selected_events": 0,
+    "uncertain_events": 1
+  },
+  "data_range": {
+    "end": "2026-07-15T07:10:00+08:00",
+    "lookback_start": "2026-07-15T01:10:00+08:00",
+    "start": "2026-07-15T07:10:00+08:00"
+  },
+  "errors": [
+    "minimax normalization failed for simulation: simulated provider failure"
+  ],
+  "kind": "morning",
+  "model_usage": [],
+  "rules_version": "event-retention-v1",
+  "schema_version": 1,
+  "source_commit_sha": "f4be37708d54998494c60663d9029f15c7986605",
+  "started_at": "2026-07-15T18:51:47.775501+08:00",
+  "status": "failed",
+  "workflow_run_id": "29409590705"
+}
