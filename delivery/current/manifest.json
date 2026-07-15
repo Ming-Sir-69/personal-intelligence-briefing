@@ -1,8 +1,8 @@
 {
-  "actual_started_at": "2026-07-16T07:34:38.168929+08:00",
-  "archive_path": "delivery/archive/2026-07/morning-20260716T073438+0800",
-  "batch_id": "morning-20260716T073438+0800",
-  "completed_at": "2026-07-16T07:34:38.168929+08:00",
+  "actual_started_at": "2026-07-16T07:36:06.318254+08:00",
+  "archive_path": "delivery/archive/2026-07/noon-20260716T073606+0800",
+  "batch_id": "noon-20260716T073606+0800",
+  "completed_at": "2026-07-16T07:36:06.318254+08:00",
   "counts": {
     "duplicate_events": 2,
     "input_events": 2,
@@ -11,36 +11,36 @@
   },
   "coverage_mode": "backfill",
   "data_range": {
-    "end": "2026-07-16T07:10:00+08:00",
-    "lookback_start": "2026-07-16T01:10:00+08:00",
-    "start": "2026-07-16T07:10:00+08:00"
+    "end": "2026-07-16T07:36:06.318254+08:00",
+    "lookback_start": "2026-07-16T01:34:38.168929+08:00",
+    "start": "2026-07-16T07:34:38.168929+08:00"
   },
   "errors": [],
   "is_backfill": true,
-  "is_zero_length_window": true,
-  "kind": "morning",
+  "is_zero_length_window": false,
+  "kind": "noon",
   "model_usage": [
     {
-      "input_tokens": 422,
+      "input_tokens": 844,
       "model": "MiniMax-M3",
-      "output_tokens": 107,
+      "output_tokens": 288,
       "provider": "minimax",
-      "request_id": "06a74c0f6acf9649c917ea1ddeae1a89"
+      "request_id": "06a74c6a5249370771c0edcf31089d8b"
     },
     {
-      "input_tokens": 838,
+      "input_tokens": 419,
       "model": "MiniMax-M3",
-      "output_tokens": 156,
+      "output_tokens": 84,
       "provider": "minimax",
-      "request_id": "06a74c15e49bd238e9bec7bcd64b3dfc"
+      "request_id": "06a74c6ea19d87a28e8bc596cc750668"
     }
   ],
   "rules_version": "event-retention-v1",
-  "scheduled_for": "2026-07-16T06:20:00+08:00",
+  "scheduled_for": "2026-07-16T12:20:00+08:00",
   "schema_version": 2,
-  "source_commit_sha": "35238121e0a8d991fd3bffe92a2589c56628e47d",
-  "started_at": "2026-07-16T07:34:38.168929+08:00",
+  "source_commit_sha": "ca6ca65ff90b17786817e48f3ebca7a5171dca2c",
+  "started_at": "2026-07-16T07:36:06.318254+08:00",
   "status": "success",
   "trigger_type": "workflow_dispatch",
-  "workflow_run_id": "29458938350"
+  "workflow_run_id": "29459013203"
 }
