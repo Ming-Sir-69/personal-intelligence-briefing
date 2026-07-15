@@ -1,0 +1,75 @@
+{
+  "batch_id": "morning-20260715T181302+0800",
+  "completed_at": "2026-07-15T18:13:02.152226+08:00",
+  "errors": [
+    "minimax normalization failed for openai-news: model response missing fields: ['action', 'core_change', 'importance', 'object_name', 'subject']"
+  ],
+  "kind": "morning",
+  "model_usage": [
+    {
+      "input_tokens": 310,
+      "model": "MiniMax-M3",
+      "output_tokens": 108,
+      "provider": "minimax",
+      "request_id": "06a69030ad747deec75c61669fa46578"
+    },
+    {
+      "input_tokens": 309,
+      "model": "MiniMax-M3",
+      "output_tokens": 73,
+      "provider": "minimax",
+      "request_id": "06a69035488931a5c1034d1e05bce32d"
+    },
+    {
+      "input_tokens": 316,
+      "model": "MiniMax-M3",
+      "output_tokens": 158,
+      "provider": "minimax",
+      "request_id": "06a690381631cff922f76254c577c93c"
+    },
+    {
+      "input_tokens": 316,
+      "model": "MiniMax-M3",
+      "output_tokens": 79,
+      "provider": "minimax",
+      "request_id": "06a6903ce1a7cd313a667ab20b57b687"
+    },
+    {
+      "input_tokens": 310,
+      "model": "MiniMax-M3",
+      "output_tokens": 80,
+      "provider": "minimax",
+      "request_id": "06a6903f3d69374bcb5dd4b5b0e86432"
+    },
+    {
+      "input_tokens": 316,
+      "model": "MiniMax-M3",
+      "output_tokens": 89,
+      "provider": "minimax",
+      "request_id": "06a69042bf76618b10545e8d0f280998"
+    },
+    {
+      "input_tokens": 316,
+      "model": "MiniMax-M3",
+      "output_tokens": 68,
+      "provider": "minimax",
+      "request_id": "06a6904540ddb09f7d66dc4d93b7a453"
+    },
+    {
+      "input_tokens": 312,
+      "model": "MiniMax-M3",
+      "output_tokens": 62,
+      "provider": "minimax",
+      "request_id": "06a690474289dca853df1e87954afda8"
+    },
+    {
+      "input_tokens": 312,
+      "model": "MiniMax-M3",
+      "output_tokens": 78,
+      "provider": "minimax",
+      "request_id": "06a6904a9194892e0425831032b3964e"
+    }
+  ],
+  "started_at": "2026-07-15T18:13:02.152226+08:00",
+  "status": "partial"
+}
