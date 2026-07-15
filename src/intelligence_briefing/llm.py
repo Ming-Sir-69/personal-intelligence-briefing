@@ -121,12 +121,23 @@ class MiniMaxNormalizer:
             "source": source.to_dict(),
             "constraints": ["do not invent an official date", "do not request or return article body"],
         }
-        reply = self.client.complete(request)
-        payload = _load_json_object(reply.content)
         required = {"status", "subject", "object_name", "action", "core_change", "importance"}
-        missing = required - payload.keys()
-        if missing:
-            raise ValueError(f"model response missing fields: {sorted(missing)}")
+        replies: list[ModelReply] = []
+        for attempt in range(2):
+            reply = self.client.complete(request)
+            replies.append(reply)
+            try:
+                payload = _load_json_object(reply.content)
+                missing = required - payload.keys()
+                if missing:
+                    raise ValueError(f"model response missing fields: {sorted(missing)}")
+            except (ValueError, json.JSONDecodeError):
+                if attempt == 1:
+                    raise
+                continue
+            break
+        else:  # pragma: no cover - the final attempt always raises or breaks
+            raise RuntimeError("normalization retry loop did not complete")
         event_at = _event_datetime(payload.get("event_at"), discovered_at.tzinfo)
         fingerprint = event_fingerprint(
             str(payload["subject"]),
@@ -154,7 +165,13 @@ class MiniMaxNormalizer:
                 importance=str(payload["importance"]),
                 event_phase=str(payload.get("event_phase") or ""),
             ),
-            reply.usage,
+            ModelUsage(
+                provider=reply.usage.provider,
+                model=reply.usage.model,
+                input_tokens=sum(item.usage.input_tokens for item in replies),
+                output_tokens=sum(item.usage.output_tokens for item in replies),
+                request_id=reply.usage.request_id,
+            ),
         )
 
 
