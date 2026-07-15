@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import replace
 import json
 from pathlib import Path
 from typing import Iterable
 
+from .config import load_enabled_sources
+from .gpt_review import build_gpt_review_plan
 from .models import Batch, Event
 from .time_window import ReportWindow, report_window
 
@@ -117,11 +120,26 @@ class DeliveryWriter:
             "uncertain_events": sum(event.status == "uncertain" for event in events),
             "selected_events": len(valid),
         }
+        source_config = self.root / "config" / "sources-official-v1.yml"
+        official_sources = load_enabled_sources(source_config) if source_config.exists() else []
+        gpt_review_plan = build_gpt_review_plan(batch.kind, events, official_sources, data_range)
+        flagged_events = [event for event in events if event.normalization_flags]
+        flag_counts = Counter(flag for event in flagged_events for flag in event.normalization_flags)
+        normalization_audit = {
+            "events": [
+                {"event_id": event.event_id, "flags": list(event.normalization_flags)}
+                for event in flagged_events
+            ],
+            "events_with_flags": len(flagged_events),
+            "flag_counts": dict(sorted(flag_counts.items())),
+        }
         return {
             "sections": sections,
             "counts": sections["quality_metrics"],
             "data_range": data_range,
             "duplicate_audit": duplicate_audit,
+            "normalization_audit": normalization_audit,
+            "gpt_review_plan": gpt_review_plan,
         }
 
     @staticmethod
@@ -177,4 +195,12 @@ class DeliveryWriter:
         }
         for key in SECTION_KEYS:
             lines.extend(("", f"## {headings[key]}", "", "```json", json.dumps(sections[key], ensure_ascii=False, indent=2), "```"))
+        lines.extend((
+            "",
+            "## GPT 二次研究计划",
+            "",
+            "```json",
+            json.dumps(payload["gpt_review_plan"], ensure_ascii=False, indent=2),
+            "```",
+        ))
         return "\n".join(lines) + "\n"

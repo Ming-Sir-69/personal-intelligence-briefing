@@ -26,6 +26,8 @@ FACT_TYPES = {
     "other",
 }
 
+IMPORTANCE_LEVELS = {"high", "medium", "low", "minor"}
+
 PUBLISHER_HINTS = {
     "openai-news": "OpenAI",
     "openai-codex-releases": "OpenAI",
@@ -177,6 +179,11 @@ class MiniMaxNormalizer:
                     raise ValueError(f"model response missing fields: {sorted(missing)}")
                 if payload["fact_type"] not in FACT_TYPES:
                     raise ValueError("model response returned an unsupported fact_type")
+                if payload["importance"] not in IMPORTANCE_LEVELS:
+                    raise ValueError("model response returned an unsupported importance")
+                for field in ("status", "subject", "object_name", "action", "core_change"):
+                    if not isinstance(payload[field], str) or not payload[field].strip():
+                        raise ValueError(f"model response returned an empty {field}")
             except (ValueError, json.JSONDecodeError):
                 if attempt == 1:
                     raise
@@ -188,6 +195,14 @@ class MiniMaxNormalizer:
         event_at = _event_datetime(raw_event_at, discovered_at.tzinfo)
         fact_type = str(payload["fact_type"])
         subject = publisher_hint if fact_type == "company_policy_position" else str(payload["subject"])
+        feed_time_matches = bool(event_at and source.published_at and event_at == source.published_at)
+        normalization_flags: list[str] = []
+        if len(replies) > 1:
+            normalization_flags.append("model_retry")
+        if feed_time_matches:
+            normalization_flags.append("feed_time_metadata")
+        if fact_type == "company_policy_position" and str(payload["subject"]).strip() != publisher_hint:
+            normalization_flags.append("publisher_subject_corrected")
         fingerprint = event_fingerprint(
             subject,
             str(payload["object_name"]),
@@ -215,7 +230,8 @@ class MiniMaxNormalizer:
                 event_phase=str(payload.get("event_phase") or ""),
                 fact_type=fact_type,
                 event_time_precision=_event_time_precision(raw_event_at, event_at),
-                event_time_source="rss" if event_at and source.published_at else "inferred" if event_at else "unknown",
+                event_time_source="rss" if feed_time_matches else "inferred" if event_at else "unknown",
+                normalization_flags=tuple(normalization_flags),
             ),
             ModelUsage(
                 provider=reply.usage.provider,

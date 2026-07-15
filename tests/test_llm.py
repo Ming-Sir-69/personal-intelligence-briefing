@@ -91,6 +91,7 @@ def test_minimax_normalizer_keeps_company_policy_position_and_feed_time_provenan
     assert event.fact_type == "company_policy_position"
     assert event.event_time_precision == "datetime"
     assert event.event_time_source == "rss"
+    assert event.normalization_flags == ("feed_time_metadata", "publisher_subject_corrected")
     assert client.requests[0]["publisher_hint"] == "OpenAI"
 
 
@@ -141,6 +142,29 @@ def test_minimax_normalizer_marks_missing_event_time_as_uncertain_without_using_
     assert event.status == "uncertain"
 
 
+def test_minimax_normalizer_does_not_label_a_different_model_time_as_rss_time() -> None:
+    reply = json.dumps(
+        {
+            "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
+            "action": "release", "core_change": "new coding capability",
+            "event_at": "2026-07-14", "importance": "high",
+            "event_phase": "released", "fact_type": "software_release",
+        }
+    )
+    source = SourceItem(
+        "openai-news", "Codex update", "https://openai.com/codex",
+        datetime(2026, 7, 14, 18, 0, tzinfo=SHANGHAI), "official",
+    )
+
+    event, _usage = MiniMaxNormalizer(FakeClient(reply)).normalize(
+        source, datetime(2026, 7, 14, 18, 20, tzinfo=SHANGHAI)
+    )
+
+    assert event.event_time_precision == "date"
+    assert event.event_time_source == "inferred"
+    assert "feed_time_metadata" not in event.normalization_flags
+
+
 def test_minimax_normalizer_retries_once_after_an_incomplete_json_response() -> None:
     incomplete = json.dumps({"status": "new_event", "event_at": "2026-07-14T06:00:00+08:00"})
     complete = json.dumps(
@@ -176,7 +200,43 @@ def test_minimax_normalizer_retries_once_after_an_incomplete_json_response() -> 
 
     assert event.status == "new_event"
     assert len(client.requests) == 2
+    assert event.normalization_flags == ("model_retry",)
     assert (usage.input_tokens, usage.output_tokens) == (60, 24)
+
+
+def test_minimax_normalizer_retries_after_unsupported_importance() -> None:
+    invalid = json.dumps(
+        {
+            "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
+            "action": "release", "core_change": "new coding capability",
+            "event_at": "2026-07-14T06:00:00+08:00", "importance": "urgent",
+            "event_phase": "released", "fact_type": "software_release",
+        }
+    )
+    valid = json.dumps(
+        {
+            "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
+            "action": "release", "core_change": "new coding capability",
+            "event_at": "2026-07-14T06:00:00+08:00", "importance": "high",
+            "event_phase": "released", "fact_type": "software_release",
+        }
+    )
+
+    class SequencedClient:
+        def __init__(self) -> None:
+            self.contents = [invalid, valid]
+
+        def complete(self, _payload: dict[str, object]) -> ModelReply:
+            return ModelReply(self.contents.pop(0), ModelUsage("minimax", "MiniMax-M3", 10, 5))
+
+    source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", None, "official")
+
+    event, _usage = MiniMaxNormalizer(SequencedClient()).normalize(
+        source, datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI)
+    )
+
+    assert event.importance == "high"
+    assert event.normalization_flags == ("model_retry",)
 
 
 def test_kimi_arbitrator_receives_at_most_three_compact_history_records() -> None:

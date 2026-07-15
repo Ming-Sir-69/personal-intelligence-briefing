@@ -31,6 +31,7 @@ class Event:
     fact_type: str = "unknown"
     event_time_precision: str = "unknown"
     event_time_source: str = "unknown"
+    normalization_flags: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)
@@ -38,6 +39,7 @@ class Event:
             value = getattr(self, field)
             payload[field] = value.isoformat() if value else None
         payload["source_urls"] = list(self.source_urls)
+        payload["normalization_flags"] = list(self.normalization_flags)
         return payload
 
     @classmethod
@@ -46,6 +48,7 @@ class Event:
         for field in ("event_at", "published_at", "discovered_at"):
             values[field] = _parse_datetime(values.get(field))
         values["source_urls"] = tuple(values.get("source_urls", ()))
+        values["normalization_flags"] = tuple(values.get("normalization_flags", ()))
         return cls(**values)
 
     @property
