@@ -321,5 +321,43 @@
     ],
     "status": "duplicate",
     "subject": "anthropic-claude-code"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.12",
+    "core_change": "OpenAI Codex (Rust) pre-release version 0.145.0-alpha.12 published",
+    "discovered_at": "2026-07-15T18:50:16.975023+08:00",
+    "event_at": "2026-07-15T09:10:31+08:00",
+    "event_id": "evt-3dd472bd1042a7b4",
+    "event_phase": "pre-release",
+    "fingerprint": "f78e0444bfc9ccc778447f0f30ae17348f587a5b2c4bb3415b8a5ad85822bb49",
+    "importance": "minor",
+    "object_name": "Codex (Rust) v0.145.0-alpha.12",
+    "published_at": "2026-07-15T09:10:31+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.12"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI Codex"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.210",
+    "core_change": "Published Claude Code release v2.1.210",
+    "discovered_at": "2026-07-15T18:50:16.975023+08:00",
+    "event_at": "2026-07-15T07:45:25+08:00",
+    "event_id": "evt-2d825a66a0af4aa6",
+    "event_phase": "shipped",
+    "fingerprint": "2031fbbf30c296dbb7e1831e23f74a253bafd10c122d3f1c0e45e917f9ae363c",
+    "importance": "low",
+    "object_name": "Claude Code v2.1.210",
+    "published_at": "2026-07-15T07:45:25+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.210"
+    ],
+    "status": "new_event",
+    "subject": "anthropic-claude-code-releases"
   }
 ]
