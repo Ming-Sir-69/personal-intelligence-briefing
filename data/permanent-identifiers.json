@@ -17,6 +17,7 @@
   "8b74d46d9c0d300fb037686e3954015906d21c6ddff497bfcb50b55ee263c058": "evt-d64936fd13e8741d",
   "8bf401336ed5287140727b89879c21ca40b0a197d44e29ef4f20e8c21eeb84e5": "evt-2265da421f6f07cd",
   "a33b9ae1239c85783a244fa2af8c6985e8da7d4c152ede83fee0f64091e0f93d": "evt-5ba19ff3263876cc",
+  "aa86183bb71753eb6cdb95ead316c339ed7f574c3e1e98bfd404cead48ade335": "evt-afde3739fe60eed4",
   "c1db3f8178c181ed237b8dca9efe372037e10c868058785add465acf469523aa": "evt-959d593c0a5ef02f",
   "d87a848597ab5f273d6269579f7d80bcf43102ae84f3069948bb94355720cb47": "evt-9cb04c16de4b8f53",
   "d9944dd319eff8fd70fa96dd4c65c79913a120637aac0d7df20674d3eff37620": "evt-441d2e6bf4bf94f0",
@@ -42,6 +43,7 @@
   "evt-7139db9629c12f4a": "evt-7139db9629c12f4a",
   "evt-959d593c0a5ef02f": "evt-959d593c0a5ef02f",
   "evt-9cb04c16de4b8f53": "evt-9cb04c16de4b8f53",
+  "evt-afde3739fe60eed4": "evt-afde3739fe60eed4",
   "evt-bfec75a8f305a0a6": "evt-bfec75a8f305a0a6",
   "evt-d64936fd13e8741d": "evt-d64936fd13e8741d",
   "evt-de9770c4ef3e53f2": "evt-de9770c4ef3e53f2",
@@ -64,7 +66,7 @@
   "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.9": "evt-1d47b682fa9c231e",
   "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex": "evt-d64936fd13e8741d",
   "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex": "evt-7139db9629c12f4a",
-  "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action": "evt-5a61abf20b8bd589",
+  "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action": "evt-afde3739fe60eed4",
   "https://openai.com/index/managing-ai-investments-in-agentic-era": "evt-3f49a0fb74859859",
   "https://openai.com/index/unlocking-self-improvement-gpt-red": "evt-1d666ef77a7b47c5"
 }
