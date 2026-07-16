@@ -4,16 +4,16 @@
 
 ```json
 {
-  "batch_id": "noon-20260716T073606+0800",
+  "batch_id": "noon-20260716T143528+0800",
   "kind": "noon",
-  "started_at": "2026-07-16T07:36:06.318254+08:00",
-  "completed_at": "2026-07-16T07:36:06.318254+08:00",
+  "started_at": "2026-07-16T14:35:28.466945+08:00",
+  "completed_at": "2026-07-16T14:35:28.466945+08:00",
   "data_range": {
-    "start": "2026-07-16T07:34:38.168929+08:00",
-    "end": "2026-07-16T07:36:06.318254+08:00",
-    "lookback_start": "2026-07-16T01:34:38.168929+08:00"
+    "start": "2026-07-16T07:36:06.318254+08:00",
+    "end": "2026-07-16T13:10:00+08:00",
+    "lookback_start": "2026-07-16T01:36:06.318254+08:00"
   },
-  "trigger_type": "workflow_dispatch"
+  "trigger_type": "schedule"
 }
 ```
 
@@ -26,13 +26,115 @@
 ## 其他有效新增
 
 ```json
-[]
+[
+  {
+    "event_id": "evt-bd838c00151b0afd",
+    "status": "new_event",
+    "subject": "OpenAI",
+    "object_name": "Codex",
+    "action": "release",
+    "core_change": "Version 0.144.5 of Codex released",
+    "event_at": "2026-07-16T10:56:18+08:00",
+    "published_at": "2026-07-16T10:56:18+08:00",
+    "discovered_at": "2026-07-16T14:35:28.466945+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.5",
+    "fingerprint": "9a76cd48c2fe3bba475f5ac390036e55b77a6f9239edad0e4bac624d9794a57c",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.144.5"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "announced",
+    "fact_type": "software_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  },
+  {
+    "event_id": "evt-6f51abccc767f3fb",
+    "status": "new_event",
+    "subject": "OpenAI",
+    "object_name": "Codex",
+    "action": "released",
+    "core_change": "Version rust-v0.145.0-alpha.15 of Codex",
+    "event_at": "2026-07-16T08:34:23+08:00",
+    "published_at": "2026-07-16T08:34:23+08:00",
+    "discovered_at": "2026-07-16T14:35:28.466945+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.15",
+    "fingerprint": "0ed9696a24a4ae22d838b96d90e962d312d8715d868b3953dcc4ca5d1b61580a",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.15"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "announced",
+    "fact_type": "software_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  }
+]
 ```
 
 ## Agentic Coding 与工具链
 
 ```json
-[]
+[
+  {
+    "event_id": "evt-bd838c00151b0afd",
+    "status": "new_event",
+    "subject": "OpenAI",
+    "object_name": "Codex",
+    "action": "release",
+    "core_change": "Version 0.144.5 of Codex released",
+    "event_at": "2026-07-16T10:56:18+08:00",
+    "published_at": "2026-07-16T10:56:18+08:00",
+    "discovered_at": "2026-07-16T14:35:28.466945+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.5",
+    "fingerprint": "9a76cd48c2fe3bba475f5ac390036e55b77a6f9239edad0e4bac624d9794a57c",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.144.5"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "announced",
+    "fact_type": "software_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  },
+  {
+    "event_id": "evt-6f51abccc767f3fb",
+    "status": "new_event",
+    "subject": "OpenAI",
+    "object_name": "Codex",
+    "action": "released",
+    "core_change": "Version rust-v0.145.0-alpha.15 of Codex",
+    "event_at": "2026-07-16T08:34:23+08:00",
+    "published_at": "2026-07-16T08:34:23+08:00",
+    "discovered_at": "2026-07-16T14:35:28.466945+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.15",
+    "fingerprint": "0ed9696a24a4ae22d838b96d90e962d312d8715d868b3953dcc4ca5d1b61580a",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.15"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "announced",
+    "fact_type": "software_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  }
+]
 ```
 
 ## 产品、产业与政策影响
@@ -51,10 +153,10 @@
 
 ```json
 {
-  "input_events": 2,
+  "input_events": 4,
   "duplicate_events": 2,
   "uncertain_events": 0,
-  "selected_events": 0
+  "selected_events": 2
 }
 ```
 
@@ -76,9 +178,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-16T07:34:38.168929+08:00",
-    "end": "2026-07-16T07:36:06.318254+08:00",
-    "lookback_start": "2026-07-16T01:34:38.168929+08:00"
+    "start": "2026-07-16T07:36:06.318254+08:00",
+    "end": "2026-07-16T13:10:00+08:00",
+    "lookback_start": "2026-07-16T01:36:06.318254+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -103,7 +205,48 @@
       "source_type": "official"
     }
   ],
-  "candidate_reviews": [],
+  "candidate_reviews": [
+    {
+      "event_id": "evt-bd838c00151b0afd",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/openai/codex/releases/tag/rust-v0.144.5"
+      ],
+      "normalization_flags": [
+        "feed_time_metadata"
+      ],
+      "search_query_seeds": [
+        "site:github.com \"OpenAI\" \"Codex\" release"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "inspect normalization flags before accepting the normalized claim"
+      ]
+    },
+    {
+      "event_id": "evt-6f51abccc767f3fb",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.15"
+      ],
+      "normalization_flags": [
+        "feed_time_metadata"
+      ],
+      "search_query_seeds": [
+        "site:github.com \"OpenAI\" \"Codex\" released"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "inspect normalization flags before accepting the normalized claim"
+      ]
+    }
+  ],
   "expansion_policy": {
     "allowed": [
       "primary release notes, documentation, security advisory, paper, or regulator text directly adjacent to a candidate",

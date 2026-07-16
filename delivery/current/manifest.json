@@ -1,46 +1,60 @@
 {
-  "actual_started_at": "2026-07-16T07:36:06.318254+08:00",
-  "archive_path": "delivery/archive/2026-07/noon-20260716T073606+0800",
-  "batch_id": "noon-20260716T073606+0800",
-  "completed_at": "2026-07-16T07:36:06.318254+08:00",
+  "actual_started_at": "2026-07-16T14:35:28.466945+08:00",
+  "archive_path": "delivery/archive/2026-07/noon-20260716T143528+0800",
+  "batch_id": "noon-20260716T143528+0800",
+  "completed_at": "2026-07-16T14:35:28.466945+08:00",
   "counts": {
     "duplicate_events": 2,
-    "input_events": 2,
-    "selected_events": 0,
+    "input_events": 4,
+    "selected_events": 2,
     "uncertain_events": 0
   },
-  "coverage_mode": "backfill",
+  "coverage_mode": "scheduled_increment",
   "data_range": {
-    "end": "2026-07-16T07:36:06.318254+08:00",
-    "lookback_start": "2026-07-16T01:34:38.168929+08:00",
-    "start": "2026-07-16T07:34:38.168929+08:00"
+    "end": "2026-07-16T13:10:00+08:00",
+    "lookback_start": "2026-07-16T01:36:06.318254+08:00",
+    "start": "2026-07-16T07:36:06.318254+08:00"
   },
   "errors": [],
-  "is_backfill": true,
+  "is_backfill": false,
   "is_zero_length_window": false,
   "kind": "noon",
   "model_usage": [
     {
-      "input_tokens": 844,
+      "input_tokens": 416,
       "model": "MiniMax-M3",
-      "output_tokens": 288,
+      "output_tokens": 103,
       "provider": "minimax",
-      "request_id": "06a74c6a5249370771c0edcf31089d8b"
+      "request_id": "06a7aeb2f7b779ce82b649f076b4a933"
+    },
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 91,
+      "provider": "minimax",
+      "request_id": "06a7aeb5224b0ad5fcc9a860b13d9e7b"
+    },
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 99,
+      "provider": "minimax",
+      "request_id": "06a7aeb89d30640c85c761b2f154f53e"
     },
     {
       "input_tokens": 419,
       "model": "MiniMax-M3",
-      "output_tokens": 84,
+      "output_tokens": 72,
       "provider": "minimax",
-      "request_id": "06a74c6ea19d87a28e8bc596cc750668"
+      "request_id": "06a7aebba8ca4561f3ae0321dc772782"
     }
   ],
   "rules_version": "event-retention-v1",
   "scheduled_for": "2026-07-16T12:20:00+08:00",
   "schema_version": 2,
-  "source_commit_sha": "ca6ca65ff90b17786817e48f3ebca7a5171dca2c",
-  "started_at": "2026-07-16T07:36:06.318254+08:00",
+  "source_commit_sha": "4d2d6a895cde98e4ce98d269797ffc5f8762d941",
+  "started_at": "2026-07-16T14:35:28.466945+08:00",
   "status": "success",
-  "trigger_type": "workflow_dispatch",
-  "workflow_run_id": "29459013203"
+  "trigger_type": "schedule",
+  "workflow_run_id": "29477155698"
 }
