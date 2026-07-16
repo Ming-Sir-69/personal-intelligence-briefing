@@ -1,6 +1,8 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+import pytest
+
 from intelligence_briefing.collectors import collect_feeds, collect_feeds_safely, fetch_url, select_recent_feed_items
 from intelligence_briefing.models import SourceItem
 from intelligence_briefing.time_window import SHANGHAI, ReportWindow
@@ -47,7 +49,7 @@ def test_fetch_url_uses_a_metadata_only_public_request() -> None:
     observed: dict[str, str] = {}
 
     class Response:
-        def read(self) -> bytes:
+        def read(self, _size: int = -1) -> bytes:
             return b"<rss/>"
 
         def __enter__(self) -> "Response":
@@ -66,6 +68,60 @@ def test_fetch_url_uses_a_metadata_only_public_request() -> None:
     assert observed == {"url": "https://example.com/feed", "user_agent": "personal-intelligence-briefing/0.1"}
 
 
+def test_fetch_url_rejects_non_https_before_opening() -> None:
+    opened = False
+
+    def opener(_request: object, *, timeout: int) -> object:
+        nonlocal opened
+        opened = True
+        raise AssertionError("opener must not be called")
+
+    with pytest.raises(ValueError, match="HTTPS"):
+        fetch_url("file:///etc/passwd", opener=opener)
+
+    assert opened is False
+
+
+def test_fetch_url_rejects_an_oversized_feed_response() -> None:
+    class Response:
+        def read(self, _size: int = -1) -> bytes:
+            return b"x" * 2_000_001
+
+        def __enter__(self) -> "Response":
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+    with pytest.raises(ValueError, match="feed response exceeds safety limit"):
+        fetch_url("https://example.com/feed", opener=lambda _request, timeout: Response())
+
+
+def test_collect_feeds_rejects_xml_entity_declarations() -> None:
+    malicious = b'''<?xml version="1.0"?>
+<!DOCTYPE rss [<!ENTITY injected "untrusted">]>
+<rss><channel><item><title>&injected;</title><link>https://example.com/item</link></item></channel></rss>'''
+
+    with pytest.raises(ValueError, match="unsafe XML declaration"):
+        collect_feeds(
+            [{"id": "unsafe", "url": "https://example.com/feed", "source_type": "official"}],
+            fetch=lambda _url: malicious,
+        )
+
+
+def test_collect_feeds_ignores_non_https_item_links() -> None:
+    unsafe_link = b"""<rss><channel><item>
+      <title>Local file</title><link>file:///etc/passwd</link>
+    </item></channel></rss>"""
+
+    items = collect_feeds(
+        [{"id": "unsafe", "url": "https://example.com/feed", "source_type": "official"}],
+        fetch=lambda _url: unsafe_link,
+    )
+
+    assert items == []
+
+
 def test_safe_collection_keeps_healthy_sources_when_one_source_fails() -> None:
     sources = [
         {"id": "unavailable", "url": "https://example.com/unavailable", "source_type": "official"},
@@ -80,7 +136,18 @@ def test_safe_collection_keeps_healthy_sources_when_one_source_fails() -> None:
     items, errors = collect_feeds_safely(sources, fetch=fetch)
 
     assert [item.source_id for item in items] == ["openai-news"]
-    assert errors == ("unavailable: TimeoutError: feed timeout",)
+    assert errors == ("unavailable: TimeoutError",)
+
+
+def test_safe_collection_does_not_persist_exception_text() -> None:
+    marker = "private-secret-marker"
+
+    _items, errors = collect_feeds_safely(
+        [{"id": "unsafe", "url": "https://example.com/feed", "source_type": "official"}],
+        fetch=lambda _url: (_ for _ in ()).throw(TimeoutError(marker)),
+    )
+
+    assert marker not in " ".join(errors)
 
 
 def test_select_recent_feed_items_keeps_window_items_and_caps_each_source() -> None:

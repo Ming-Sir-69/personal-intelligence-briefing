@@ -128,6 +128,8 @@ sources:
     }
     assert plan["search_budget"] == {
         "candidate_verification_max_queries": 2,
+        "candidate_verification_scope": "per_candidate",
+        "batch_total_max_queries": 12,
         "gap_scan_max_queries": 4,
         "max_expansion_hops": 1,
         "max_supplements": 3,

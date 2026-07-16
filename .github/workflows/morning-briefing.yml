@@ -15,20 +15,21 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    env:
-      MINIMAX_FOR_CODING_API_KEY: ${{ secrets.MINIMAX_FOR_CODING_API_KEY }}
-      KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
       - run: python -m pip install ".[dev]"
       - run: python -m pytest -q
-      - run: python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch morning --trigger-type schedule --live
+      - name: Run live batch
+        env:
+          MINIMAX_FOR_CODING_API_KEY: ${{ secrets.MINIMAX_FOR_CODING_API_KEY }}
+          KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+        run: python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch morning --trigger-type schedule --live
       - name: Commit generated state
         shell: bash
         run: |

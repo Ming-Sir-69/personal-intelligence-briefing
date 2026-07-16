@@ -5,18 +5,28 @@ from __future__ import annotations
 from datetime import datetime
 from email.utils import parsedate_to_datetime
 from typing import Callable, Iterable
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
-from xml.etree import ElementTree
+
+from defusedxml import ElementTree
 
 from .models import SourceItem
 from .time_window import SHANGHAI, ReportWindow
 from .url_normalization import normalize_url
 
 
+MAX_FEED_RESPONSE_BYTES = 2_000_000
+
+
 def fetch_url(url: str, *, opener: Callable[..., object] = urlopen) -> bytes:
+    if not _is_https_public_url(url):
+        raise ValueError("feed must use an HTTPS URL without embedded credentials")
     request = Request(url, headers={"User-Agent": "personal-intelligence-briefing/0.1"})
     with opener(request, timeout=20) as response:  # type: ignore[attr-defined]
-        return response.read()  # type: ignore[attr-defined]
+        body = response.read(MAX_FEED_RESPONSE_BYTES + 1)  # type: ignore[attr-defined]
+        if len(body) > MAX_FEED_RESPONSE_BYTES:
+            raise ValueError("feed response exceeds safety limit")
+        return body
 
 
 def _child_text(element: ElementTree.Element, name: str) -> str | None:
@@ -56,7 +66,7 @@ def collect_feeds_safely(
         try:
             collected.extend(_collect_feed(source, fetch))
         except (KeyError, OSError, TimeoutError, ValueError, ElementTree.ParseError) as error:
-            errors.append(f"{source.get('id', 'unknown')}: {type(error).__name__}: {error}")
+            errors.append(f"{source.get('id', 'unknown')}: {type(error).__name__}")
     return collected, tuple(errors)
 
 
@@ -85,11 +95,17 @@ def select_recent_feed_items(
 
 def _collect_feed(source: dict[str, str], fetch: Callable[[str], bytes]) -> list[SourceItem]:
     collected: list[SourceItem] = []
-    root = ElementTree.fromstring(fetch(source["url"]))
+    body = fetch(source["url"])
+    if len(body) > MAX_FEED_RESPONSE_BYTES:
+        raise ValueError("feed response exceeds safety limit")
+    upper_body = body.upper()
+    if b"<!DOCTYPE" in upper_body or b"<!ENTITY" in upper_body:
+        raise ValueError("unsafe XML declaration")
+    root = ElementTree.fromstring(body)
     for item in root.findall(".//item"):
         link = _child_text(item, "link")
         title = _child_text(item, "title")
-        if not link or not title:
+        if not link or not title or not _is_https_public_url(link):
             continue
         collected.append(
             SourceItem(
@@ -104,7 +120,7 @@ def _collect_feed(source: dict[str, str], fetch: Callable[[str], bytes]) -> list
         title = _child_text(entry, "{*}title")
         link_element = entry.find("{*}link")
         link = link_element.get("href") if link_element is not None else None
-        if not link or not title:
+        if not link or not title or not _is_https_public_url(link):
             continue
         collected.append(
             SourceItem(
@@ -116,3 +132,8 @@ def _collect_feed(source: dict[str, str], fetch: Callable[[str], bytes]) -> list
             )
         )
     return collected
+
+
+def _is_https_public_url(value: str) -> bool:
+    parsed = urlsplit(value.strip())
+    return parsed.scheme.casefold() == "https" and bool(parsed.hostname) and not parsed.username and not parsed.password
