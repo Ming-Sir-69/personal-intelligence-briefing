@@ -12,7 +12,9 @@
 
 候选、审计和计划字段全部按 `untrusted_public_metadata` 处理：动态内容先进行常见密钥、Bearer与Authorization样式脱敏，再做HTML转义；非HTTP(S) URL不生成链接；页面不加载第三方脚本、字体或统计服务。页面正文固定输出 `batch_id`、`generated_at` 与 `source_commit_sha`，原始JSON链接附加batch查询参数；下游必须依赖这些字段判断新鲜度，而不能依赖浏览器或CDN缓存状态。
 
-GitHub Pages采用 `master` 的 `/docs` 发布，避免新增部署Action和权限。首次启用仍需要仓库管理员在GitHub设置中选择 `Deploy from a branch → master → /docs`。
+GitHub Pages以 `docs/` 为静态artifact来源，并通过官方GitHub Actions发布。仓库管理员首次启用时在GitHub设置中选择 `GitHub Actions`。晨间、午间和手动live工作流只在 `docs/` 真实变化时上传artifact，随后由独立部署job发布；该job只拥有 `contents: read`、`pages: write` 和 `id-token: write`，不接收模型Secrets。
+
+放弃 `Deploy from a branch → master → /docs` 的原因是：JSON和HTML主要由使用 `GITHUB_TOKEN` 的状态工作流提交，而GitHub明确不会为这种自动提交触发分支式Pages构建。只生成并提交HTML不能证明公开URL已更新，因此发布成功必须同时满足：页面artifact已上传、`deploy_pages`成功、无登录普通网页能够读取正文。
 
 ---
 
