@@ -19,7 +19,7 @@ MVP 聚焦 AI 行业实时信息：GitHub Actions 维护可追溯的候选事件
 python scripts/build_public_pages.py --root "$PWD"
 ```
 
-GitHub Pages 需要在仓库 `Settings → Pages` 选择 `Deploy from a branch`、分支 `master`、目录 `/docs`。
+GitHub Pages 需要在仓库 `Settings → Pages` 将 Source 选择为 `GitHub Actions`。晨间、午间或手动 live 工作流只有在 `docs/` 真实变化时才上传并部署页面；Pages 部署 job 与模型调用 job 权限隔离，不接收 MiniMax/Kimi Secrets。
 
 ## 安全边界
 

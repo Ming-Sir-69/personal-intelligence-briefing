@@ -65,13 +65,23 @@ python -m pytest tests/test_public_pages.py tests/test_workflows.py -q
 
 ### 启用GitHub Pages
 
-合并包含静态页面的PR后，在仓库中打开：
+合并包含静态页面与部署工作流的PR后，在仓库中打开：
 
 1. `Settings → Pages`；
-2. Source选择 `Deploy from a branch`；
-3. Branch选择 `master`；
-4. Folder选择 `/docs`；
-5. 保存并等待GitHub Pages首次部署。
+2. Source选择 `GitHub Actions`；
+3. 保存；
+4. 在默认分支手动运行一次 `Manual briefing batch` 的 `live`，或等待下一次晨间/午间任务；
+5. 确认同一次工作流中的 `deploy_pages` job 成功后，等待 GitHub Pages 首次发布。
+
+不能使用 `Deploy from a branch → master → /docs` 作为长期自动发布方案：晨间和午间工作流使用 `GITHUB_TOKEN` 提交新JSON与HTML，而此类自动提交不会触发分支式Pages构建。当前工作流改为在生成阶段检测 `docs/` 变化并上传官方Pages artifact，再由独立部署job发布。
+
+部署安全边界：
+
+- 生成job只保留现有 `contents: write`；
+- 部署job只拥有 `contents: read`、`pages: write`、`id-token: write`；
+- MiniMax/Kimi Secrets只注入 `Run live batch`，不进入页面上传或部署步骤；
+- failed、partial、dry-run或HTML无变化时，不上传也不部署页面；
+- 官方Pages Actions固定到完整commit SHA。
 
 预计公开地址：
 
@@ -80,7 +90,7 @@ python -m pytest tests/test_public_pages.py tests/test_workflows.py -q
 - <https://ming-sir-69.github.io/personal-intelligence-briefing/current/morning/>
 - <https://ming-sir-69.github.io/personal-intelligence-briefing/current/noon/>
 
-使用无登录浏览器或任意网页读取型Agent验证HTTP可访问后，再把这些URL替换进对应平台提示词。Agent必须先核对 `batch_id`、`generated_at`、`source_commit_sha` 和 `review_status`；若页面不可审核或时间过旧，应报告上游不可用，不得补入旧闻。
+使用无登录浏览器或任意网页读取型Agent验证HTTP可访问后，再把这些URL替换进对应平台提示词。验收不能以GitHub API、GitHub连接器、Raw链接或已登录仓库页面替代普通网页正文。Agent必须先核对 `batch_id`、`generated_at`、`source_commit_sha` 和 `review_status`；若页面不可审核或时间过旧，应报告上游不可用，不得补入旧闻。
 
 ## G3 Actions 操作顺序
 
