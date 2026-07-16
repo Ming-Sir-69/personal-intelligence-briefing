@@ -25,6 +25,8 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
+    outputs:
+      pages_changed: ${{ steps.pages_change.outputs.changed }}
     env:
       BATCH: ${{ inputs.batch }}
       MODE: ${{ inputs.mode }}
@@ -53,15 +55,49 @@ jobs:
           MINIMAX_FOR_CODING_API_KEY: ${{ secrets.MINIMAX_FOR_CODING_API_KEY }}
           KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
         run: python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch "$BATCH" --trigger-type workflow_dispatch --live
+      - name: Build public review pages
+        if: ${{ inputs.mode != 'dry-run' }}
+        run: python scripts/build_public_pages.py --root "$GITHUB_WORKSPACE"
+      - name: Detect public page changes
+        id: pages_change
+        if: ${{ inputs.mode != 'dry-run' }}
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain -- docs)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Commit generated state
         if: ${{ inputs.mode != 'dry-run' }}
         shell: bash
         run: |
-          if [ -z "$(git status --porcelain -- data delivery)" ]; then
+          if [ -z "$(git status --porcelain -- data delivery docs)" ]; then
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data delivery
+          git add data delivery docs
           git commit -m "chore: record ${BATCH} briefing batch"
           git push origin "HEAD:${GITHUB_REF_NAME}"
+      - name: Upload public pages artifact
+        if: ${{ steps.pages_change.outputs.changed == 'true' }}
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+        with:
+          path: docs
+
+  deploy_pages:
+    needs: run
+    if: ${{ github.ref == 'refs/heads/master' && needs.run.outputs.pages_changed == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy public review pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
