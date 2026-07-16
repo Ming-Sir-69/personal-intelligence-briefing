@@ -70,7 +70,7 @@ def run_batch(
                     normalization_flags=("normalization_failed",),
                 )
                 normalization_failures += 1
-                errors.append(f"minimax normalization failed for {source.source_id}: {error}")
+                errors.append(f"minimax normalization failed for {source.source_id}: {type(error).__name__}")
         else:
             event = event_from_source(source, discovered_at)
         status = classify_candidate(event, recall_history(store, event, discovered_at), discovered_at)

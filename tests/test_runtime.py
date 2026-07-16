@@ -2,6 +2,8 @@ from datetime import datetime
 import json
 from zoneinfo import ZoneInfo
 
+from intelligence_briefing.models import Event, ModelUsage, SourceItem
+from intelligence_briefing.pipeline import run_batch
 from intelligence_briefing.runtime import run_live_batch
 
 
@@ -61,6 +63,10 @@ def test_live_runtime_uses_configured_feed_and_minimax_secret(tmp_path, monkeypa
     assert observed["timeout_seconds"] == 30
     assert manifest["trigger_type"] == "schedule"
     assert manifest["coverage_mode"] == "scheduled_increment"
+    candidates = json.loads((archive / "candidates.json").read_text(encoding="utf-8"))
+    review = candidates["gpt_review_plan"]["candidate_reviews"][0]
+    assert review["review_level"] == "required"
+    assert candidates["normalization_audit"]["flag_counts"] == {"feed_time_metadata": 1}
 
 
 def test_live_runtime_missing_minimax_secret_does_not_fall_back_to_process_environment(tmp_path, monkeypatch) -> None:
@@ -91,3 +97,75 @@ def test_live_runtime_missing_minimax_secret_does_not_fall_back_to_process_envir
     assert manifest["status"] == "failed"
     assert "MINIMAX_FOR_CODING_API_KEY" in manifest["errors"][0]
     assert not (tmp_path / "delivery/current").exists()
+
+
+def test_live_runtime_routes_only_a_high_priority_ambiguous_event_to_kimi(tmp_path, monkeypatch) -> None:
+    _write_runtime_config(tmp_path)
+    previous = datetime(2026, 7, 14, 6, 10, tzinfo=ZoneInfo("Asia/Shanghai"))
+
+    class PreviousNormalizer:
+        def normalize(self, source: SourceItem, discovered_at: datetime) -> tuple[Event, ModelUsage]:
+            return (
+                Event(
+                    "evt-previous", "new_event", "OpenAI", "Codex", "release", "previous capability",
+                    previous, previous, discovered_at, "https://openai.com/previous", "previous-fingerprint",
+                    ("https://openai.com/previous",), "official", "high", "released", "software_release",
+                ),
+                ModelUsage("minimax", "MiniMax-M3", 1, 1),
+            )
+
+    run_batch(
+        tmp_path,
+        "morning",
+        previous,
+        [SourceItem("openai-news", "Previous", "https://openai.com/previous", previous, "official")],
+        normalizer=PreviousNormalizer(),
+    )
+    observed_providers: list[str] = []
+
+    def request_json(_url, headers, _payload, **_kwargs):
+        authorization = headers["Authorization"]
+        observed_providers.append(authorization)
+        if authorization == "Bearer kimi-key":
+            content = json.dumps({"status": "substantive_update", "reason": "material change"})
+            provider = "kimi-test"
+        else:
+            content = json.dumps({
+                "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
+                "action": "release", "core_change": "new capability",
+                "event_at": "2026-07-14T06:00:00+08:00", "importance": "high",
+                "event_phase": "released", "fact_type": "software_release",
+            })
+            provider = "minimax-test"
+        return 200, {
+            "id": provider,
+            "choices": [{"message": {"content": content}}],
+            "usage": {"prompt_tokens": 5, "completion_tokens": 3},
+        }
+
+    monkeypatch.setattr("intelligence_briefing.runtime.http_post_json", request_json)
+    archive = run_live_batch(
+        tmp_path,
+        "noon",
+        datetime(2026, 7, 14, 12, 20, tzinfo=ZoneInfo("Asia/Shanghai")),
+        fetch=lambda _url: RSS,
+        environment={
+            "MINIMAX_FOR_CODING_API_KEY": "minimax-key",
+            "KIMI_API_KEY": "kimi-key",
+        },
+        trigger_type="schedule",
+    )
+
+    manifest = json.loads((archive / "manifest.json").read_text(encoding="utf-8"))
+    candidates = json.loads((archive / "candidates.json").read_text(encoding="utf-8"))
+    persisted = "\n".join(
+        path.read_text(encoding="utf-8")
+        for directory in (tmp_path / "data", tmp_path / "delivery")
+        for path in directory.rglob("*")
+        if path.is_file()
+    )
+    assert observed_providers == ["Bearer minimax-key", "Bearer kimi-key"]
+    assert [usage["provider"] for usage in manifest["model_usage"]] == ["minimax", "kimi"]
+    assert candidates["sections"]["must_know"][0]["status"] == "substantive_update"
+    assert "minimax-key" not in persisted
+    assert "kimi-key" not in persisted

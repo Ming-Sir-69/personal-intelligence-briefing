@@ -16,6 +16,39 @@ def test_manual_dry_run_does_not_receive_provider_secrets() -> None:
     assert "MINIMAX_FOR_CODING_API_KEY" in steps["Run live batch"]["env"]
 
 
+def test_scheduled_workflows_scope_provider_secrets_to_the_live_step() -> None:
+    for name in ("morning-briefing.yml", "noon-briefing.yml"):
+        workflow = yaml.safe_load(Path(".github/workflows", name).read_text(encoding="utf-8"))
+        job = workflow["jobs"]["run"]
+        steps = {step.get("name"): step for step in job["steps"] if isinstance(step, dict)}
+
+        assert "MINIMAX_FOR_CODING_API_KEY" not in job.get("env", {})
+        assert "KIMI_API_KEY" not in job.get("env", {})
+        assert set(steps["Run live batch"]["env"]) == {
+            "MINIMAX_FOR_CODING_API_KEY",
+            "KIMI_API_KEY",
+        }
+
+
+def test_workflow_actions_are_pinned_to_full_commit_shas() -> None:
+    for workflow_path in Path(".github/workflows").glob("*.yml"):
+        workflow = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
+        for job in workflow["jobs"].values():
+            for step in job.get("steps", []):
+                action = step.get("uses") if isinstance(step, dict) else None
+                if action:
+                    _repository, reference = action.rsplit("@", 1)
+                    assert len(reference) == 40
+                    assert all(character in "0123456789abcdef" for character in reference)
+
+
+def test_workflows_do_not_use_privileged_fork_triggers() -> None:
+    for workflow_path in Path(".github/workflows").glob("*.yml"):
+        content = workflow_path.read_text(encoding="utf-8")
+        assert "pull_request_target" not in content
+        assert "workflow_run:" not in content
+
+
 def test_state_commits_detect_new_untracked_delivery_files() -> None:
     commit_steps = []
     for workflow_path in Path(".github/workflows").glob("*.yml"):
