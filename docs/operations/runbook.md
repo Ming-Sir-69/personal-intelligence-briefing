@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-- 当前阶段：PR #10 已合并；确定性标准化守门和 ChatGPT 有界二次研究计划已通过晨间、午间真实批次。下一步配置 ChatGPT 07:30 / 13:30 正式计划任务，并用首次自然新增候选复核 `required` 路径。
+- 当前阶段：确定性标准化守门和 ChatGPT 有界二次研究计划已通过晨间、午间真实批次；正在增加无需连接器授权的 GitHub Pages 公开只读审核入口。
 - 最近验收：ChatGPT G2 复核结论为“允许进入 G3”。
 - 已关闭的 G3 前置问题：四档召回、未知事件时间、批次状态、跨批次 `recent-events.json`。
 - G3 已实现：测试、手动运行、晨间/午间工作流；成功批次水位线；按来源隔离的采集错误；离线失败/部分失败模拟。
@@ -34,6 +34,63 @@
 - 历史追溯：`delivery/archive/YYYY-MM/<batch-id>/`。
 
 候选初稿服务于上游审计和 GPT 交接；最终面向铭哥阅读的自然语言简报由 G4 ChatGPT 任务输出。
+
+## GitHub Pages 跨平台审核入口
+
+### 状态边界
+
+- `delivery/current/*.json` 是唯一正式状态源；`docs/current/` 只显示这些JSON的确定性HTML快照。
+- manifest只有在 `status == success` 且 `kind` 与晨间或午间入口匹配时，页面才标记为 `review_status: ready`。
+- kind不匹配的入口明确显示 `unavailable`，不读取对应旧候选或历史事件。
+- failed或partial批次不能覆盖 `delivery/current/`；静态生成器检测到非成功manifest且已有成功页面时，也不会替换该公开快照。
+- 页面没有写入接口，不接收ChatGPT、Perplexity、Grok或Trae Solo的审核结果。
+
+### 本地生成与验证
+
+```bash
+source .venv/bin/activate
+python scripts/build_public_pages.py --root "$PWD"
+python -m pytest tests/test_public_pages.py tests/test_workflows.py -q
+```
+
+输出位置：
+
+- `docs/index.html`
+- `docs/current/status/index.html`
+- `docs/current/morning/index.html`
+- `docs/current/noon/index.html`
+- `docs/assets/style.css`
+
+页面正文直接包含审核字段，不依赖JavaScript。每次成功批次在同一工作区内先生成JSON、再生成HTML，校验全部通过后由同一提交写入 `data/`、`delivery/` 和 `docs/`。页面构建失败时提交步骤不会执行，仓库中的上一份成功JSON和HTML保持一致。
+
+### 启用GitHub Pages
+
+合并包含静态页面与部署工作流的PR后，在仓库中打开：
+
+1. `Settings → Pages`；
+2. Source选择 `GitHub Actions`；
+3. 保存；
+4. 在默认分支手动运行一次 `Manual briefing batch` 的 `live`，或等待下一次晨间/午间任务；
+5. 确认同一次工作流中的 `deploy_pages` job 成功后，等待 GitHub Pages 首次发布。
+
+不能使用 `Deploy from a branch → master → /docs` 作为长期自动发布方案：晨间和午间工作流使用 `GITHUB_TOKEN` 提交新JSON与HTML，而此类自动提交不会触发分支式Pages构建。当前工作流改为在生成阶段检测 `docs/` 变化并上传官方Pages artifact，再由独立部署job发布。
+
+部署安全边界：
+
+- 生成job只保留现有 `contents: write`；
+- 部署job只拥有 `contents: read`、`pages: write`、`id-token: write`；
+- MiniMax/Kimi Secrets只注入 `Run live batch`，不进入页面上传或部署步骤；
+- failed、partial、dry-run或HTML无变化时，不上传也不部署页面；
+- 官方Pages Actions固定到完整commit SHA。
+
+预计公开地址：
+
+- <https://ming-sir-69.github.io/personal-intelligence-briefing/>
+- <https://ming-sir-69.github.io/personal-intelligence-briefing/current/status/>
+- <https://ming-sir-69.github.io/personal-intelligence-briefing/current/morning/>
+- <https://ming-sir-69.github.io/personal-intelligence-briefing/current/noon/>
+
+使用无登录浏览器或任意网页读取型Agent验证HTTP可访问后，再把这些URL替换进对应平台提示词。验收不能以GitHub API、GitHub连接器、Raw链接或已登录仓库页面替代普通网页正文。Agent必须先核对 `batch_id`、`generated_at`、`source_commit_sha` 和 `review_status`；若页面不可审核或时间过旧，应报告上游不可用，不得补入旧闻。
 
 ## G3 Actions 操作顺序
 
