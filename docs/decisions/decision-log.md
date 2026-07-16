@@ -1,5 +1,21 @@
 # 决策日志
 
+## 2026-07-16｜GitHub Pages公开只读审核适配层
+
+### 决策
+
+保留 `delivery/current/*.json` 作为唯一正式状态源，在 `master/docs` 增加由Python确定性生成的静态HTML。首页、状态、晨间和午间入口均为服务器直接返回正文的语义化HTML，不依赖JavaScript、数据库、API服务、MCP或新增Secret。该入口用于ChatGPT、Perplexity、Grok、Trae Solo等无法稳定读取GitHub Raw JSON但可以读取普通网页的下游Agent。
+
+晨间和午间页面受当前manifest严格门控：仅 `status == success` 且 `kind`匹配时显示 `ready`；另一时段显示 `unavailable`且不载入旧候选。HTML与JSON在同一次Actions工作区生成并由同一提交更新，failed或partial批次继续沿用既有 `delivery/current` 保护，不形成第二套状态。
+
+### 安全与缓存边界
+
+候选、审计和计划字段全部按 `untrusted_public_metadata` 处理：动态内容先进行常见密钥、Bearer与Authorization样式脱敏，再做HTML转义；非HTTP(S) URL不生成链接；页面不加载第三方脚本、字体或统计服务。页面正文固定输出 `batch_id`、`generated_at` 与 `source_commit_sha`，原始JSON链接附加batch查询参数；下游必须依赖这些字段判断新鲜度，而不能依赖浏览器或CDN缓存状态。
+
+GitHub Pages采用 `master` 的 `/docs` 发布，避免新增部署Action和权限。首次启用仍需要仓库管理员在GitHub设置中选择 `Deploy from a branch → master → /docs`。
+
+---
+
 ## 2026-07-16｜确定性模型守门与 ChatGPT 有界二次研究
 
 ### 决策

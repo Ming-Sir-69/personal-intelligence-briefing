@@ -35,6 +35,7 @@ personal-intelligence-briefing/
 │   ├── deduplication.py                   # 热/温窗口候选召回与状态判断
 │   ├── learning_schedule.py               # 学习槽位选择，不保存个人数据
 │   ├── reporting.py                       # JSON/Markdown/manifest 渲染
+│   ├── public_pages.py                    # delivery/current 到安全静态HTML的只读适配层
 │   ├── collectors.py                      # 官方源与发现源采集器
 │   ├── llm.py                             # MiniMax、Kimi 客户端和结构化校验
 │   └── runtime.py                         # GitHub Actions 的真实来源与模型装配
@@ -49,6 +50,7 @@ personal-intelligence-briefing/
 │   ├── test_learning_schedule.py
 │   ├── test_llm.py
 │   ├── test_reporting.py
+│   ├── test_public_pages.py
 │   ├── test_collectors.py
 │   ├── test_cli.py
 │   └── test_workflows.py
@@ -79,7 +81,16 @@ personal-intelligence-briefing/
 │       ├── candidates.json
 │       └── preliminary.md
 │
-└── docs/                                  # 静态项目知识，不与运行数据混放
+├── scripts/
+│   └── build_public_pages.py              # GitHub Pages本地与Actions构建入口
+│
+└── docs/                                  # 项目知识与GitHub Pages静态发布目录
+    ├── index.html                         # 无需授权的公开审核首页（生成文件）
+    ├── assets/style.css                   # 本地轻量样式，无第三方资源
+    ├── current/                           # 当前成功JSON的确定性HTML快照
+    │   ├── status/index.html
+    │   ├── morning/index.html
+    │   └── noon/index.html
     ├── product/
     │   └── project-brief.md
     ├── architecture/
@@ -107,6 +118,7 @@ personal-intelligence-briefing/
 | `data/gpt-handoffs/handoffs-YYYY-MM.jsonl` | 仅在成功候选包生成后追加 | 为下一批和 GPT 提供最近 30 天已提交审核的跨批次历史 |
 | `delivery/archive/` | 仅创建，不修改 | 保留每次候选包的审计快照 |
 | `delivery/current/` | 仅在批次完整成功后覆盖 | 为 ChatGPT 提供稳定、短路径的读取入口 |
+| `docs/index.html`、`docs/current/`、`docs/assets/` | 从 `delivery/current` 确定性覆盖生成 | 为只具备网页读取能力的Agent提供公开只读入口；不保存独立状态 |
 
 失败批次不得覆盖 `delivery/current/`。失败详情只写入对应 `data/runs/...` 和该批次的 `delivery/archive/.../manifest.json`，使 ChatGPT 能识别“上游失败”，而不会误读昨天的成功文件。
 
