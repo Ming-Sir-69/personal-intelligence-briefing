@@ -1,0 +1,25 @@
+{
+  "batch_id": "noon-20260716T170024+0800",
+  "completed_at": "2026-07-16T17:00:24.649316+08:00",
+  "errors": [],
+  "kind": "noon",
+  "model_usage": [
+    {
+      "input_tokens": 416,
+      "model": "MiniMax-M3",
+      "output_tokens": 89,
+      "provider": "minimax",
+      "request_id": "06a7d0aa3472c67a9a90b96337678736"
+    },
+    {
+      "input_tokens": 844,
+      "model": "MiniMax-M3",
+      "output_tokens": 277,
+      "provider": "minimax",
+      "request_id": "06a7d0b5906b9cae197d8faefaf2a2db"
+    }
+  ],
+  "started_at": "2026-07-16T17:00:24.649316+08:00",
+  "status": "success",
+  "trigger_type": "workflow_dispatch"
+}

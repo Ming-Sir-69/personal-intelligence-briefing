@@ -628,5 +628,30 @@
     ],
     "status": "new_event",
     "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.5",
+    "core_change": "OpenAI released Codex rust-v0.144.5.",
+    "discovered_at": "2026-07-16T17:00:24.649316+08:00",
+    "event_at": "2026-07-16T10:56:18+08:00",
+    "event_id": "evt-2c790b040a615de6",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "3e1eb984fa55eae04fd532a20516ca5c4b9600c81f89fa3c2a962d4bd0d38429",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-16T10:56:18+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.144.5"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
   }
 ]
