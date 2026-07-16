@@ -53,15 +53,18 @@ jobs:
           MINIMAX_FOR_CODING_API_KEY: ${{ secrets.MINIMAX_FOR_CODING_API_KEY }}
           KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
         run: python -m intelligence_briefing.cli --root "$GITHUB_WORKSPACE" --batch "$BATCH" --trigger-type workflow_dispatch --live
+      - name: Build public review pages
+        if: ${{ inputs.mode != 'dry-run' }}
+        run: python scripts/build_public_pages.py --root "$GITHUB_WORKSPACE"
       - name: Commit generated state
         if: ${{ inputs.mode != 'dry-run' }}
         shell: bash
         run: |
-          if [ -z "$(git status --porcelain -- data delivery)" ]; then
+          if [ -z "$(git status --porcelain -- data delivery docs)" ]; then
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data delivery
+          git add data delivery docs
           git commit -m "chore: record ${BATCH} briefing batch"
           git push origin "HEAD:${GITHUB_REF_NAME}"
