@@ -30,7 +30,15 @@ def _unique_urls(event: Event) -> list[str]:
 def _query_seed(event: Event) -> str:
     hostname = urlsplit(event.canonical_url).hostname or ""
     site = f"site:{hostname} " if hostname else ""
-    return f'{site}"{event.subject}" "{event.object_name}" {event.action}'.strip()
+    subject = _safe_query_term(event.subject, 80)
+    object_name = _safe_query_term(event.object_name, 120)
+    action = _safe_query_term(event.action, 60)
+    return f'{site}"{subject}" "{object_name}" {action}'.strip()
+
+
+def _safe_query_term(value: str, limit: int) -> str:
+    printable = "".join(character if character.isprintable() and character not in {'"', "\\"} else " " for character in value)
+    return " ".join(printable.split())[:limit].strip()
 
 
 def _required_checks(event: Event) -> list[str]:
@@ -92,6 +100,8 @@ def build_gpt_review_plan(
         "time_scope": data_range,
         "search_budget": {
             "candidate_verification_max_queries": 2,
+            "candidate_verification_scope": "per_candidate",
+            "batch_total_max_queries": 12 if morning else 8,
             "gap_scan_max_queries": 4 if morning else 3,
             "max_expansion_hops": 1,
             "max_supplements": 3 if morning else 2,
