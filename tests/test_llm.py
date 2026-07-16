@@ -239,6 +239,66 @@ def test_minimax_normalizer_retries_after_unsupported_importance() -> None:
     assert event.normalization_flags == ("model_retry",)
 
 
+@pytest.mark.parametrize(
+    ("field", "invalid_value"),
+    (("fact_type", []), ("importance", {})),
+)
+def test_minimax_normalizer_retries_after_non_scalar_enum_fields(field: str, invalid_value: object) -> None:
+    valid_payload = {
+        "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
+        "action": "release", "core_change": "new coding capability",
+        "event_at": "2026-07-14T06:00:00+08:00", "importance": "high",
+        "event_phase": "released", "fact_type": "software_release",
+    }
+    invalid_payload = dict(valid_payload)
+    invalid_payload[field] = invalid_value
+
+    class SequencedClient:
+        def __init__(self) -> None:
+            self.contents = [json.dumps(invalid_payload), json.dumps(valid_payload)]
+            self.calls = 0
+
+        def complete(self, _payload: dict[str, object]) -> ModelReply:
+            self.calls += 1
+            return ModelReply(self.contents.pop(0), ModelUsage("minimax", "MiniMax-M3", 10, 5))
+
+    client = SequencedClient()
+    source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", None, "official")
+
+    event, _usage = MiniMaxNormalizer(client).normalize(
+        source, datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI)
+    )
+
+    assert client.calls == 2
+    assert event.normalization_flags == ("model_retry",)
+
+
+def test_minimax_normalizer_retries_after_oversized_model_field() -> None:
+    valid_payload = {
+        "status": "new_event", "subject": "OpenAI", "object_name": "Codex",
+        "action": "release", "core_change": "new coding capability",
+        "event_at": "2026-07-14T06:00:00+08:00", "importance": "high",
+        "event_phase": "released", "fact_type": "software_release",
+    }
+    invalid_payload = dict(valid_payload, core_change="x" * 5000)
+
+    class SequencedClient:
+        def __init__(self) -> None:
+            self.contents = [json.dumps(invalid_payload), json.dumps(valid_payload)]
+
+        def complete(self, _payload: dict[str, object]) -> ModelReply:
+            return ModelReply(self.contents.pop(0), ModelUsage("minimax", "MiniMax-M3", 10, 5))
+
+    source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", None, "official")
+
+    event, _usage = MiniMaxNormalizer(SequencedClient()).normalize(
+        source, datetime(2026, 7, 14, 6, 20, tzinfo=SHANGHAI)
+    )
+
+    assert event.core_change == "new coding capability"
+    assert event.normalization_flags == ("model_retry",)
+
+
 def test_kimi_arbitrator_receives_at_most_three_compact_history_records() -> None:
     client = FakeClient(json.dumps({"status": "duplicate", "reason": "same official event"}))
     candidate = Event(
@@ -374,7 +434,7 @@ def test_http_post_json_passes_authorization_without_logging_or_persisting_it() 
     class Response:
         status = 200
 
-        def read(self) -> bytes:
+        def read(self, _size: int = -1) -> bytes:
             return b'{"id":"response"}'
 
         def __enter__(self) -> "Response":
@@ -413,4 +473,45 @@ def test_http_post_json_converts_network_timeout_to_runtime_error() -> None:
             {"Authorization": "Bearer test-token", "Content-Type": "application/json"},
             {"model": "test"},
             opener=opener,
+        )
+
+
+def test_http_post_json_rejects_non_https_before_sending_authorization() -> None:
+    opened = False
+
+    def opener(_request: object, *, timeout: int) -> object:
+        nonlocal opened
+        opened = True
+        raise AssertionError("opener must not be called")
+
+    with pytest.raises(ValueError, match="HTTPS"):
+        http_post_json(
+            "http://api.example/v1/chat/completions",
+            {"Authorization": "Bearer test-token", "Content-Type": "application/json"},
+            {"model": "test"},
+            opener=opener,
+        )
+
+    assert opened is False
+
+
+def test_http_post_json_rejects_an_oversized_provider_response() -> None:
+    class Response:
+        status = 200
+
+        def read(self, _size: int = -1) -> bytes:
+            return b"x" * 2_000_001
+
+        def __enter__(self) -> "Response":
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+    with pytest.raises(RuntimeError, match="response exceeds safety limit"):
+        http_post_json(
+            "https://api.example/v1/chat/completions",
+            {"Authorization": "Bearer test-token", "Content-Type": "application/json"},
+            {"model": "test"},
+            opener=lambda _request, timeout: Response(),
         )

@@ -28,6 +28,16 @@ FACT_TYPES = {
 
 IMPORTANCE_LEVELS = {"high", "medium", "low", "minor"}
 
+MAX_PROVIDER_RESPONSE_BYTES = 2_000_000
+MODEL_FIELD_LIMITS = {
+    "status": 64,
+    "subject": 200,
+    "object_name": 300,
+    "action": 120,
+    "core_change": 1_200,
+    "event_phase": 120,
+}
+
 PUBLISHER_HINTS = {
     "openai-news": "OpenAI",
     "openai-codex-releases": "OpenAI",
@@ -43,12 +53,21 @@ def http_post_json(
     opener: Callable[..., object] = urlopen,
     timeout_seconds: int = 30,
 ) -> tuple[int, dict[str, object]]:
+    parsed_url = urlsplit(url.strip())
+    if parsed_url.scheme.casefold() != "https" or not parsed_url.hostname or parsed_url.username or parsed_url.password:
+        raise ValueError("model API must use an HTTPS URL without embedded credentials")
     request = Request(url, data=json.dumps(payload, ensure_ascii=False).encode("utf-8"), headers=headers, method="POST")
     try:
         with opener(request, timeout=timeout_seconds) as response:  # type: ignore[attr-defined]
-            return int(response.status), json.loads(response.read())  # type: ignore[attr-defined]
+            body = response.read(MAX_PROVIDER_RESPONSE_BYTES + 1)  # type: ignore[attr-defined]
+            if len(body) > MAX_PROVIDER_RESPONSE_BYTES:
+                raise RuntimeError("provider response exceeds safety limit")
+            return int(response.status), json.loads(body)
     except HTTPError as error:
-        body = error.read().decode("utf-8", errors="replace")
+        body_bytes = error.read(MAX_PROVIDER_RESPONSE_BYTES + 1)
+        if len(body_bytes) > MAX_PROVIDER_RESPONSE_BYTES:
+            return error.code, {"error": {"message": "provider response exceeds safety limit"}}
+        body = body_bytes.decode("utf-8", errors="replace")
         try:
             return error.code, json.loads(body)
         except json.JSONDecodeError:
@@ -177,13 +196,16 @@ class MiniMaxNormalizer:
                 missing = required - payload.keys()
                 if missing:
                     raise ValueError(f"model response missing fields: {sorted(missing)}")
-                if payload["fact_type"] not in FACT_TYPES:
+                if not isinstance(payload["fact_type"], str) or payload["fact_type"] not in FACT_TYPES:
                     raise ValueError("model response returned an unsupported fact_type")
-                if payload["importance"] not in IMPORTANCE_LEVELS:
+                if not isinstance(payload["importance"], str) or payload["importance"] not in IMPORTANCE_LEVELS:
                     raise ValueError("model response returned an unsupported importance")
-                for field in ("status", "subject", "object_name", "action", "core_change"):
-                    if not isinstance(payload[field], str) or not payload[field].strip():
+                for field, limit in MODEL_FIELD_LIMITS.items():
+                    value = payload.get(field, "")
+                    if not isinstance(value, str) or (field != "event_phase" and not value.strip()):
                         raise ValueError(f"model response returned an empty {field}")
+                    if len(value) > limit:
+                        raise ValueError(f"model response exceeded the {field} length limit")
             except (ValueError, json.JSONDecodeError):
                 if attempt == 1:
                     raise

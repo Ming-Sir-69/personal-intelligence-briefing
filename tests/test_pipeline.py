@@ -57,6 +57,26 @@ def test_all_normalization_failures_create_failed_archive_without_replacing_curr
     assert current_manifest["kind"] == "morning"
 
 
+def test_normalization_failure_does_not_persist_provider_exception_text(tmp_path) -> None:
+    now = datetime(2026, 7, 14, 6, 20, tzinfo=ZoneInfo("Asia/Shanghai"))
+    source = SourceItem("openai-news", "Codex update", "https://openai.com/codex", now, "official")
+    marker = "private-secret-marker"
+
+    class FailingNormalizer:
+        def normalize(self, _source: SourceItem, _discovered_at: datetime) -> tuple[Event, ModelUsage]:
+            raise RuntimeError(f"provider failure includes {marker}")
+
+    run_batch(tmp_path, "morning", now, [source], normalizer=FailingNormalizer())
+
+    persisted = "\n".join(
+        path.read_text(encoding="utf-8")
+        for directory in (tmp_path / "data", tmp_path / "delivery")
+        for path in directory.rglob("*")
+        if path.is_file()
+    )
+    assert marker not in persisted
+
+
 def test_partial_batch_is_archived_without_replacing_current(tmp_path) -> None:
     now = datetime(2026, 7, 14, 6, 20, tzinfo=ZoneInfo("Asia/Shanghai"))
     first = SourceItem("openai-news", "Codex update", "https://openai.com/codex", now, "official")
