@@ -1,23 +1,7 @@
 {
-  "actual_started_at": "2026-07-18T07:11:34.115597+08:00",
-  "archive_path": "delivery/archive/2026-07/morning-20260718T071134+0800",
   "batch_id": "morning-20260718T071134+0800",
   "completed_at": "2026-07-18T07:11:34.115597+08:00",
-  "counts": {
-    "duplicate_events": 1,
-    "input_events": 5,
-    "selected_events": 1,
-    "uncertain_events": 3
-  },
-  "coverage_mode": "scheduled_increment",
-  "data_range": {
-    "end": "2026-07-18T07:10:00+08:00",
-    "lookback_start": "2026-07-17T08:31:26.038665+08:00",
-    "start": "2026-07-17T14:31:26.038665+08:00"
-  },
   "errors": [],
-  "is_backfill": false,
-  "is_zero_length_window": false,
   "kind": "morning",
   "model_usage": [
     {
@@ -56,12 +40,7 @@
       "request_id": "06a9e9b3112c9484d42e025f79884243"
     }
   ],
-  "rules_version": "event-retention-v1",
-  "scheduled_for": "2026-07-18T06:20:00+08:00",
-  "schema_version": 2,
-  "source_commit_sha": "1aca829642821a1daa20c6ddc3c9c68d04ae4989",
   "started_at": "2026-07-18T07:11:34.115597+08:00",
   "status": "success",
-  "trigger_type": "schedule",
-  "workflow_run_id": "29620001546"
+  "trigger_type": "schedule"
 }

@@ -1,6 +1,33 @@
 [
   {
     "action": "released",
+    "batch_id": "noon-20260717T143126+0800",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.212",
+    "core_change": "Claude Code version 2.1.212 released",
+    "discovered_at": "2026-07-17T14:31:26.038665+08:00",
+    "event_at": "2026-07-17T08:26:27+08:00",
+    "event_id": "evt-cdb461c5041cb116",
+    "event_phase": "confirmed",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "b3df0a14062e12a280068cdfd644d587e6b09f8528fd7d631b7cf8ad4aa2f4ae",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Claude Code",
+    "published_at": "2026-07-17T08:26:27+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.212"
+    ],
+    "status": "new_event",
+    "subject": "Anthropic",
+    "submitted_to_gpt_at": "2026-07-17T14:31:26.038665+08:00"
+  },
+  {
+    "action": "released",
     "batch_id": "morning-20260717T091351+0800",
     "canonical_url": "https://github.com/openai/codex/releases/tag/python-v0.144.4",
     "core_change": "Version python-v0.144.4 adds support for custom transports for Amazon Bedrock (#33695).",
