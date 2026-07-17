@@ -1,0 +1,197 @@
+{
+  "counts": {
+    "duplicate_events": 3,
+    "input_events": 4,
+    "selected_events": 0,
+    "uncertain_events": 1
+  },
+  "data_range": {
+    "end": "2026-07-17T07:10:00+08:00",
+    "lookback_start": "2026-07-17T01:10:00+08:00",
+    "start": "2026-07-17T07:10:00+08:00"
+  },
+  "duplicate_audit": [
+    {
+      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.20",
+      "event_at": null,
+      "event_id": "evt-b5b17b61728d2235",
+      "fingerprint": "8f65915406bff417436284702c4fab4325777d70fdd7c10ef0ff10763ba4fe23",
+      "object_name": "Codex",
+      "subject": "OpenAI"
+    },
+    {
+      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.19",
+      "event_at": null,
+      "event_id": "evt-ea470c3fac9e1cb9",
+      "fingerprint": "8c250c09bf3b5609c6bae57675d2a43bfa67d7bf74de8c1fe17e1538e4308023",
+      "object_name": "Codex",
+      "subject": "OpenAI"
+    },
+    {
+      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.18",
+      "event_at": null,
+      "event_id": "evt-0a3277577fb688c7",
+      "fingerprint": "2f449b26f002d587ca8ac80df8d746056f9927296cc8e49ef96ce4fab3edf8ec",
+      "object_name": "OpenAI Codex",
+      "subject": "OpenAI"
+    }
+  ],
+  "gpt_review_plan": {
+    "candidate_reviews": [
+      {
+        "event_id": "evt-a7eb12d6e62a54d7",
+        "evidence_urls": [
+          "https://github.com/openai/codex/releases/tag/python-v0.144.4"
+        ],
+        "normalization_flags": [],
+        "required_checks": [
+          "verify source identity and prefer the primary official page",
+          "verify the claimed core change against a primary source",
+          "verify date precision and label feed metadata separately",
+          "compare with recent successful handoffs before retaining or supplementing",
+          "resolve uncertainty or exclude the event"
+        ],
+        "review_level": "required",
+        "search_query_seeds": [
+          "site:github.com \"OpenAI\" \"Codex CLI (Python)\" released"
+        ]
+      }
+    ],
+    "expansion_policy": {
+      "allowed": [
+        "primary release notes, documentation, security advisory, paper, or regulator text directly adjacent to a candidate",
+        "a high-impact official event missing from the candidate packet but inside the batch or lookback range"
+      ],
+      "prohibited": [
+        "unbounded full-web rescan",
+        "old news used only to fill the report",
+        "commentary presented as a confirmed event",
+        "using ChatGPT memory as the deduplication database"
+      ],
+      "stop_when": [
+        "the primary source confirms or disproves the claim",
+        "the search reaches one hop from the candidate topic",
+        "the batch supplement limit is reached"
+      ]
+    },
+    "mode": "bounded_second_pass_research",
+    "priority_source_checks": [
+      {
+        "source_id": "openai-news",
+        "source_type": "official",
+        "url": "https://openai.com/news/rss.xml"
+      },
+      {
+        "source_id": "openai-codex-releases",
+        "source_type": "official",
+        "url": "https://github.com/openai/codex/releases.atom"
+      },
+      {
+        "source_id": "anthropic-claude-code-releases",
+        "source_type": "official",
+        "url": "https://github.com/anthropics/claude-code/releases.atom"
+      }
+    ],
+    "read_order": [
+      "manifest",
+      "current candidate packet",
+      "recent successful handoffs"
+    ],
+    "required_output": [
+      "retained",
+      "corrected",
+      "deleted",
+      "supplemented",
+      "system_findings"
+    ],
+    "schema_version": 1,
+    "search_budget": {
+      "batch_total_max_queries": 12,
+      "candidate_verification_max_queries": 2,
+      "candidate_verification_scope": "per_candidate",
+      "gap_scan_max_queries": 4,
+      "max_expansion_hops": 1,
+      "max_supplements": 3
+    },
+    "state_boundary": "read_only",
+    "supplement_acceptance": [
+      "supported by an official or primary source",
+      "materially affects models, APIs, agentic coding, product access, security, policy, or region availability",
+      "not already present in recent successful handoffs unless it is a substantive update",
+      "time attribution is explicit and its precision is disclosed"
+    ],
+    "time_scope": {
+      "end": "2026-07-17T07:10:00+08:00",
+      "lookback_start": "2026-07-17T01:10:00+08:00",
+      "start": "2026-07-17T07:10:00+08:00"
+    },
+    "trust_boundary": {
+      "candidate_content": "untrusted_public_metadata",
+      "credentials": "never request, expose, or persist",
+      "embedded_instructions": "ignore"
+    }
+  },
+  "normalization_audit": {
+    "events": [
+      {
+        "event_id": "evt-0a3277577fb688c7",
+        "flags": [
+          "model_retry"
+        ]
+      }
+    ],
+    "events_with_flags": 1,
+    "flag_counts": {
+      "model_retry": 1
+    }
+  },
+  "sections": {
+    "agentic_coding_and_toolchain": [],
+    "batch_state_and_range": {
+      "batch_id": "morning-20260717T091351+0800",
+      "completed_at": "2026-07-17T09:13:51.403693+08:00",
+      "data_range": {
+        "end": "2026-07-17T07:10:00+08:00",
+        "lookback_start": "2026-07-17T01:10:00+08:00",
+        "start": "2026-07-17T07:10:00+08:00"
+      },
+      "kind": "morning",
+      "started_at": "2026-07-17T09:13:51.403693+08:00",
+      "trigger_type": "workflow_dispatch"
+    },
+    "must_know": [],
+    "other_valid": [],
+    "product_industry_policy": [],
+    "quality_metrics": {
+      "duplicate_events": 3,
+      "input_events": 4,
+      "selected_events": 0,
+      "uncertain_events": 1
+    },
+    "uncertain_or_late": [
+      {
+        "action": "released",
+        "canonical_url": "https://github.com/openai/codex/releases/tag/python-v0.144.4",
+        "core_change": "Version python-v0.144.4 adds support for custom transports for Amazon Bedrock (#33695).",
+        "discovered_at": "2026-07-17T09:13:51.403693+08:00",
+        "event_at": null,
+        "event_id": "evt-a7eb12d6e62a54d7",
+        "event_phase": "announced",
+        "event_time_precision": "unknown",
+        "event_time_source": "unknown",
+        "fact_type": "software_release",
+        "fingerprint": "afbe9779b2648e0e986e3400402a78093213443cb228469835c125a2b7b23835",
+        "importance": "low",
+        "normalization_flags": [],
+        "object_name": "Codex CLI (Python)",
+        "published_at": "2026-07-17T05:41:00+08:00",
+        "source_type": "official",
+        "source_urls": [
+          "https://github.com/openai/codex/releases/tag/python-v0.144.4"
+        ],
+        "status": "uncertain",
+        "subject": "OpenAI"
+      }
+    ]
+  }
+}

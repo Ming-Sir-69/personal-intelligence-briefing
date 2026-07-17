@@ -4,16 +4,16 @@
 
 ```json
 {
-  "batch_id": "morning-20260717T071409+0800",
+  "batch_id": "morning-20260717T091351+0800",
   "kind": "morning",
-  "started_at": "2026-07-17T07:14:09.418579+08:00",
-  "completed_at": "2026-07-17T07:14:09.418579+08:00",
+  "started_at": "2026-07-17T09:13:51.403693+08:00",
+  "completed_at": "2026-07-17T09:13:51.403693+08:00",
   "data_range": {
-    "start": "2026-07-16T17:00:24.649316+08:00",
+    "start": "2026-07-17T07:10:00+08:00",
     "end": "2026-07-17T07:10:00+08:00",
-    "lookback_start": "2026-07-16T11:00:24.649316+08:00"
+    "lookback_start": "2026-07-17T01:10:00+08:00"
   },
-  "trigger_type": "schedule"
+  "trigger_type": "workflow_dispatch"
 }
 ```
 
@@ -46,136 +46,19 @@
 ```json
 [
   {
-    "event_id": "evt-e73ccd4c7df97031",
+    "event_id": "evt-a7eb12d6e62a54d7",
     "status": "uncertain",
     "subject": "OpenAI",
-    "object_name": "safe AI for teens",
-    "action": "publish_policy_position",
-    "core_change": "OpenAI published a policy/analysis article arguing that teens deserve access to safe AI.",
-    "event_at": null,
-    "published_at": "2026-07-17T00:00:00+08:00",
-    "discovered_at": "2026-07-17T07:14:09.418579+08:00",
-    "canonical_url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
-    "fingerprint": "9823f5b4301acf24cde98ca9870c133dbf71956fb19182e472554b1586ef44fe",
-    "source_urls": [
-      "https://openai.com/index/why-teens-deserve-access-safe-ai"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "policy_position",
-    "fact_type": "company_policy_position",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": []
-  },
-  {
-    "event_id": "evt-b3a1ff254b9ba159",
-    "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "Codex",
+    "object_name": "Codex CLI (Python)",
     "action": "released",
-    "core_change": "rust-v0.145.0-alpha.20",
+    "core_change": "Version python-v0.144.4 adds support for custom transports for Amazon Bedrock (#33695).",
     "event_at": null,
-    "published_at": "2026-07-17T06:20:07+08:00",
-    "discovered_at": "2026-07-17T07:14:09.418579+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.20",
-    "fingerprint": "91eca0dec5480b6a99c718c5f6da64bedca37679dd4ecc365d23a8dc4d528591",
+    "published_at": "2026-07-17T05:41:00+08:00",
+    "discovered_at": "2026-07-17T09:13:51.403693+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/python-v0.144.4",
+    "fingerprint": "afbe9779b2648e0e986e3400402a78093213443cb228469835c125a2b7b23835",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.20"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "pre_release",
-    "fact_type": "software_release",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": []
-  },
-  {
-    "event_id": "evt-8d1f98bc126cd1f0",
-    "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "Codex (Rust)",
-    "action": "release_version",
-    "core_change": "Codex rust-v0.145.0-alpha.19 pre-release published",
-    "event_at": null,
-    "published_at": "2026-07-17T06:13:47+08:00",
-    "discovered_at": "2026-07-17T07:14:09.418579+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.19",
-    "fingerprint": "bc010673107b31272da9c703387036042cea05970599302a38c291e8d17c5f0b",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.19"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "alpha",
-    "fact_type": "software_release",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": [
-      "model_retry"
-    ]
-  },
-  {
-    "event_id": "evt-d7d834dcf507dc65",
-    "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "Codex",
-    "action": "release",
-    "core_change": "OpenAI Codex updated to version 0.145.0-alpha.18",
-    "event_at": null,
-    "published_at": "2026-07-17T02:15:04+08:00",
-    "discovered_at": "2026-07-17T07:14:09.418579+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.18",
-    "fingerprint": "11a17ee03cc5a17268d876f3bc61449628fd6c9a073c079cb06af4ab68be2955",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.18"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "update",
-    "fact_type": "software_release",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": []
-  },
-  {
-    "event_id": "evt-3121cbd6ccfc64ac",
-    "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "rust-v0.145.0-alpha.17",
-    "action": "released",
-    "core_change": "Published rust-v0.145.0-alpha.17 as a new version in the codex repository.",
-    "event_at": null,
-    "published_at": "2026-07-17T00:43:25+08:00",
-    "discovered_at": "2026-07-17T07:14:09.418579+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.17",
-    "fingerprint": "9e2b980b7740daa9da83ca7f7d2e66f09edb07fe062865773d9a68ee1331a5cb",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.17"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "confirmed",
-    "fact_type": "software_release",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": []
-  },
-  {
-    "event_id": "evt-c542e428584351e7",
-    "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "Codex (Rust) 0.145.0-alpha.16",
-    "action": "released",
-    "core_change": "OpenAI published an alpha pre-release of the Codex Rust client, version 0.145.0-alpha.16.",
-    "event_at": null,
-    "published_at": "2026-07-16T13:25:26+08:00",
-    "discovered_at": "2026-07-17T07:14:09.418579+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.16",
-    "fingerprint": "9a674d41637e700066a708b2071d9dfb2be46fe2bcfb208116b65a90f5906785",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.16"
+      "https://github.com/openai/codex/releases/tag/python-v0.144.4"
     ],
     "source_type": "official",
     "importance": "low",
@@ -192,9 +75,9 @@
 
 ```json
 {
-  "input_events": 6,
-  "duplicate_events": 0,
-  "uncertain_events": 6,
+  "input_events": 4,
+  "duplicate_events": 3,
+  "uncertain_events": 1,
   "selected_events": 0
 }
 ```
@@ -217,9 +100,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-16T17:00:24.649316+08:00",
+    "start": "2026-07-17T07:10:00+08:00",
     "end": "2026-07-17T07:10:00+08:00",
-    "lookback_start": "2026-07-16T11:00:24.649316+08:00"
+    "lookback_start": "2026-07-17T01:10:00+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -248,108 +131,14 @@
   ],
   "candidate_reviews": [
     {
-      "event_id": "evt-e73ccd4c7df97031",
+      "event_id": "evt-a7eb12d6e62a54d7",
       "review_level": "required",
       "evidence_urls": [
-        "https://openai.com/index/why-teens-deserve-access-safe-ai"
+        "https://github.com/openai/codex/releases/tag/python-v0.144.4"
       ],
       "normalization_flags": [],
       "search_query_seeds": [
-        "site:openai.com \"OpenAI\" \"safe AI for teens\" publish_policy_position"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event",
-        "distinguish company policy position from government action"
-      ]
-    },
-    {
-      "event_id": "evt-b3a1ff254b9ba159",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.20"
-      ],
-      "normalization_flags": [],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex\" released"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event"
-      ]
-    },
-    {
-      "event_id": "evt-8d1f98bc126cd1f0",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.19"
-      ],
-      "normalization_flags": [
-        "model_retry"
-      ],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex (Rust)\" release_version"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event",
-        "inspect normalization flags before accepting the normalized claim"
-      ]
-    },
-    {
-      "event_id": "evt-d7d834dcf507dc65",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.18"
-      ],
-      "normalization_flags": [],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex\" release"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event"
-      ]
-    },
-    {
-      "event_id": "evt-3121cbd6ccfc64ac",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.17"
-      ],
-      "normalization_flags": [],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"rust-v0.145.0-alpha.17\" released"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event"
-      ]
-    },
-    {
-      "event_id": "evt-c542e428584351e7",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.16"
-      ],
-      "normalization_flags": [],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex (Rust) 0.145.0-alpha.16\" released"
+        "site:github.com \"OpenAI\" \"Codex CLI (Python)\" released"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
