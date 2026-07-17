@@ -1,5 +1,30 @@
 [
   {
+    "action": "released",
+    "batch_id": "morning-20260717T091351+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/python-v0.144.4",
+    "core_change": "Version python-v0.144.4 adds support for custom transports for Amazon Bedrock (#33695).",
+    "discovered_at": "2026-07-17T09:13:51.403693+08:00",
+    "event_at": null,
+    "event_id": "evt-a7eb12d6e62a54d7",
+    "event_phase": "announced",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "afbe9779b2648e0e986e3400402a78093213443cb228469835c125a2b7b23835",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex CLI (Python)",
+    "published_at": "2026-07-17T05:41:00+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/python-v0.144.4"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-17T09:13:51.403693+08:00"
+  },
+  {
     "action": "publish_policy_position",
     "batch_id": "morning-20260717T071409+0800",
     "canonical_url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
