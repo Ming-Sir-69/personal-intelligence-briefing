@@ -703,5 +703,80 @@
     ],
     "status": "new_event",
     "subject": "OpenAI"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/python-v0.144.4",
+    "core_change": "OpenAI published the python-v0.144.4 release.",
+    "discovered_at": "2026-07-18T14:23:51.065026+08:00",
+    "event_at": "2026-07-18T06:58:10+08:00",
+    "event_id": "evt-9f9ceca519445d11",
+    "event_phase": "completed",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "c89e59ff22e7777571195d473d6a099cd8bcc418f6c8e3518ca0cbb5ec67901f",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "python-v0.144.4",
+    "published_at": "2026-07-18T06:58:10+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/python-v0.144.4"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23",
+    "core_change": "Released version rust-v0.145.0-alpha.23 of Codex",
+    "discovered_at": "2026-07-18T14:23:51.065026+08:00",
+    "event_at": "2026-07-18T06:43:14+08:00",
+    "event_id": "evt-eeb82880587db4ce",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "fca08bd970ef0b2361af72068a54777fc7bde7df5ba3cd0e2d8620b6ea2fe5cf",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-18T06:43:14+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
+    "core_change": "v2.1.214 of Claude Code released",
+    "discovered_at": "2026-07-18T14:23:51.065026+08:00",
+    "event_at": "2026-07-18T09:20:30+08:00",
+    "event_id": "evt-82e5839c8c292adf",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "56e906c036b441e6d427618648d855e64d85936229c00e145018e4ae5c5069a2",
+    "importance": "minor",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Claude Code",
+    "published_at": "2026-07-18T09:20:30+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
+    ],
+    "status": "new_event",
+    "subject": "Anthropic"
   }
 ]
