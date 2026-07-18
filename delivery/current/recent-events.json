@@ -1,5 +1,107 @@
 [
   {
+    "action": "published",
+    "batch_id": "morning-20260718T071134+0800",
+    "canonical_url": "https://openai.com/index/a-scorecard-for-the-ai-age",
+    "core_change": "OpenAI published a policy/analysis article titled 'A scorecard for the AI age'.",
+    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
+    "event_at": null,
+    "event_id": "evt-8357af44bd11afeb",
+    "event_phase": "policy_position",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "company_policy_position",
+    "fingerprint": "a6608c0653b314ab12bdab650347651a461aaf8ac5a6d8a9b2b150ac2e9d3646",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "AI Age Scorecard",
+    "published_at": "2026-07-17T18:00:00+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://openai.com/index/a-scorecard-for-the-ai-age"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-18T07:11:34.115597+08:00"
+  },
+  {
+    "action": "release",
+    "batch_id": "morning-20260718T071134+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23",
+    "core_change": "Published rust-v0.145.0-alpha.23 pre-release",
+    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
+    "event_at": null,
+    "event_id": "evt-ac2deccb6cd35aa4",
+    "event_phase": "announced",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "62cb222842408fc496a701135afd929da25478c114b43d8c71d19ee5eb22e6c8",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex (Rust)",
+    "published_at": "2026-07-18T06:43:14+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-18T07:11:34.115597+08:00"
+  },
+  {
+    "action": "released",
+    "batch_id": "morning-20260718T071134+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.22",
+    "core_change": "Version 0.145.0-alpha.22 (rust-v0.145.0-alpha.22) of the codex project",
+    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
+    "event_at": null,
+    "event_id": "evt-bb8b0757685f2ad1",
+    "event_phase": "minor",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "4733b120ed28c5d2f80797aad5da70c2f12dbc283ef7f088399d28172e24399c",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "codex",
+    "published_at": "2026-07-18T01:32:15+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.22"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-18T07:11:34.115597+08:00"
+  },
+  {
+    "action": "release",
+    "batch_id": "morning-20260718T071134+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.21",
+    "core_change": "rust-v0.145.0-alpha.21",
+    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
+    "event_at": "2026-07-17T22:42:05+08:00",
+    "event_id": "evt-40222817c4ea124f",
+    "event_phase": "alpha",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "e951492ca7e5da26b51c2e374b59053b4190220c628c82392036ecacce3c71fd",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex (Rust)",
+    "published_at": "2026-07-17T22:42:05+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.21"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-18T07:11:34.115597+08:00"
+  },
+  {
     "action": "released",
     "batch_id": "noon-20260717T143126+0800",
     "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.212",

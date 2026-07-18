@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "noon-20260717T143126+0800",
+  "batch_id": "noon-20260718T142351+0800",
   "kind": "noon",
-  "started_at": "2026-07-17T14:31:26.038665+08:00",
-  "completed_at": "2026-07-17T14:31:26.038665+08:00",
+  "started_at": "2026-07-18T14:23:51.065026+08:00",
+  "completed_at": "2026-07-18T14:23:51.065026+08:00",
   "data_range": {
-    "start": "2026-07-17T09:13:51.403693+08:00",
-    "end": "2026-07-17T13:10:00+08:00",
-    "lookback_start": "2026-07-17T03:13:51.403693+08:00"
+    "start": "2026-07-18T07:11:34.115597+08:00",
+    "end": "2026-07-18T13:10:00+08:00",
+    "lookback_start": "2026-07-18T01:11:34.115597+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -28,23 +28,23 @@
 ```json
 [
   {
-    "event_id": "evt-cdb461c5041cb116",
+    "event_id": "evt-82e5839c8c292adf",
     "status": "new_event",
     "subject": "Anthropic",
     "object_name": "Claude Code",
-    "action": "released",
-    "core_change": "Claude Code version 2.1.212 released",
-    "event_at": "2026-07-17T08:26:27+08:00",
-    "published_at": "2026-07-17T08:26:27+08:00",
-    "discovered_at": "2026-07-17T14:31:26.038665+08:00",
-    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.212",
-    "fingerprint": "b3df0a14062e12a280068cdfd644d587e6b09f8528fd7d631b7cf8ad4aa2f4ae",
+    "action": "release",
+    "core_change": "v2.1.214 of Claude Code released",
+    "event_at": "2026-07-18T09:20:30+08:00",
+    "published_at": "2026-07-18T09:20:30+08:00",
+    "discovered_at": "2026-07-18T14:23:51.065026+08:00",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
+    "fingerprint": "56e906c036b441e6d427618648d855e64d85936229c00e145018e4ae5c5069a2",
     "source_urls": [
-      "https://github.com/anthropics/claude-code/releases/tag/v2.1.212"
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
     ],
     "source_type": "official",
-    "importance": "low",
-    "event_phase": "confirmed",
+    "importance": "minor",
+    "event_phase": "announced",
     "fact_type": "software_release",
     "event_time_precision": "datetime",
     "event_time_source": "rss",
@@ -60,23 +60,23 @@
 ```json
 [
   {
-    "event_id": "evt-cdb461c5041cb116",
+    "event_id": "evt-82e5839c8c292adf",
     "status": "new_event",
     "subject": "Anthropic",
     "object_name": "Claude Code",
-    "action": "released",
-    "core_change": "Claude Code version 2.1.212 released",
-    "event_at": "2026-07-17T08:26:27+08:00",
-    "published_at": "2026-07-17T08:26:27+08:00",
-    "discovered_at": "2026-07-17T14:31:26.038665+08:00",
-    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.212",
-    "fingerprint": "b3df0a14062e12a280068cdfd644d587e6b09f8528fd7d631b7cf8ad4aa2f4ae",
+    "action": "release",
+    "core_change": "v2.1.214 of Claude Code released",
+    "event_at": "2026-07-18T09:20:30+08:00",
+    "published_at": "2026-07-18T09:20:30+08:00",
+    "discovered_at": "2026-07-18T14:23:51.065026+08:00",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
+    "fingerprint": "56e906c036b441e6d427618648d855e64d85936229c00e145018e4ae5c5069a2",
     "source_urls": [
-      "https://github.com/anthropics/claude-code/releases/tag/v2.1.212"
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
     ],
     "source_type": "official",
-    "importance": "low",
-    "event_phase": "confirmed",
+    "importance": "minor",
+    "event_phase": "announced",
     "fact_type": "software_release",
     "event_time_precision": "datetime",
     "event_time_source": "rss",
@@ -128,9 +128,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-17T09:13:51.403693+08:00",
-    "end": "2026-07-17T13:10:00+08:00",
-    "lookback_start": "2026-07-17T03:13:51.403693+08:00"
+    "start": "2026-07-18T07:11:34.115597+08:00",
+    "end": "2026-07-18T13:10:00+08:00",
+    "lookback_start": "2026-07-18T01:11:34.115597+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -159,16 +159,16 @@
   ],
   "candidate_reviews": [
     {
-      "event_id": "evt-cdb461c5041cb116",
+      "event_id": "evt-82e5839c8c292adf",
       "review_level": "required",
       "evidence_urls": [
-        "https://github.com/anthropics/claude-code/releases/tag/v2.1.212"
+        "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
       ],
       "normalization_flags": [
         "feed_time_metadata"
       ],
       "search_query_seeds": [
-        "site:github.com \"Anthropic\" \"Claude Code\" released"
+        "site:github.com \"Anthropic\" \"Claude Code\" release"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",

@@ -6,42 +6,42 @@
     "uncertain_events": 0
   },
   "data_range": {
-    "end": "2026-07-17T13:10:00+08:00",
-    "lookback_start": "2026-07-17T03:13:51.403693+08:00",
-    "start": "2026-07-17T09:13:51.403693+08:00"
+    "end": "2026-07-18T13:10:00+08:00",
+    "lookback_start": "2026-07-18T01:11:34.115597+08:00",
+    "start": "2026-07-18T07:11:34.115597+08:00"
   },
   "duplicate_audit": [
     {
-      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.20",
-      "event_at": null,
-      "event_id": "evt-d9da0ae7ad32475b",
-      "fingerprint": "1276247a53edd998023121b7fd1dbb672b4508c2ecd1ec39099b9a1a9210c9d2",
-      "object_name": "OpenAI Codex",
+      "canonical_url": "https://github.com/openai/codex/releases/tag/python-v0.144.4",
+      "event_at": "2026-07-18T06:58:10+08:00",
+      "event_id": "evt-9f9ceca519445d11",
+      "fingerprint": "c89e59ff22e7777571195d473d6a099cd8bcc418f6c8e3518ca0cbb5ec67901f",
+      "object_name": "python-v0.144.4",
       "subject": "OpenAI"
     },
     {
-      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.19",
-      "event_at": null,
-      "event_id": "evt-4c2211fc5a22b90a",
-      "fingerprint": "59551e3002c7b7afaba86a571ab65f5a780acf6385205c45f73e11c7bf27b9d2",
+      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23",
+      "event_at": "2026-07-18T06:43:14+08:00",
+      "event_id": "evt-eeb82880587db4ce",
+      "fingerprint": "fca08bd970ef0b2361af72068a54777fc7bde7df5ba3cd0e2d8620b6ea2fe5cf",
       "object_name": "Codex",
       "subject": "OpenAI"
     },
     {
-      "canonical_url": "https://github.com/openai/codex/releases/tag/python-v0.144.4",
+      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.22",
       "event_at": null,
-      "event_id": "evt-d8f6e527f3f457d4",
-      "fingerprint": "812e4d9459af8276c81740e3ec2ad739e93e479072e11fb09cd3adeef5e645f1",
-      "object_name": "Codex Python SDK (python-v0.144.4)",
+      "event_id": "evt-7b9c23d8bbbcccd5",
+      "fingerprint": "c51c217c0b7a4c924ba73ae237985f144edeefab4570031b3a98ddab3166a919",
+      "object_name": "Codex",
       "subject": "OpenAI"
     }
   ],
   "gpt_review_plan": {
     "candidate_reviews": [
       {
-        "event_id": "evt-cdb461c5041cb116",
+        "event_id": "evt-82e5839c8c292adf",
         "evidence_urls": [
-          "https://github.com/anthropics/claude-code/releases/tag/v2.1.212"
+          "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
         ],
         "normalization_flags": [
           "feed_time_metadata"
@@ -55,7 +55,7 @@
         ],
         "review_level": "required",
         "search_query_seeds": [
-          "site:github.com \"Anthropic\" \"Claude Code\" released"
+          "site:github.com \"Anthropic\" \"Claude Code\" release"
         ]
       }
     ],
@@ -123,9 +123,9 @@
       "time attribution is explicit and its precision is disclosed"
     ],
     "time_scope": {
-      "end": "2026-07-17T13:10:00+08:00",
-      "lookback_start": "2026-07-17T03:13:51.403693+08:00",
-      "start": "2026-07-17T09:13:51.403693+08:00"
+      "end": "2026-07-18T13:10:00+08:00",
+      "lookback_start": "2026-07-18T01:11:34.115597+08:00",
+      "start": "2026-07-18T07:11:34.115597+08:00"
     },
     "trust_boundary": {
       "candidate_content": "untrusted_public_metadata",
@@ -136,80 +136,92 @@
   "normalization_audit": {
     "events": [
       {
-        "event_id": "evt-cdb461c5041cb116",
+        "event_id": "evt-9f9ceca519445d11",
+        "flags": [
+          "feed_time_metadata"
+        ]
+      },
+      {
+        "event_id": "evt-eeb82880587db4ce",
+        "flags": [
+          "feed_time_metadata"
+        ]
+      },
+      {
+        "event_id": "evt-82e5839c8c292adf",
         "flags": [
           "feed_time_metadata"
         ]
       }
     ],
-    "events_with_flags": 1,
+    "events_with_flags": 3,
     "flag_counts": {
-      "feed_time_metadata": 1
+      "feed_time_metadata": 3
     }
   },
   "sections": {
     "agentic_coding_and_toolchain": [
       {
-        "action": "released",
-        "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.212",
-        "core_change": "Claude Code version 2.1.212 released",
-        "discovered_at": "2026-07-17T14:31:26.038665+08:00",
-        "event_at": "2026-07-17T08:26:27+08:00",
-        "event_id": "evt-cdb461c5041cb116",
-        "event_phase": "confirmed",
+        "action": "release",
+        "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
+        "core_change": "v2.1.214 of Claude Code released",
+        "discovered_at": "2026-07-18T14:23:51.065026+08:00",
+        "event_at": "2026-07-18T09:20:30+08:00",
+        "event_id": "evt-82e5839c8c292adf",
+        "event_phase": "announced",
         "event_time_precision": "datetime",
         "event_time_source": "rss",
         "fact_type": "software_release",
-        "fingerprint": "b3df0a14062e12a280068cdfd644d587e6b09f8528fd7d631b7cf8ad4aa2f4ae",
-        "importance": "low",
+        "fingerprint": "56e906c036b441e6d427618648d855e64d85936229c00e145018e4ae5c5069a2",
+        "importance": "minor",
         "normalization_flags": [
           "feed_time_metadata"
         ],
         "object_name": "Claude Code",
-        "published_at": "2026-07-17T08:26:27+08:00",
+        "published_at": "2026-07-18T09:20:30+08:00",
         "source_type": "official",
         "source_urls": [
-          "https://github.com/anthropics/claude-code/releases/tag/v2.1.212"
+          "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
         ],
         "status": "new_event",
         "subject": "Anthropic"
       }
     ],
     "batch_state_and_range": {
-      "batch_id": "noon-20260717T143126+0800",
-      "completed_at": "2026-07-17T14:31:26.038665+08:00",
+      "batch_id": "noon-20260718T142351+0800",
+      "completed_at": "2026-07-18T14:23:51.065026+08:00",
       "data_range": {
-        "end": "2026-07-17T13:10:00+08:00",
-        "lookback_start": "2026-07-17T03:13:51.403693+08:00",
-        "start": "2026-07-17T09:13:51.403693+08:00"
+        "end": "2026-07-18T13:10:00+08:00",
+        "lookback_start": "2026-07-18T01:11:34.115597+08:00",
+        "start": "2026-07-18T07:11:34.115597+08:00"
       },
       "kind": "noon",
-      "started_at": "2026-07-17T14:31:26.038665+08:00",
+      "started_at": "2026-07-18T14:23:51.065026+08:00",
       "trigger_type": "schedule"
     },
     "must_know": [],
     "other_valid": [
       {
-        "action": "released",
-        "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.212",
-        "core_change": "Claude Code version 2.1.212 released",
-        "discovered_at": "2026-07-17T14:31:26.038665+08:00",
-        "event_at": "2026-07-17T08:26:27+08:00",
-        "event_id": "evt-cdb461c5041cb116",
-        "event_phase": "confirmed",
+        "action": "release",
+        "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
+        "core_change": "v2.1.214 of Claude Code released",
+        "discovered_at": "2026-07-18T14:23:51.065026+08:00",
+        "event_at": "2026-07-18T09:20:30+08:00",
+        "event_id": "evt-82e5839c8c292adf",
+        "event_phase": "announced",
         "event_time_precision": "datetime",
         "event_time_source": "rss",
         "fact_type": "software_release",
-        "fingerprint": "b3df0a14062e12a280068cdfd644d587e6b09f8528fd7d631b7cf8ad4aa2f4ae",
-        "importance": "low",
+        "fingerprint": "56e906c036b441e6d427618648d855e64d85936229c00e145018e4ae5c5069a2",
+        "importance": "minor",
         "normalization_flags": [
           "feed_time_metadata"
         ],
         "object_name": "Claude Code",
-        "published_at": "2026-07-17T08:26:27+08:00",
+        "published_at": "2026-07-18T09:20:30+08:00",
         "source_type": "official",
         "source_urls": [
-          "https://github.com/anthropics/claude-code/releases/tag/v2.1.212"
+          "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
         ],
         "status": "new_event",
         "subject": "Anthropic"
