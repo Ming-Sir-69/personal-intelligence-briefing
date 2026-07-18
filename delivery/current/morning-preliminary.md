@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "morning-20260718T071134+0800",
+  "batch_id": "morning-20260719T071408+0800",
   "kind": "morning",
-  "started_at": "2026-07-18T07:11:34.115597+08:00",
-  "completed_at": "2026-07-18T07:11:34.115597+08:00",
+  "started_at": "2026-07-19T07:14:08.158428+08:00",
+  "completed_at": "2026-07-19T07:14:08.158428+08:00",
   "data_range": {
-    "start": "2026-07-17T14:31:26.038665+08:00",
-    "end": "2026-07-18T07:10:00+08:00",
-    "lookback_start": "2026-07-17T08:31:26.038665+08:00"
+    "start": "2026-07-18T14:23:51.065026+08:00",
+    "end": "2026-07-19T07:10:00+08:00",
+    "lookback_start": "2026-07-18T08:23:51.065026+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -28,23 +28,23 @@
 ```json
 [
   {
-    "event_id": "evt-40222817c4ea124f",
+    "event_id": "evt-c59b595b44bd6b4c",
     "status": "new_event",
     "subject": "OpenAI",
-    "object_name": "Codex (Rust)",
-    "action": "release",
-    "core_change": "rust-v0.145.0-alpha.21",
-    "event_at": "2026-07-17T22:42:05+08:00",
-    "published_at": "2026-07-17T22:42:05+08:00",
-    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.21",
-    "fingerprint": "e951492ca7e5da26b51c2e374b59053b4190220c628c82392036ecacce3c71fd",
+    "object_name": "OpenAI Codex CLI (Rust) version 0.144.6",
+    "action": "publish_release",
+    "core_change": "Released version 0.144.6 of the OpenAI Codex CLI Rust implementation.",
+    "event_at": "2026-07-18T21:53:50+08:00",
+    "published_at": "2026-07-18T21:53:50+08:00",
+    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.6",
+    "fingerprint": "e1ed0b87f57f0e5c068adbb2eeb4e6a5af7fb130d8cd83429d53dba3c453237e",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.21"
+      "https://github.com/openai/codex/releases/tag/rust-v0.144.6"
     ],
     "source_type": "official",
     "importance": "low",
-    "event_phase": "alpha",
+    "event_phase": "ongoing",
     "fact_type": "software_release",
     "event_time_precision": "datetime",
     "event_time_source": "rss",
@@ -60,23 +60,23 @@
 ```json
 [
   {
-    "event_id": "evt-40222817c4ea124f",
+    "event_id": "evt-c59b595b44bd6b4c",
     "status": "new_event",
     "subject": "OpenAI",
-    "object_name": "Codex (Rust)",
-    "action": "release",
-    "core_change": "rust-v0.145.0-alpha.21",
-    "event_at": "2026-07-17T22:42:05+08:00",
-    "published_at": "2026-07-17T22:42:05+08:00",
-    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.21",
-    "fingerprint": "e951492ca7e5da26b51c2e374b59053b4190220c628c82392036ecacce3c71fd",
+    "object_name": "OpenAI Codex CLI (Rust) version 0.144.6",
+    "action": "publish_release",
+    "core_change": "Released version 0.144.6 of the OpenAI Codex CLI Rust implementation.",
+    "event_at": "2026-07-18T21:53:50+08:00",
+    "published_at": "2026-07-18T21:53:50+08:00",
+    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.6",
+    "fingerprint": "e1ed0b87f57f0e5c068adbb2eeb4e6a5af7fb130d8cd83429d53dba3c453237e",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.21"
+      "https://github.com/openai/codex/releases/tag/rust-v0.144.6"
     ],
     "source_type": "official",
     "importance": "low",
-    "event_phase": "alpha",
+    "event_phase": "ongoing",
     "fact_type": "software_release",
     "event_time_precision": "datetime",
     "event_time_source": "rss",
@@ -98,73 +98,29 @@
 ```json
 [
   {
-    "event_id": "evt-8357af44bd11afeb",
+    "event_id": "evt-f2797c1fdd6aca3d",
     "status": "uncertain",
     "subject": "OpenAI",
-    "object_name": "AI Age Scorecard",
-    "action": "published",
-    "core_change": "OpenAI published a policy/analysis article titled 'A scorecard for the AI age'.",
-    "event_at": null,
-    "published_at": "2026-07-17T18:00:00+08:00",
-    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
-    "canonical_url": "https://openai.com/index/a-scorecard-for-the-ai-age",
-    "fingerprint": "a6608c0653b314ab12bdab650347651a461aaf8ac5a6d8a9b2b150ac2e9d3646",
-    "source_urls": [
-      "https://openai.com/index/a-scorecard-for-the-ai-age"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "policy_position",
-    "fact_type": "company_policy_position",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": []
-  },
-  {
-    "event_id": "evt-ac2deccb6cd35aa4",
-    "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "Codex (Rust)",
+    "object_name": "Codex",
     "action": "release",
-    "core_change": "Published rust-v0.145.0-alpha.23 pre-release",
-    "event_at": null,
-    "published_at": "2026-07-18T06:43:14+08:00",
-    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23",
-    "fingerprint": "62cb222842408fc496a701135afd929da25478c114b43d8c71d19ee5eb22e6c8",
+    "core_change": "Codex rust-v0.145.0-alpha.24 released",
+    "event_at": "2026-07-19T06:29:36+08:00",
+    "published_at": "2026-07-19T06:29:36+08:00",
+    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24",
+    "fingerprint": "e5a66c5f3f9acd565d80eb72d877c2136453ff66cf0a8730c26a31b45f39d0d8",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23"
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24"
     ],
     "source_type": "official",
     "importance": "low",
     "event_phase": "announced",
     "fact_type": "software_release",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": []
-  },
-  {
-    "event_id": "evt-bb8b0757685f2ad1",
-    "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "codex",
-    "action": "released",
-    "core_change": "Version 0.145.0-alpha.22 (rust-v0.145.0-alpha.22) of the codex project",
-    "event_at": null,
-    "published_at": "2026-07-18T01:32:15+08:00",
-    "discovered_at": "2026-07-18T07:11:34.115597+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.22",
-    "fingerprint": "4733b120ed28c5d2f80797aad5da70c2f12dbc283ef7f088399d28172e24399c",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.22"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "minor",
-    "fact_type": "software_release",
-    "event_time_precision": "unknown",
-    "event_time_source": "unknown",
-    "normalization_flags": []
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
   }
 ]
 ```
@@ -173,9 +129,9 @@
 
 ```json
 {
-  "input_events": 5,
+  "input_events": 3,
   "duplicate_events": 1,
-  "uncertain_events": 3,
+  "uncertain_events": 1,
   "selected_events": 1
 }
 ```
@@ -198,9 +154,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-17T14:31:26.038665+08:00",
-    "end": "2026-07-18T07:10:00+08:00",
-    "lookback_start": "2026-07-17T08:31:26.038665+08:00"
+    "start": "2026-07-18T14:23:51.065026+08:00",
+    "end": "2026-07-19T07:10:00+08:00",
+    "lookback_start": "2026-07-18T08:23:51.065026+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -229,14 +185,16 @@
   ],
   "candidate_reviews": [
     {
-      "event_id": "evt-8357af44bd11afeb",
+      "event_id": "evt-f2797c1fdd6aca3d",
       "review_level": "required",
       "evidence_urls": [
-        "https://openai.com/index/a-scorecard-for-the-ai-age"
+        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24"
       ],
-      "normalization_flags": [],
+      "normalization_flags": [
+        "feed_time_metadata"
+      ],
       "search_query_seeds": [
-        "site:openai.com \"OpenAI\" \"AI Age Scorecard\" published"
+        "site:github.com \"OpenAI\" \"Codex\" release"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
@@ -244,56 +202,20 @@
         "verify date precision and label feed metadata separately",
         "compare with recent successful handoffs before retaining or supplementing",
         "resolve uncertainty or exclude the event",
-        "distinguish company policy position from government action"
+        "inspect normalization flags before accepting the normalized claim"
       ]
     },
     {
-      "event_id": "evt-ac2deccb6cd35aa4",
+      "event_id": "evt-c59b595b44bd6b4c",
       "review_level": "required",
       "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.23"
-      ],
-      "normalization_flags": [],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex (Rust)\" release"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event"
-      ]
-    },
-    {
-      "event_id": "evt-bb8b0757685f2ad1",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.22"
-      ],
-      "normalization_flags": [],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"codex\" released"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event"
-      ]
-    },
-    {
-      "event_id": "evt-40222817c4ea124f",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.21"
+        "https://github.com/openai/codex/releases/tag/rust-v0.144.6"
       ],
       "normalization_flags": [
         "feed_time_metadata"
       ],
       "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex (Rust)\" release"
+        "site:github.com \"OpenAI\" \"OpenAI Codex CLI (Rust) version 0.144.6\" publish_release"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
