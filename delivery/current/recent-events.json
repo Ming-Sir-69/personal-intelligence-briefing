@@ -1,6 +1,60 @@
 [
   {
     "action": "release",
+    "batch_id": "morning-20260719T071408+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24",
+    "core_change": "Codex rust-v0.145.0-alpha.24 released",
+    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
+    "event_at": "2026-07-19T06:29:36+08:00",
+    "event_id": "evt-f2797c1fdd6aca3d",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "e5a66c5f3f9acd565d80eb72d877c2136453ff66cf0a8730c26a31b45f39d0d8",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-19T06:29:36+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-19T07:14:08.158428+08:00"
+  },
+  {
+    "action": "publish_release",
+    "batch_id": "morning-20260719T071408+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.6",
+    "core_change": "Released version 0.144.6 of the OpenAI Codex CLI Rust implementation.",
+    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
+    "event_at": "2026-07-18T21:53:50+08:00",
+    "event_id": "evt-c59b595b44bd6b4c",
+    "event_phase": "ongoing",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "e1ed0b87f57f0e5c068adbb2eeb4e6a5af7fb130d8cd83429d53dba3c453237e",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "OpenAI Codex CLI (Rust) version 0.144.6",
+    "published_at": "2026-07-18T21:53:50+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.144.6"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-19T07:14:08.158428+08:00"
+  },
+  {
+    "action": "release",
     "batch_id": "noon-20260718T142351+0800",
     "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
     "core_change": "v2.1.214 of Claude Code released",

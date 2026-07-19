@@ -854,5 +854,30 @@
     ],
     "status": "duplicate",
     "subject": "Anthropic"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24",
+    "core_change": "Released rust-v0.145.0-alpha.24 of OpenAI Codex",
+    "discovered_at": "2026-07-20T07:14:51.318367+08:00",
+    "event_at": "2026-07-19T06:29:36+08:00",
+    "event_id": "evt-78ee50aebd1ba8a2",
+    "event_phase": "occurrED",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "e01125f0a18b3a02f27a48f16e502c457171a686f035e7afe893eecb5f34716f",
+    "importance": "minor",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "OpenAI Codex",
+    "published_at": "2026-07-19T06:29:36+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
   }
 ]
