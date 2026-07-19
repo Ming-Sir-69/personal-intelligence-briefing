@@ -1,0 +1,20 @@
+{
+  "batch_id": "noon-20260719T144801+0800",
+  "completed_at": "2026-07-19T14:48:01.043149+08:00",
+  "errors": [
+    "minimax normalization failed for anthropic-claude-code-releases: ValueError"
+  ],
+  "kind": "noon",
+  "model_usage": [
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 89,
+      "provider": "minimax",
+      "request_id": "06aba622b6e129fcfab3d39ddc6e81b4"
+    }
+  ],
+  "started_at": "2026-07-19T14:48:01.043149+08:00",
+  "status": "partial",
+  "trigger_type": "schedule"
+}
