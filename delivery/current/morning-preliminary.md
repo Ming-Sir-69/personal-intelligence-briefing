@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "morning-20260719T071408+0800",
+  "batch_id": "morning-20260720T071451+0800",
   "kind": "morning",
-  "started_at": "2026-07-19T07:14:08.158428+08:00",
-  "completed_at": "2026-07-19T07:14:08.158428+08:00",
+  "started_at": "2026-07-20T07:14:51.318367+08:00",
+  "completed_at": "2026-07-20T07:14:51.318367+08:00",
   "data_range": {
-    "start": "2026-07-18T14:23:51.065026+08:00",
-    "end": "2026-07-19T07:10:00+08:00",
-    "lookback_start": "2026-07-18T08:23:51.065026+08:00"
+    "start": "2026-07-19T07:14:08.158428+08:00",
+    "end": "2026-07-20T07:10:00+08:00",
+    "lookback_start": "2026-07-19T01:14:08.158428+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -26,65 +26,13 @@
 ## 其他有效新增
 
 ```json
-[
-  {
-    "event_id": "evt-c59b595b44bd6b4c",
-    "status": "new_event",
-    "subject": "OpenAI",
-    "object_name": "OpenAI Codex CLI (Rust) version 0.144.6",
-    "action": "publish_release",
-    "core_change": "Released version 0.144.6 of the OpenAI Codex CLI Rust implementation.",
-    "event_at": "2026-07-18T21:53:50+08:00",
-    "published_at": "2026-07-18T21:53:50+08:00",
-    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.6",
-    "fingerprint": "e1ed0b87f57f0e5c068adbb2eeb4e6a5af7fb130d8cd83429d53dba3c453237e",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.144.6"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "ongoing",
-    "fact_type": "software_release",
-    "event_time_precision": "datetime",
-    "event_time_source": "rss",
-    "normalization_flags": [
-      "feed_time_metadata"
-    ]
-  }
-]
+[]
 ```
 
 ## Agentic Coding 与工具链
 
 ```json
-[
-  {
-    "event_id": "evt-c59b595b44bd6b4c",
-    "status": "new_event",
-    "subject": "OpenAI",
-    "object_name": "OpenAI Codex CLI (Rust) version 0.144.6",
-    "action": "publish_release",
-    "core_change": "Released version 0.144.6 of the OpenAI Codex CLI Rust implementation.",
-    "event_at": "2026-07-18T21:53:50+08:00",
-    "published_at": "2026-07-18T21:53:50+08:00",
-    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.144.6",
-    "fingerprint": "e1ed0b87f57f0e5c068adbb2eeb4e6a5af7fb130d8cd83429d53dba3c453237e",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.144.6"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "ongoing",
-    "fact_type": "software_release",
-    "event_time_precision": "datetime",
-    "event_time_source": "rss",
-    "normalization_flags": [
-      "feed_time_metadata"
-    ]
-  }
-]
+[]
 ```
 
 ## 产品、产业与政策影响
@@ -98,28 +46,28 @@
 ```json
 [
   {
-    "event_id": "evt-f2797c1fdd6aca3d",
+    "event_id": "evt-0fb05c612f9ad2d9",
     "status": "uncertain",
-    "subject": "OpenAI",
-    "object_name": "Codex",
-    "action": "release",
-    "core_change": "Codex rust-v0.145.0-alpha.24 released",
-    "event_at": "2026-07-19T06:29:36+08:00",
-    "published_at": "2026-07-19T06:29:36+08:00",
-    "discovered_at": "2026-07-19T07:14:08.158428+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24",
-    "fingerprint": "e5a66c5f3f9acd565d80eb72d877c2136453ff66cf0a8730c26a31b45f39d0d8",
+    "subject": "Anthropic",
+    "object_name": "Claude Code",
+    "action": "released version v2.1.215",
+    "core_change": "Claude Code software release at version v2.1.215",
+    "event_at": null,
+    "published_at": "2026-07-19T10:56:01+08:00",
+    "discovered_at": "2026-07-20T07:14:51.318367+08:00",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.215",
+    "fingerprint": "7138ae2475cc88f0aabc98958c77c983e89893bcbff0105554a269754c129ff4",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24"
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.215"
     ],
     "source_type": "official",
     "importance": "low",
-    "event_phase": "announced",
+    "event_phase": "update",
     "fact_type": "software_release",
-    "event_time_precision": "datetime",
-    "event_time_source": "rss",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
     "normalization_flags": [
-      "feed_time_metadata"
+      "model_retry"
     ]
   }
 ]
@@ -129,10 +77,10 @@
 
 ```json
 {
-  "input_events": 3,
+  "input_events": 2,
   "duplicate_events": 1,
   "uncertain_events": 1,
-  "selected_events": 1
+  "selected_events": 0
 }
 ```
 
@@ -154,9 +102,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-18T14:23:51.065026+08:00",
-    "end": "2026-07-19T07:10:00+08:00",
-    "lookback_start": "2026-07-18T08:23:51.065026+08:00"
+    "start": "2026-07-19T07:14:08.158428+08:00",
+    "end": "2026-07-20T07:10:00+08:00",
+    "lookback_start": "2026-07-19T01:14:08.158428+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -185,16 +133,16 @@
   ],
   "candidate_reviews": [
     {
-      "event_id": "evt-f2797c1fdd6aca3d",
+      "event_id": "evt-0fb05c612f9ad2d9",
       "review_level": "required",
       "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24"
+        "https://github.com/anthropics/claude-code/releases/tag/v2.1.215"
       ],
       "normalization_flags": [
-        "feed_time_metadata"
+        "model_retry"
       ],
       "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex\" release"
+        "site:github.com \"Anthropic\" \"Claude Code\" released version v2.1.215"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
@@ -202,26 +150,6 @@
         "verify date precision and label feed metadata separately",
         "compare with recent successful handoffs before retaining or supplementing",
         "resolve uncertainty or exclude the event",
-        "inspect normalization flags before accepting the normalized claim"
-      ]
-    },
-    {
-      "event_id": "evt-c59b595b44bd6b4c",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.144.6"
-      ],
-      "normalization_flags": [
-        "feed_time_metadata"
-      ],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"OpenAI Codex CLI (Rust) version 0.144.6\" publish_release"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
         "inspect normalization flags before accepting the normalized claim"
       ]
     }
