@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "noon-20260718T142351+0800",
+  "batch_id": "noon-20260720T153552+0800",
   "kind": "noon",
-  "started_at": "2026-07-18T14:23:51.065026+08:00",
-  "completed_at": "2026-07-18T14:23:51.065026+08:00",
+  "started_at": "2026-07-20T15:35:52.382614+08:00",
+  "completed_at": "2026-07-20T15:35:52.382614+08:00",
   "data_range": {
-    "start": "2026-07-18T07:11:34.115597+08:00",
-    "end": "2026-07-18T13:10:00+08:00",
-    "lookback_start": "2026-07-18T01:11:34.115597+08:00"
+    "start": "2026-07-20T07:14:51.318367+08:00",
+    "end": "2026-07-20T13:10:00+08:00",
+    "lookback_start": "2026-07-20T01:14:51.318367+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -26,65 +26,13 @@
 ## 其他有效新增
 
 ```json
-[
-  {
-    "event_id": "evt-82e5839c8c292adf",
-    "status": "new_event",
-    "subject": "Anthropic",
-    "object_name": "Claude Code",
-    "action": "release",
-    "core_change": "v2.1.214 of Claude Code released",
-    "event_at": "2026-07-18T09:20:30+08:00",
-    "published_at": "2026-07-18T09:20:30+08:00",
-    "discovered_at": "2026-07-18T14:23:51.065026+08:00",
-    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
-    "fingerprint": "56e906c036b441e6d427618648d855e64d85936229c00e145018e4ae5c5069a2",
-    "source_urls": [
-      "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
-    ],
-    "source_type": "official",
-    "importance": "minor",
-    "event_phase": "announced",
-    "fact_type": "software_release",
-    "event_time_precision": "datetime",
-    "event_time_source": "rss",
-    "normalization_flags": [
-      "feed_time_metadata"
-    ]
-  }
-]
+[]
 ```
 
 ## Agentic Coding 与工具链
 
 ```json
-[
-  {
-    "event_id": "evt-82e5839c8c292adf",
-    "status": "new_event",
-    "subject": "Anthropic",
-    "object_name": "Claude Code",
-    "action": "release",
-    "core_change": "v2.1.214 of Claude Code released",
-    "event_at": "2026-07-18T09:20:30+08:00",
-    "published_at": "2026-07-18T09:20:30+08:00",
-    "discovered_at": "2026-07-18T14:23:51.065026+08:00",
-    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.214",
-    "fingerprint": "56e906c036b441e6d427618648d855e64d85936229c00e145018e4ae5c5069a2",
-    "source_urls": [
-      "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
-    ],
-    "source_type": "official",
-    "importance": "minor",
-    "event_phase": "announced",
-    "fact_type": "software_release",
-    "event_time_precision": "datetime",
-    "event_time_source": "rss",
-    "normalization_flags": [
-      "feed_time_metadata"
-    ]
-  }
-]
+[]
 ```
 
 ## 产品、产业与政策影响
@@ -103,10 +51,10 @@
 
 ```json
 {
-  "input_events": 4,
-  "duplicate_events": 3,
+  "input_events": 0,
+  "duplicate_events": 0,
   "uncertain_events": 0,
-  "selected_events": 1
+  "selected_events": 0
 }
 ```
 
@@ -128,9 +76,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-18T07:11:34.115597+08:00",
-    "end": "2026-07-18T13:10:00+08:00",
-    "lookback_start": "2026-07-18T01:11:34.115597+08:00"
+    "start": "2026-07-20T07:14:51.318367+08:00",
+    "end": "2026-07-20T13:10:00+08:00",
+    "lookback_start": "2026-07-20T01:14:51.318367+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -157,28 +105,7 @@
       "source_type": "official"
     }
   ],
-  "candidate_reviews": [
-    {
-      "event_id": "evt-82e5839c8c292adf",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/anthropics/claude-code/releases/tag/v2.1.214"
-      ],
-      "normalization_flags": [
-        "feed_time_metadata"
-      ],
-      "search_query_seeds": [
-        "site:github.com \"Anthropic\" \"Claude Code\" release"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "inspect normalization flags before accepting the normalized claim"
-      ]
-    }
-  ],
+  "candidate_reviews": [],
   "expansion_policy": {
     "allowed": [
       "primary release notes, documentation, security advisory, paper, or regulator text directly adjacent to a candidate",
