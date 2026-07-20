@@ -1,5 +1,32 @@
 [
   {
+    "action": "released version v2.1.215",
+    "batch_id": "morning-20260720T071451+0800",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.215",
+    "core_change": "Claude Code software release at version v2.1.215",
+    "discovered_at": "2026-07-20T07:14:51.318367+08:00",
+    "event_at": null,
+    "event_id": "evt-0fb05c612f9ad2d9",
+    "event_phase": "update",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "7138ae2475cc88f0aabc98958c77c983e89893bcbff0105554a269754c129ff4",
+    "importance": "low",
+    "normalization_flags": [
+      "model_retry"
+    ],
+    "object_name": "Claude Code",
+    "published_at": "2026-07-19T10:56:01+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.215"
+    ],
+    "status": "uncertain",
+    "subject": "Anthropic",
+    "submitted_to_gpt_at": "2026-07-20T07:14:51.318367+08:00"
+  },
+  {
     "action": "release",
     "batch_id": "morning-20260719T071408+0800",
     "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.24",
