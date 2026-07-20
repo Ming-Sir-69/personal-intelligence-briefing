@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "morning-20260720T071451+0800",
+  "batch_id": "morning-20260721T072701+0800",
   "kind": "morning",
-  "started_at": "2026-07-20T07:14:51.318367+08:00",
-  "completed_at": "2026-07-20T07:14:51.318367+08:00",
+  "started_at": "2026-07-21T07:27:01.068673+08:00",
+  "completed_at": "2026-07-21T07:27:01.068673+08:00",
   "data_range": {
-    "start": "2026-07-19T07:14:08.158428+08:00",
-    "end": "2026-07-20T07:10:00+08:00",
-    "lookback_start": "2026-07-19T01:14:08.158428+08:00"
+    "start": "2026-07-20T15:35:52.382614+08:00",
+    "end": "2026-07-21T07:10:00+08:00",
+    "lookback_start": "2026-07-20T09:35:52.382614+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -26,13 +26,65 @@
 ## 其他有效新增
 
 ```json
-[]
+[
+  {
+    "event_id": "evt-a90f05b4572c2618",
+    "status": "new_event",
+    "subject": "OpenAI",
+    "object_name": "OpenAI Codex",
+    "action": "released",
+    "core_change": "Version rust-v0.145.0-alpha.25 published",
+    "event_at": "2026-07-20T18:55:05+00:00",
+    "published_at": "2026-07-21T02:55:05+08:00",
+    "discovered_at": "2026-07-21T07:27:01.068673+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.25",
+    "fingerprint": "2f3465c1200b2a9fe1fa64683a47fa4c3c1f0b7a75c77013149dd866265e1bdd",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.25"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "release",
+    "fact_type": "software_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  }
+]
 ```
 
 ## Agentic Coding 与工具链
 
 ```json
-[]
+[
+  {
+    "event_id": "evt-a90f05b4572c2618",
+    "status": "new_event",
+    "subject": "OpenAI",
+    "object_name": "OpenAI Codex",
+    "action": "released",
+    "core_change": "Version rust-v0.145.0-alpha.25 published",
+    "event_at": "2026-07-20T18:55:05+00:00",
+    "published_at": "2026-07-21T02:55:05+08:00",
+    "discovered_at": "2026-07-21T07:27:01.068673+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.25",
+    "fingerprint": "2f3465c1200b2a9fe1fa64683a47fa4c3c1f0b7a75c77013149dd866265e1bdd",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.25"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "release",
+    "fact_type": "software_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  }
+]
 ```
 
 ## 产品、产业与政策影响
@@ -46,23 +98,46 @@
 ```json
 [
   {
-    "event_id": "evt-0fb05c612f9ad2d9",
+    "event_id": "evt-0fb4f2c49f42bc32",
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "object_name": "Safety and alignment in an era of long-horizon models",
+    "action": "publish",
+    "core_change": "OpenAI published an analysis on safety and alignment considerations for long-horizon models.",
+    "event_at": null,
+    "published_at": "2026-07-20T18:00:00+08:00",
+    "discovered_at": "2026-07-21T07:27:01.068673+08:00",
+    "canonical_url": "https://openai.com/index/safety-alignment-long-horizon-models",
+    "fingerprint": "3432afbc732f78d0b98da324e1766e0c2fb0bb86e0d4db350dde79c74f065276",
+    "source_urls": [
+      "https://openai.com/index/safety-alignment-long-horizon-models"
+    ],
+    "source_type": "official",
+    "importance": "medium",
+    "event_phase": "policy_statement",
+    "fact_type": "company_policy_position",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "normalization_flags": []
+  },
+  {
+    "event_id": "evt-b6dcd8875ff7b3b3",
     "status": "uncertain",
     "subject": "Anthropic",
     "object_name": "Claude Code",
-    "action": "released version v2.1.215",
-    "core_change": "Claude Code software release at version v2.1.215",
+    "action": "release",
+    "core_change": "Version 2.1.216 of Claude Code released.",
     "event_at": null,
-    "published_at": "2026-07-19T10:56:01+08:00",
-    "discovered_at": "2026-07-20T07:14:51.318367+08:00",
-    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.215",
-    "fingerprint": "7138ae2475cc88f0aabc98958c77c983e89893bcbff0105554a269754c129ff4",
+    "published_at": "2026-07-21T06:14:00+08:00",
+    "discovered_at": "2026-07-21T07:27:01.068673+08:00",
+    "canonical_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.216",
+    "fingerprint": "39e3481d56a0120c1350488e44aebd6fc9f2e6a930d73b22206eaea955269f0d",
     "source_urls": [
-      "https://github.com/anthropics/claude-code/releases/tag/v2.1.215"
+      "https://github.com/anthropics/claude-code/releases/tag/v2.1.216"
     ],
     "source_type": "official",
-    "importance": "low",
-    "event_phase": "update",
+    "importance": "medium",
+    "event_phase": "completed",
     "fact_type": "software_release",
     "event_time_precision": "unknown",
     "event_time_source": "unknown",
@@ -77,10 +152,10 @@
 
 ```json
 {
-  "input_events": 2,
-  "duplicate_events": 1,
-  "uncertain_events": 1,
-  "selected_events": 0
+  "input_events": 3,
+  "duplicate_events": 0,
+  "uncertain_events": 2,
+  "selected_events": 1
 }
 ```
 
@@ -102,9 +177,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-19T07:14:08.158428+08:00",
-    "end": "2026-07-20T07:10:00+08:00",
-    "lookback_start": "2026-07-19T01:14:08.158428+08:00"
+    "start": "2026-07-20T15:35:52.382614+08:00",
+    "end": "2026-07-21T07:10:00+08:00",
+    "lookback_start": "2026-07-20T09:35:52.382614+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -133,16 +208,55 @@
   ],
   "candidate_reviews": [
     {
-      "event_id": "evt-0fb05c612f9ad2d9",
+      "event_id": "evt-0fb4f2c49f42bc32",
       "review_level": "required",
       "evidence_urls": [
-        "https://github.com/anthropics/claude-code/releases/tag/v2.1.215"
+        "https://openai.com/index/safety-alignment-long-horizon-models"
+      ],
+      "normalization_flags": [],
+      "search_query_seeds": [
+        "site:openai.com \"OpenAI\" \"Safety and alignment in an era of long-horizon models\" publish"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "resolve uncertainty or exclude the event",
+        "distinguish company policy position from government action"
+      ]
+    },
+    {
+      "event_id": "evt-a90f05b4572c2618",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.25"
+      ],
+      "normalization_flags": [
+        "feed_time_metadata"
+      ],
+      "search_query_seeds": [
+        "site:github.com \"OpenAI\" \"OpenAI Codex\" released"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "inspect normalization flags before accepting the normalized claim"
+      ]
+    },
+    {
+      "event_id": "evt-b6dcd8875ff7b3b3",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/anthropics/claude-code/releases/tag/v2.1.216"
       ],
       "normalization_flags": [
         "model_retry"
       ],
       "search_query_seeds": [
-        "site:github.com \"Anthropic\" \"Claude Code\" released version v2.1.215"
+        "site:github.com \"Anthropic\" \"Claude Code\" release"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
