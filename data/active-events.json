@@ -879,5 +879,30 @@
     ],
     "status": "duplicate",
     "subject": "OpenAI"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.25",
+    "core_change": "Version rust-v0.145.0-alpha.25 published",
+    "discovered_at": "2026-07-21T07:27:01.068673+08:00",
+    "event_at": "2026-07-20T18:55:05+00:00",
+    "event_id": "evt-a90f05b4572c2618",
+    "event_phase": "release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "2f3465c1200b2a9fe1fa64683a47fa4c3c1f0b7a75c77013149dd866265e1bdd",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "OpenAI Codex",
+    "published_at": "2026-07-21T02:55:05+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.25"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI"
   }
 ]
