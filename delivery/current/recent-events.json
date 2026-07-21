@@ -1,5 +1,84 @@
 [
   {
+    "action": "release",
+    "batch_id": "noon-20260721T144423+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.28",
+    "core_change": "Version 0.145.0-alpha.28",
+    "discovered_at": "2026-07-21T14:44:23.370903+08:00",
+    "event_at": "2026-07-21T11:04:40+08:00",
+    "event_id": "evt-5c70298fc856f3c9",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "d29f3c2c4d8d4a0258324ccf8a8a0b25fd67030c64fbe5a5b814bb4093a2ba41",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-21T11:04:40+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.28"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-21T14:44:23.370903+08:00"
+  },
+  {
+    "action": "release",
+    "batch_id": "noon-20260721T144423+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.27",
+    "core_change": "OpenAI released OpenAI Codex version 0.145.0-alpha.27.",
+    "discovered_at": "2026-07-21T14:44:23.370903+08:00",
+    "event_at": "2026-07-21T10:02:53+08:00",
+    "event_id": "evt-22fa229ab082b62d",
+    "event_phase": "release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "a24fd40350a9cb9d679a5f624a0740bb7c28db75fc27342be1a578d12c5e096e",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "OpenAI Codex",
+    "published_at": "2026-07-21T10:02:53+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.27"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-21T14:44:23.370903+08:00"
+  },
+  {
+    "action": "released",
+    "batch_id": "noon-20260721T144423+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.26",
+    "core_change": "OpenAI published the rust-v0.145.0-alpha.26 release of Codex.",
+    "discovered_at": "2026-07-21T14:44:23.370903+08:00",
+    "event_at": null,
+    "event_id": "evt-91a725ebe52c308f",
+    "event_phase": "released",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "b6ab1bc258d5a8b8d6acb19e6e0192661ed3ec5fe1cd4aae1b35027e4e8f9eae",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex (rust-v0.145.0-alpha.26)",
+    "published_at": "2026-07-21T08:30:27+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.26"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-21T14:44:23.370903+08:00"
+  },
+  {
     "action": "publish",
     "batch_id": "morning-20260721T072701+0800",
     "canonical_url": "https://openai.com/index/safety-alignment-long-horizon-models",
