@@ -1,23 +1,7 @@
 {
-  "actual_started_at": "2026-07-22T14:45:04.656641+08:00",
-  "archive_path": "delivery/archive/2026-07/noon-20260722T144504+0800",
   "batch_id": "noon-20260722T144504+0800",
   "completed_at": "2026-07-22T14:45:04.656641+08:00",
-  "counts": {
-    "duplicate_events": 2,
-    "input_events": 4,
-    "selected_events": 0,
-    "uncertain_events": 2
-  },
-  "coverage_mode": "scheduled_increment",
-  "data_range": {
-    "end": "2026-07-22T13:10:00+08:00",
-    "lookback_start": "2026-07-22T01:15:27.520937+08:00",
-    "start": "2026-07-22T07:15:27.520937+08:00"
-  },
   "errors": [],
-  "is_backfill": false,
-  "is_zero_length_window": false,
   "kind": "noon",
   "model_usage": [
     {
@@ -49,12 +33,7 @@
       "request_id": "06af9a00c2b1dde3f5d2fe14f7eff1ca"
     }
   ],
-  "rules_version": "event-retention-v1",
-  "scheduled_for": "2026-07-22T12:20:00+08:00",
-  "schema_version": 2,
-  "source_commit_sha": "467c5bfc821467aae4988bfcd042bcb2bc84754d",
   "started_at": "2026-07-22T14:45:04.656641+08:00",
   "status": "success",
-  "trigger_type": "schedule",
-  "workflow_run_id": "29897756725"
+  "trigger_type": "schedule"
 }
