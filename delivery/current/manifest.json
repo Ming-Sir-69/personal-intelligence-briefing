@@ -1,60 +1,95 @@
 {
-  "actual_started_at": "2026-07-22T14:45:04.656641+08:00",
-  "archive_path": "delivery/archive/2026-07/noon-20260722T144504+0800",
-  "batch_id": "noon-20260722T144504+0800",
-  "completed_at": "2026-07-22T14:45:04.656641+08:00",
+  "actual_started_at": "2026-07-23T07:26:40.114658+08:00",
+  "archive_path": "delivery/archive/2026-07/morning-20260723T072640+0800",
+  "batch_id": "morning-20260723T072640+0800",
+  "completed_at": "2026-07-23T07:26:40.114658+08:00",
   "counts": {
     "duplicate_events": 2,
-    "input_events": 4,
-    "selected_events": 0,
-    "uncertain_events": 2
+    "input_events": 9,
+    "selected_events": 1,
+    "uncertain_events": 6
   },
   "coverage_mode": "scheduled_increment",
   "data_range": {
-    "end": "2026-07-22T13:10:00+08:00",
-    "lookback_start": "2026-07-22T01:15:27.520937+08:00",
-    "start": "2026-07-22T07:15:27.520937+08:00"
+    "end": "2026-07-23T07:10:00+08:00",
+    "lookback_start": "2026-07-22T08:45:04.656641+08:00",
+    "start": "2026-07-22T14:45:04.656641+08:00"
   },
   "errors": [],
   "is_backfill": false,
   "is_zero_length_window": false,
-  "kind": "noon",
+  "kind": "morning",
   "model_usage": [
     {
-      "input_tokens": 422,
+      "input_tokens": 418,
       "model": "MiniMax-M3",
-      "output_tokens": 83,
+      "output_tokens": 104,
       "provider": "minimax",
-      "request_id": "06af99f32832c5e0a20fe0a0242bf6eb"
+      "request_id": "06b084b1ec2391431fa3f2849e05bcd4"
+    },
+    {
+      "input_tokens": 415,
+      "model": "MiniMax-M3",
+      "output_tokens": 86,
+      "provider": "minimax",
+      "request_id": "06b084b41f5da30c5dce25c2fc0f8eac"
+    },
+    {
+      "input_tokens": 413,
+      "model": "MiniMax-M3",
+      "output_tokens": 107,
+      "provider": "minimax",
+      "request_id": "06b084b7178e237c730b3e1845956e6c"
+    },
+    {
+      "input_tokens": 814,
+      "model": "MiniMax-M3",
+      "output_tokens": 177,
+      "provider": "minimax",
+      "request_id": "06b084bdf0dda87417e19e4d7935a25a"
     },
     {
       "input_tokens": 422,
       "model": "MiniMax-M3",
-      "output_tokens": 74,
+      "output_tokens": 88,
       "provider": "minimax",
-      "request_id": "06af99f511146eb1b035c0ea5c33324c"
+      "request_id": "06b084bf1ea49da1c57391a9904d98dc"
     },
     {
-      "input_tokens": 416,
+      "input_tokens": 422,
       "model": "MiniMax-M3",
-      "output_tokens": 66,
+      "output_tokens": 93,
       "provider": "minimax",
-      "request_id": "06af99f9506919d7ae049e74c4ec9f8e"
+      "request_id": "06b084c2191f0c133423581271c8b54e"
     },
     {
-      "input_tokens": 838,
+      "input_tokens": 422,
       "model": "MiniMax-M3",
-      "output_tokens": 179,
+      "output_tokens": 104,
       "provider": "minimax",
-      "request_id": "06af9a00c2b1dde3f5d2fe14f7eff1ca"
+      "request_id": "06b084c54abbf2209892a638651178ab"
+    },
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 90,
+      "provider": "minimax",
+      "request_id": "06b084c7a0660c738b11ec477847d09a"
+    },
+    {
+      "input_tokens": 419,
+      "model": "MiniMax-M3",
+      "output_tokens": 132,
+      "provider": "minimax",
+      "request_id": "06b084cb4b6d467e603dd2d6aafc0ed6"
     }
   ],
   "rules_version": "event-retention-v1",
-  "scheduled_for": "2026-07-22T12:20:00+08:00",
+  "scheduled_for": "2026-07-23T06:20:00+08:00",
   "schema_version": 2,
-  "source_commit_sha": "467c5bfc821467aae4988bfcd042bcb2bc84754d",
-  "started_at": "2026-07-22T14:45:04.656641+08:00",
+  "source_commit_sha": "a7b355fc45c73dc6ccbb06d3f163a90d54d809b5",
+  "started_at": "2026-07-23T07:26:40.114658+08:00",
   "status": "success",
   "trigger_type": "schedule",
-  "workflow_run_id": "29897756725"
+  "workflow_run_id": "29966124384"
 }
