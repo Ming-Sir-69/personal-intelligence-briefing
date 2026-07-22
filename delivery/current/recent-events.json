@@ -1,5 +1,57 @@
 [
   {
+    "action": "released",
+    "batch_id": "noon-20260722T144504+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.1",
+    "core_change": "Version 0.146.0-alpha.1 (rust-v0.146.0-alpha.1)",
+    "discovered_at": "2026-07-22T14:45:04.656641+08:00",
+    "event_at": null,
+    "event_id": "evt-ed8b6af9075a2254",
+    "event_phase": "alpha",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "c8bf73522defbefd94e19e25e4b2404bf5ba4306812d8da9e894081ee8b69789",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex",
+    "published_at": "2026-07-22T13:04:48+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.1"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-22T14:45:04.656641+08:00"
+  },
+  {
+    "action": "release",
+    "batch_id": "noon-20260722T144504+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.30",
+    "core_change": "Version 0.145.0-alpha.30 of Codex released",
+    "discovered_at": "2026-07-22T14:45:04.656641+08:00",
+    "event_at": "2026-07-22T09:21:38+08:00",
+    "event_id": "evt-f73c1c49200485ad",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "297b5ae72cadf0e986d70696defa22035ccbc92a870095c4d6ca76daf1a4fae0",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-22T09:21:38+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.30"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-22T14:45:04.656641+08:00"
+  },
+  {
     "action": "introduced",
     "batch_id": "morning-20260722T071527+0800",
     "canonical_url": "https://openai.com/index/introducing-chatgpt-small-business-program",

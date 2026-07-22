@@ -1004,5 +1004,56 @@
     ],
     "status": "uncertain",
     "subject": "OpenAI"
+  },
+  {
+    "action": "introducing",
+    "canonical_url": "https://openai.com/index/introducing-openai-presence",
+    "core_change": "OpenAI announced a new product or feature named Presence.",
+    "discovered_at": "2026-07-23T07:26:40.114658+08:00",
+    "event_at": "2026-07-22T13:30:00+08:00",
+    "event_id": "evt-09a1a9befa6ebac1",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "product_release",
+    "fingerprint": "7afb97c5fd9a098178efbe208b62fa6686b310140f4122fa2fe240125b1e4e11",
+    "importance": "medium",
+    "normalization_flags": [
+      "model_retry",
+      "feed_time_metadata"
+    ],
+    "object_name": "Presence",
+    "published_at": "2026-07-22T13:30:00+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://openai.com/index/introducing-openai-presence"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.1",
+    "core_change": "Version 0.146.0-alpha.1 (rust-v0.146.0-alpha.1) of Codex was released.",
+    "discovered_at": "2026-07-23T07:26:40.114658+08:00",
+    "event_at": "2026-07-22T13:04:48+08:00",
+    "event_id": "evt-f90208137d6fd07f",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "3a79395377e5a42264376cc9baf4453ab08d96d134d47c869f5cae038a052a31",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-22T13:04:48+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.1"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
   }
 ]
