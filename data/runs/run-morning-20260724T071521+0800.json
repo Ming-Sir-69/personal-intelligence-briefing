@@ -1,0 +1,27 @@
+{
+  "batch_id": "morning-20260724T071521+0800",
+  "completed_at": "2026-07-24T07:15:21.288526+08:00",
+  "errors": [
+    "minimax normalization failed for openai-codex-releases: ValueError"
+  ],
+  "kind": "morning",
+  "model_usage": [
+    {
+      "input_tokens": 428,
+      "model": "MiniMax-M3",
+      "output_tokens": 90,
+      "provider": "minimax",
+      "request_id": "06b1d38b1188d3ed4280aa363e331bcd"
+    },
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 90,
+      "provider": "minimax",
+      "request_id": "06b1d38dc3e373a9b4148b6d4e386085"
+    }
+  ],
+  "started_at": "2026-07-24T07:15:21.288526+08:00",
+  "status": "partial",
+  "trigger_type": "schedule"
+}

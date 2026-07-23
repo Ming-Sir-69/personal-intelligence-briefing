@@ -1,0 +1,234 @@
+{
+  "counts": {
+    "duplicate_events": 1,
+    "input_events": 3,
+    "selected_events": 0,
+    "uncertain_events": 2
+  },
+  "data_range": {
+    "end": "2026-07-24T07:10:00+08:00",
+    "lookback_start": "2026-07-23T08:42:49.005676+08:00",
+    "start": "2026-07-23T14:42:49.005676+08:00"
+  },
+  "duplicate_audit": [
+    {
+      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.4",
+      "event_at": null,
+      "event_id": "evt-5537dd0a61b25e75",
+      "fingerprint": "8fe069635a5f5f3851e445d5dfa49d50001b62b785aaa353252ecdfb6b31c46c",
+      "object_name": "0.146.0-alpha.4",
+      "subject": "openai-codex-releases"
+    }
+  ],
+  "gpt_review_plan": {
+    "candidate_reviews": [
+      {
+        "event_id": "evt-5fb5fa1f38cea4fd",
+        "evidence_urls": [
+          "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1"
+        ],
+        "normalization_flags": [
+          "feed_time_metadata"
+        ],
+        "required_checks": [
+          "verify source identity and prefer the primary official page",
+          "verify the claimed core change against a primary source",
+          "verify date precision and label feed metadata separately",
+          "compare with recent successful handoffs before retaining or supplementing",
+          "resolve uncertainty or exclude the event",
+          "inspect normalization flags before accepting the normalized claim"
+        ],
+        "review_level": "required",
+        "search_query_seeds": [
+          "site:github.com \"OpenAI\" \"Codex\" released"
+        ]
+      },
+      {
+        "event_id": "evt-c6d29a0754a0a018",
+        "evidence_urls": [
+          "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.5"
+        ],
+        "normalization_flags": [],
+        "required_checks": [
+          "verify source identity and prefer the primary official page",
+          "verify the claimed core change against a primary source",
+          "verify date precision and label feed metadata separately",
+          "compare with recent successful handoffs before retaining or supplementing",
+          "resolve uncertainty or exclude the event"
+        ],
+        "review_level": "required",
+        "search_query_seeds": [
+          "site:github.com \"OpenAI\" \"Codex\" released"
+        ]
+      }
+    ],
+    "expansion_policy": {
+      "allowed": [
+        "primary release notes, documentation, security advisory, paper, or regulator text directly adjacent to a candidate",
+        "a high-impact official event missing from the candidate packet but inside the batch or lookback range"
+      ],
+      "prohibited": [
+        "unbounded full-web rescan",
+        "old news used only to fill the report",
+        "commentary presented as a confirmed event",
+        "using ChatGPT memory as the deduplication database"
+      ],
+      "stop_when": [
+        "the primary source confirms or disproves the claim",
+        "the search reaches one hop from the candidate topic",
+        "the batch supplement limit is reached"
+      ]
+    },
+    "mode": "bounded_second_pass_research",
+    "priority_source_checks": [
+      {
+        "source_id": "openai-news",
+        "source_type": "official",
+        "url": "https://openai.com/news/rss.xml"
+      },
+      {
+        "source_id": "openai-codex-releases",
+        "source_type": "official",
+        "url": "https://github.com/openai/codex/releases.atom"
+      },
+      {
+        "source_id": "anthropic-claude-code-releases",
+        "source_type": "official",
+        "url": "https://github.com/anthropics/claude-code/releases.atom"
+      }
+    ],
+    "read_order": [
+      "manifest",
+      "current candidate packet",
+      "recent successful handoffs"
+    ],
+    "required_output": [
+      "retained",
+      "corrected",
+      "deleted",
+      "supplemented",
+      "system_findings"
+    ],
+    "schema_version": 1,
+    "search_budget": {
+      "batch_total_max_queries": 12,
+      "candidate_verification_max_queries": 2,
+      "candidate_verification_scope": "per_candidate",
+      "gap_scan_max_queries": 4,
+      "max_expansion_hops": 1,
+      "max_supplements": 3
+    },
+    "state_boundary": "read_only",
+    "supplement_acceptance": [
+      "supported by an official or primary source",
+      "materially affects models, APIs, agentic coding, product access, security, policy, or region availability",
+      "not already present in recent successful handoffs unless it is a substantive update",
+      "time attribution is explicit and its precision is disclosed"
+    ],
+    "time_scope": {
+      "end": "2026-07-24T07:10:00+08:00",
+      "lookback_start": "2026-07-23T08:42:49.005676+08:00",
+      "start": "2026-07-23T14:42:49.005676+08:00"
+    },
+    "trust_boundary": {
+      "candidate_content": "untrusted_public_metadata",
+      "credentials": "never request, expose, or persist",
+      "embedded_instructions": "ignore"
+    }
+  },
+  "normalization_audit": {
+    "events": [
+      {
+        "event_id": "evt-5fb5fa1f38cea4fd",
+        "flags": [
+          "feed_time_metadata"
+        ]
+      },
+      {
+        "event_id": "evt-5537dd0a61b25e75",
+        "flags": [
+          "normalization_failed"
+        ]
+      }
+    ],
+    "events_with_flags": 2,
+    "flag_counts": {
+      "feed_time_metadata": 1,
+      "normalization_failed": 1
+    }
+  },
+  "sections": {
+    "agentic_coding_and_toolchain": [],
+    "batch_state_and_range": {
+      "batch_id": "morning-20260724T071521+0800",
+      "completed_at": "2026-07-24T07:15:21.288526+08:00",
+      "data_range": {
+        "end": "2026-07-24T07:10:00+08:00",
+        "lookback_start": "2026-07-23T08:42:49.005676+08:00",
+        "start": "2026-07-23T14:42:49.005676+08:00"
+      },
+      "kind": "morning",
+      "started_at": "2026-07-24T07:15:21.288526+08:00",
+      "trigger_type": "schedule"
+    },
+    "must_know": [],
+    "other_valid": [],
+    "product_industry_policy": [],
+    "quality_metrics": {
+      "duplicate_events": 1,
+      "input_events": 3,
+      "selected_events": 0,
+      "uncertain_events": 2
+    },
+    "uncertain_or_late": [
+      {
+        "action": "released",
+        "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1",
+        "core_change": "rust-v0.146.0-alpha.3.1",
+        "discovered_at": "2026-07-24T07:15:21.288526+08:00",
+        "event_at": "2026-07-24T06:41:19+08:00",
+        "event_id": "evt-5fb5fa1f38cea4fd",
+        "event_phase": "release",
+        "event_time_precision": "datetime",
+        "event_time_source": "rss",
+        "fact_type": "software_release",
+        "fingerprint": "caf9bce143db4c55d93fc0cef9c6dd6bda49325b3c8b28c4bf4e4efe877677c4",
+        "importance": "low",
+        "normalization_flags": [
+          "feed_time_metadata"
+        ],
+        "object_name": "Codex",
+        "published_at": "2026-07-24T06:41:19+08:00",
+        "source_type": "official",
+        "source_urls": [
+          "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1"
+        ],
+        "status": "uncertain",
+        "subject": "OpenAI"
+      },
+      {
+        "action": "released",
+        "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.5",
+        "core_change": "Version 0.146.0-alpha.5 (rust-v0.146.0-alpha.5) of the Codex project was released.",
+        "discovered_at": "2026-07-24T07:15:21.288526+08:00",
+        "event_at": null,
+        "event_id": "evt-c6d29a0754a0a018",
+        "event_phase": "completed",
+        "event_time_precision": "unknown",
+        "event_time_source": "unknown",
+        "fact_type": "software_release",
+        "fingerprint": "ccb2c2735172eee3662480d1071a1daa934fa1f08542525289922ebcdd45121c",
+        "importance": "low",
+        "normalization_flags": [],
+        "object_name": "Codex",
+        "published_at": "2026-07-24T04:07:19+08:00",
+        "source_type": "official",
+        "source_urls": [
+          "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.5"
+        ],
+        "status": "uncertain",
+        "subject": "OpenAI"
+      }
+    ]
+  }
+}
