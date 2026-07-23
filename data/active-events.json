@@ -1081,5 +1081,30 @@
     ],
     "status": "duplicate",
     "subject": "Anthropic"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1",
+    "core_change": "rust-v0.146.0-alpha.3.1",
+    "discovered_at": "2026-07-24T07:15:21.288526+08:00",
+    "event_at": "2026-07-24T06:41:19+08:00",
+    "event_id": "evt-5fb5fa1f38cea4fd",
+    "event_phase": "release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "caf9bce143db4c55d93fc0cef9c6dd6bda49325b3c8b28c4bf4e4efe877677c4",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-24T06:41:19+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI"
   }
 ]
