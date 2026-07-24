@@ -1131,5 +1131,30 @@
     ],
     "status": "uncertain",
     "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.7",
+    "core_change": "OpenAI published Codex pre-release rust-v0.146.0-alpha.7",
+    "discovered_at": "2026-07-25T07:27:38.383800+08:00",
+    "event_at": "2026-07-24T18:27:46+00:00",
+    "event_id": "evt-a1b9dbd65ebedb22",
+    "event_phase": "pre_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "0d852e6cd61cc134dd8222d5b2322ee089d930fddce1fb4048012cf9cbe5ebe9",
+    "importance": "medium",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-25T02:27:46+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.7"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI"
   }
 ]
