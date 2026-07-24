@@ -1,5 +1,30 @@
 [
   {
+    "action": "release",
+    "batch_id": "noon-20260723T144249+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.4",
+    "core_change": "OpenAI published the 0.146.0-alpha.4 release of Codex.",
+    "discovered_at": "2026-07-23T14:42:49.005676+08:00",
+    "event_at": null,
+    "event_id": "evt-5437c0f99b8a2b7e",
+    "event_phase": "announced",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "1efa15ee9400e320e195ad10fe2f07c969f08f7f658d4211008a40dd33c4335c",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex",
+    "published_at": "2026-07-23T08:49:48+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.4"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-23T14:42:49.005676+08:00"
+  },
+  {
     "action": "publish",
     "batch_id": "morning-20260723T072640+0800",
     "canonical_url": "https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community",
