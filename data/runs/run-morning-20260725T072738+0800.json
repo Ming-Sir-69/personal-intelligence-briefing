@@ -1,0 +1,32 @@
+{
+  "batch_id": "morning-20260725T072738+0800",
+  "completed_at": "2026-07-25T07:27:38.383800+08:00",
+  "errors": [],
+  "kind": "morning",
+  "model_usage": [
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 75,
+      "provider": "minimax",
+      "request_id": "06b327eba5061ae4b19f9244723803bf"
+    },
+    {
+      "input_tokens": 844,
+      "model": "MiniMax-M3",
+      "output_tokens": 397,
+      "provider": "minimax",
+      "request_id": "06b327f16bd90f51003a18697758591d"
+    },
+    {
+      "input_tokens": 419,
+      "model": "MiniMax-M3",
+      "output_tokens": 212,
+      "provider": "minimax",
+      "request_id": "06b327f49e1319e139657e33799a3a27"
+    }
+  ],
+  "started_at": "2026-07-25T07:27:38.383800+08:00",
+  "status": "success",
+  "trigger_type": "schedule"
+}
