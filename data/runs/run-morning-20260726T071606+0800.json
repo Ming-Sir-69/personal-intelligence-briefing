@@ -1,0 +1,41 @@
+{
+  "batch_id": "morning-20260726T071606+0800",
+  "completed_at": "2026-07-26T07:16:06.903524+08:00",
+  "errors": [
+    "minimax normalization failed for anthropic-claude-code-releases: ValueError"
+  ],
+  "kind": "morning",
+  "model_usage": [
+    {
+      "input_tokens": 426,
+      "model": "MiniMax-M3",
+      "output_tokens": 239,
+      "provider": "minimax",
+      "request_id": "06b476b80bbd344ff6fe0f23c7892bf4"
+    },
+    {
+      "input_tokens": 424,
+      "model": "MiniMax-M3",
+      "output_tokens": 73,
+      "provider": "minimax",
+      "request_id": "06b476bbee24d66d1214d0184e6b6102"
+    },
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 72,
+      "provider": "minimax",
+      "request_id": "06b476bd1184ce94f8c38630472e6c5d"
+    },
+    {
+      "input_tokens": 422,
+      "model": "MiniMax-M3",
+      "output_tokens": 183,
+      "provider": "minimax",
+      "request_id": "06b476c05ee67ad851b3970893479078"
+    }
+  ],
+  "started_at": "2026-07-26T07:16:06.903524+08:00",
+  "status": "partial",
+  "trigger_type": "schedule"
+}
