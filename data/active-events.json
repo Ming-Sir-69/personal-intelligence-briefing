@@ -1256,5 +1256,55 @@
     ],
     "status": "uncertain",
     "subject": "Anthropic"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.11",
+    "core_change": "rust-v0.146.0-alpha.11",
+    "discovered_at": "2026-07-26T07:16:06.903524+08:00",
+    "event_at": "2026-07-26T02:21:17+08:00",
+    "event_id": "evt-944c1cd88149dda4",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "c0bb10a044edacc3f084c890b040adbd9117e7f8c79f4abddd14fc1679dd5d1f",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex Rust CLI",
+    "published_at": "2026-07-26T02:21:17+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.11"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10",
+    "core_change": "Version 0.146.0-alpha.10",
+    "discovered_at": "2026-07-26T07:16:06.903524+08:00",
+    "event_at": "2026-07-25T10:21:40+08:00",
+    "event_id": "evt-b57abac727b3ae66",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "4e5b4425430f1d38314e46438816a679b2302d513465bf727a4c9c723ea213bc",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "OpenAI Codex",
+    "published_at": "2026-07-25T10:21:40+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
   }
 ]
