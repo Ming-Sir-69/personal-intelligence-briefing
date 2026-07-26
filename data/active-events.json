@@ -1306,5 +1306,30 @@
     ],
     "status": "duplicate",
     "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10",
+    "core_change": "Pre-release build 0.146.0-alpha.10 of the Rust-based Codex CLI published.",
+    "discovered_at": "2026-07-26T15:07:12.460040+08:00",
+    "event_at": "2026-07-25T10:21:40+08:00",
+    "event_id": "evt-9b17ac0090b4210b",
+    "event_phase": "pre_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "6a82178db7b8f7da09600c0f0948e7d8a93565847a93f500922a43f1e44cc5a4",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex (Rust)",
+    "published_at": "2026-07-25T10:21:40+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
   }
 ]
