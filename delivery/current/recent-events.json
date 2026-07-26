@@ -1,6 +1,56 @@
 [
   {
     "action": "released",
+    "batch_id": "noon-20260726T150712+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10.1",
+    "core_change": "Version 0.146.0-alpha.10.1 (rust-v0.146.0-alpha.10.1)",
+    "discovered_at": "2026-07-26T15:07:12.460040+08:00",
+    "event_at": null,
+    "event_id": "evt-807e685b718f1383",
+    "event_phase": "alpha",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "241302549610c6d7755c326f678b75a513976c5f8a5240ce1dcf2574f991382d",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex",
+    "published_at": "2026-07-26T04:32:19+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10.1"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-26T15:07:12.460040+08:00"
+  },
+  {
+    "action": "release",
+    "batch_id": "noon-20260726T150712+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.11",
+    "core_change": "Published a new pre-release build, rust-v0.146.0-alpha.11, of the Codex Rust implementation.",
+    "discovered_at": "2026-07-26T15:07:12.460040+08:00",
+    "event_at": null,
+    "event_id": "evt-7f6d7bb0d3b6b85e",
+    "event_phase": "pre-release",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "9dc3019ba96016e0b596f9eeb171650765578fd459b3b1c0004e418199dd20d0",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex (Rust) v0.146.0-alpha.11",
+    "published_at": "2026-07-26T02:21:17+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.11"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-26T15:07:12.460040+08:00"
+  },
+  {
+    "action": "released",
     "batch_id": "noon-20260725T143225+0800",
     "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10",
     "core_change": "Version 0.146.0-alpha.10",
