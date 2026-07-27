@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "morning-20260727T071552+0800",
+  "batch_id": "morning-20260728T073006+0800",
   "kind": "morning",
-  "started_at": "2026-07-27T07:15:52.484378+08:00",
-  "completed_at": "2026-07-27T07:15:52.484378+08:00",
+  "started_at": "2026-07-28T07:30:06.941794+08:00",
+  "completed_at": "2026-07-28T07:30:06.941794+08:00",
   "data_range": {
-    "start": "2026-07-26T15:07:12.460040+08:00",
-    "end": "2026-07-27T07:10:00+08:00",
-    "lookback_start": "2026-07-26T09:07:12.460040+08:00"
+    "start": "2026-07-27T15:56:44.991364+08:00",
+    "end": "2026-07-28T07:10:00+08:00",
+    "lookback_start": "2026-07-27T09:56:44.991364+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -26,7 +26,33 @@
 ## 其他有效新增
 
 ```json
-[]
+[
+  {
+    "event_id": "evt-ff9545286e0d15b4",
+    "status": "new_event",
+    "subject": "OpenAI",
+    "object_name": "workplace AI adoption",
+    "action": "published analysis",
+    "core_change": "OpenAI published an article describing how AI is expanding what people do at work",
+    "event_at": "2026-07-27T11:30:00+08:00",
+    "published_at": "2026-07-27T11:30:00+08:00",
+    "discovered_at": "2026-07-28T07:30:06.941794+08:00",
+    "canonical_url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+    "fingerprint": "e4028261c84f282f3a7642ef1212ab129e392d61436699e5d3f71213772432eb",
+    "source_urls": [
+      "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "announced",
+    "fact_type": "company_policy_position",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  }
+]
 ```
 
 ## Agentic Coding 与工具链
@@ -44,17 +70,64 @@
 ## 不确定或迟到项
 
 ```json
-[]
+[
+  {
+    "event_id": "evt-51171c14210a7318",
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "object_name": "Codex",
+    "action": "release",
+    "core_change": "Version 0.146.0-alpha.13 (rust-v0.146.0-alpha.13) released",
+    "event_at": null,
+    "published_at": "2026-07-28T00:08:17+08:00",
+    "discovered_at": "2026-07-28T07:30:06.941794+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.13",
+    "fingerprint": "89f21aa605cc1623c6795a26eac8c9fb6393e8cd4d17972ec3f7001b211190a3",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.13"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "announced",
+    "fact_type": "software_release",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "normalization_flags": []
+  },
+  {
+    "event_id": "evt-e623597146f2f6fe",
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "object_name": "codex",
+    "action": "release",
+    "core_change": "Released rust-v0.146.0-alpha.12",
+    "event_at": null,
+    "published_at": "2026-07-27T16:28:56+08:00",
+    "discovered_at": "2026-07-28T07:30:06.941794+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.12",
+    "fingerprint": "ad6ab9e7520dba2b2519568681eb67bec350d972d018f472e005213b5d849992",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.12"
+    ],
+    "source_type": "official",
+    "importance": "minor",
+    "event_phase": "update",
+    "fact_type": "software_release",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "normalization_flags": []
+  }
+]
 ```
 
 ## 去重与质量指标
 
 ```json
 {
-  "input_events": 0,
+  "input_events": 3,
   "duplicate_events": 0,
-  "uncertain_events": 0,
-  "selected_events": 0
+  "uncertain_events": 2,
+  "selected_events": 1
 }
 ```
 
@@ -76,9 +149,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-26T15:07:12.460040+08:00",
-    "end": "2026-07-27T07:10:00+08:00",
-    "lookback_start": "2026-07-26T09:07:12.460040+08:00"
+    "start": "2026-07-27T15:56:44.991364+08:00",
+    "end": "2026-07-28T07:10:00+08:00",
+    "lookback_start": "2026-07-27T09:56:44.991364+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -105,7 +178,65 @@
       "source_type": "official"
     }
   ],
-  "candidate_reviews": [],
+  "candidate_reviews": [
+    {
+      "event_id": "evt-ff9545286e0d15b4",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work"
+      ],
+      "normalization_flags": [
+        "feed_time_metadata"
+      ],
+      "search_query_seeds": [
+        "site:openai.com \"OpenAI\" \"workplace AI adoption\" published analysis"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "distinguish company policy position from government action",
+        "inspect normalization flags before accepting the normalized claim"
+      ]
+    },
+    {
+      "event_id": "evt-51171c14210a7318",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.13"
+      ],
+      "normalization_flags": [],
+      "search_query_seeds": [
+        "site:github.com \"OpenAI\" \"Codex\" release"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "resolve uncertainty or exclude the event"
+      ]
+    },
+    {
+      "event_id": "evt-e623597146f2f6fe",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.12"
+      ],
+      "normalization_flags": [],
+      "search_query_seeds": [
+        "site:github.com \"OpenAI\" \"codex\" release"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "resolve uncertainty or exclude the event"
+      ]
+    }
+  ],
   "expansion_policy": {
     "allowed": [
       "primary release notes, documentation, security advisory, paper, or regulator text directly adjacent to a candidate",

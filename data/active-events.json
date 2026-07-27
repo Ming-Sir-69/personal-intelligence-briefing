@@ -1331,5 +1331,30 @@
     ],
     "status": "duplicate",
     "subject": "OpenAI"
+  },
+  {
+    "action": "published analysis",
+    "canonical_url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+    "core_change": "OpenAI published an article describing how AI is expanding what people do at work",
+    "discovered_at": "2026-07-28T07:30:06.941794+08:00",
+    "event_at": "2026-07-27T11:30:00+08:00",
+    "event_id": "evt-ff9545286e0d15b4",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "company_policy_position",
+    "fingerprint": "e4028261c84f282f3a7642ef1212ab129e392d61436699e5d3f71213772432eb",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "workplace AI adoption",
+    "published_at": "2026-07-27T11:30:00+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work"
+    ],
+    "status": "new_event",
+    "subject": "OpenAI"
   }
 ]
