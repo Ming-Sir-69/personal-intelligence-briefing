@@ -1,0 +1,10 @@
+{
+  "batch_id": "noon-20260727T155644+0800",
+  "completed_at": "2026-07-27T15:56:44.991364+08:00",
+  "errors": [],
+  "kind": "noon",
+  "model_usage": [],
+  "started_at": "2026-07-27T15:56:44.991364+08:00",
+  "status": "success",
+  "trigger_type": "schedule"
+}
