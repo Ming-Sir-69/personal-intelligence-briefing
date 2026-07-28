@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "noon-20260727T155644+0800",
+  "batch_id": "noon-20260728T144446+0800",
   "kind": "noon",
-  "started_at": "2026-07-27T15:56:44.991364+08:00",
-  "completed_at": "2026-07-27T15:56:44.991364+08:00",
+  "started_at": "2026-07-28T14:44:46.997148+08:00",
+  "completed_at": "2026-07-28T14:44:46.997148+08:00",
   "data_range": {
-    "start": "2026-07-27T07:15:52.484378+08:00",
-    "end": "2026-07-27T13:10:00+08:00",
-    "lookback_start": "2026-07-27T01:15:52.484378+08:00"
+    "start": "2026-07-28T07:30:06.941794+08:00",
+    "end": "2026-07-28T13:10:00+08:00",
+    "lookback_start": "2026-07-28T01:30:06.941794+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -44,16 +44,40 @@
 ## 不确定或迟到项
 
 ```json
-[]
+[
+  {
+    "event_id": "evt-670d8f53281e183b",
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "object_name": "OpenAI Codex",
+    "action": "released",
+    "core_change": "Released version 0.146.0-alpha.14 of OpenAI Codex",
+    "event_at": null,
+    "published_at": "2026-07-28T13:02:44+08:00",
+    "discovered_at": "2026-07-28T14:44:46.997148+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.14",
+    "fingerprint": "1a371eedcc3e673b427853e0f0c6017d15e864922a5f676f8d455f40ebe529a4",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.14"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "preview",
+    "fact_type": "software_release",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "normalization_flags": []
+  }
+]
 ```
 
 ## 去重与质量指标
 
 ```json
 {
-  "input_events": 0,
+  "input_events": 1,
   "duplicate_events": 0,
-  "uncertain_events": 0,
+  "uncertain_events": 1,
   "selected_events": 0
 }
 ```
@@ -76,9 +100,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-27T07:15:52.484378+08:00",
-    "end": "2026-07-27T13:10:00+08:00",
-    "lookback_start": "2026-07-27T01:15:52.484378+08:00"
+    "start": "2026-07-28T07:30:06.941794+08:00",
+    "end": "2026-07-28T13:10:00+08:00",
+    "lookback_start": "2026-07-28T01:30:06.941794+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -105,7 +129,26 @@
       "source_type": "official"
     }
   ],
-  "candidate_reviews": [],
+  "candidate_reviews": [
+    {
+      "event_id": "evt-670d8f53281e183b",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.14"
+      ],
+      "normalization_flags": [],
+      "search_query_seeds": [
+        "site:github.com \"OpenAI\" \"OpenAI Codex\" released"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "resolve uncertainty or exclude the event"
+      ]
+    }
+  ],
   "expansion_policy": {
     "allowed": [
       "primary release notes, documentation, security advisory, paper, or regulator text directly adjacent to a candidate",
