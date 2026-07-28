@@ -1,5 +1,30 @@
 [
   {
+    "action": "released",
+    "batch_id": "noon-20260728T144446+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.14",
+    "core_change": "Released version 0.146.0-alpha.14 of OpenAI Codex",
+    "discovered_at": "2026-07-28T14:44:46.997148+08:00",
+    "event_at": null,
+    "event_id": "evt-670d8f53281e183b",
+    "event_phase": "preview",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "1a371eedcc3e673b427853e0f0c6017d15e864922a5f676f8d455f40ebe529a4",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "OpenAI Codex",
+    "published_at": "2026-07-28T13:02:44+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.14"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-28T14:44:46.997148+08:00"
+  },
+  {
     "action": "published analysis",
     "batch_id": "morning-20260728T073006+0800",
     "canonical_url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
