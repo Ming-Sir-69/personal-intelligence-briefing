@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "morning-20260728T073006+0800",
+  "batch_id": "morning-20260729T072610+0800",
   "kind": "morning",
-  "started_at": "2026-07-28T07:30:06.941794+08:00",
-  "completed_at": "2026-07-28T07:30:06.941794+08:00",
+  "started_at": "2026-07-29T07:26:10.981428+08:00",
+  "completed_at": "2026-07-29T07:26:10.981428+08:00",
   "data_range": {
-    "start": "2026-07-27T15:56:44.991364+08:00",
-    "end": "2026-07-28T07:10:00+08:00",
-    "lookback_start": "2026-07-27T09:56:44.991364+08:00"
+    "start": "2026-07-28T14:44:46.997148+08:00",
+    "end": "2026-07-29T07:10:00+08:00",
+    "lookback_start": "2026-07-28T08:44:46.997148+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -28,24 +28,24 @@
 ```json
 [
   {
-    "event_id": "evt-ff9545286e0d15b4",
+    "event_id": "evt-0ee2a57813e0c81e",
     "status": "new_event",
     "subject": "OpenAI",
-    "object_name": "workplace AI adoption",
-    "action": "published analysis",
-    "core_change": "OpenAI published an article describing how AI is expanding what people do at work",
-    "event_at": "2026-07-27T11:30:00+08:00",
-    "published_at": "2026-07-27T11:30:00+08:00",
-    "discovered_at": "2026-07-28T07:30:06.941794+08:00",
-    "canonical_url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
-    "fingerprint": "e4028261c84f282f3a7642ef1212ab129e392d61436699e5d3f71213772432eb",
+    "object_name": "rusty_v8",
+    "action": "update",
+    "core_change": "rusty_v8 updated to version 150.4.0",
+    "event_at": "2026-07-29T05:21:45+08:00",
+    "published_at": "2026-07-29T05:21:45+08:00",
+    "discovered_at": "2026-07-29T07:26:10.981428+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rusty-v8-v150.4.0",
+    "fingerprint": "e1497db537321d52f145814de28870ebe2992c0c7361dff265901bc17742904f",
     "source_urls": [
-      "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work"
+      "https://github.com/openai/codex/releases/tag/rusty-v8-v150.4.0"
     ],
     "source_type": "official",
     "importance": "low",
     "event_phase": "announced",
-    "fact_type": "company_policy_position",
+    "fact_type": "software_release",
     "event_time_precision": "datetime",
     "event_time_source": "rss",
     "normalization_flags": [
@@ -72,46 +72,46 @@
 ```json
 [
   {
-    "event_id": "evt-51171c14210a7318",
+    "event_id": "evt-84830d4c0404025b",
     "status": "uncertain",
     "subject": "OpenAI",
-    "object_name": "Codex",
-    "action": "release",
-    "core_change": "Version 0.146.0-alpha.13 (rust-v0.146.0-alpha.13) released",
+    "object_name": "scientific computing with agentic AI",
+    "action": "publishes analysis on",
+    "core_change": "OpenAI published a company-authored article discussing the role of agentic AI in scientific computing.",
     "event_at": null,
-    "published_at": "2026-07-28T00:08:17+08:00",
-    "discovered_at": "2026-07-28T07:30:06.941794+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.13",
-    "fingerprint": "89f21aa605cc1623c6795a26eac8c9fb6393e8cd4d17972ec3f7001b211190a3",
+    "published_at": "2026-07-29T01:00:00+08:00",
+    "discovered_at": "2026-07-29T07:26:10.981428+08:00",
+    "canonical_url": "https://openai.com/index/scientific-computing-agentic-ai",
+    "fingerprint": "e3f089f5e13a6b344d1c738307cd602c8ad6f4d4c5f7ad9811bf32c498ce455e",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.13"
+      "https://openai.com/index/scientific-computing-agentic-ai"
     ],
     "source_type": "official",
-    "importance": "low",
-    "event_phase": "announced",
-    "fact_type": "software_release",
+    "importance": "medium",
+    "event_phase": "announcement",
+    "fact_type": "company_policy_position",
     "event_time_precision": "unknown",
     "event_time_source": "unknown",
     "normalization_flags": []
   },
   {
-    "event_id": "evt-e623597146f2f6fe",
+    "event_id": "evt-898ca3c60ad6b115",
     "status": "uncertain",
     "subject": "OpenAI",
-    "object_name": "codex",
-    "action": "release",
-    "core_change": "Released rust-v0.146.0-alpha.12",
+    "object_name": "Codex",
+    "action": "released",
+    "core_change": "Rust build rust-v0.146.0-alpha.15",
     "event_at": null,
-    "published_at": "2026-07-27T16:28:56+08:00",
-    "discovered_at": "2026-07-28T07:30:06.941794+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.12",
-    "fingerprint": "ad6ab9e7520dba2b2519568681eb67bec350d972d018f472e005213b5d849992",
+    "published_at": "2026-07-29T04:42:41+08:00",
+    "discovered_at": "2026-07-29T07:26:10.981428+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15",
+    "fingerprint": "c0719aee44e3f0b73fe5636666c14ace78209bc12b901621f4e3b42c4b8d0138",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.12"
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15"
     ],
     "source_type": "official",
-    "importance": "minor",
-    "event_phase": "update",
+    "importance": "low",
+    "event_phase": "alpha",
     "fact_type": "software_release",
     "event_time_precision": "unknown",
     "event_time_source": "unknown",
@@ -124,8 +124,8 @@
 
 ```json
 {
-  "input_events": 3,
-  "duplicate_events": 0,
+  "input_events": 4,
+  "duplicate_events": 1,
   "uncertain_events": 2,
   "selected_events": 1
 }
@@ -149,9 +149,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-27T15:56:44.991364+08:00",
-    "end": "2026-07-28T07:10:00+08:00",
-    "lookback_start": "2026-07-27T09:56:44.991364+08:00"
+    "start": "2026-07-28T14:44:46.997148+08:00",
+    "end": "2026-07-29T07:10:00+08:00",
+    "lookback_start": "2026-07-28T08:44:46.997148+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -180,53 +180,53 @@
   ],
   "candidate_reviews": [
     {
-      "event_id": "evt-ff9545286e0d15b4",
+      "event_id": "evt-84830d4c0404025b",
       "review_level": "required",
       "evidence_urls": [
-        "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work"
+        "https://openai.com/index/scientific-computing-agentic-ai"
+      ],
+      "normalization_flags": [],
+      "search_query_seeds": [
+        "site:openai.com \"OpenAI\" \"scientific computing with agentic AI\" publishes analysis on"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "resolve uncertainty or exclude the event",
+        "distinguish company policy position from government action"
+      ]
+    },
+    {
+      "event_id": "evt-0ee2a57813e0c81e",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://github.com/openai/codex/releases/tag/rusty-v8-v150.4.0"
       ],
       "normalization_flags": [
         "feed_time_metadata"
       ],
       "search_query_seeds": [
-        "site:openai.com \"OpenAI\" \"workplace AI adoption\" published analysis"
+        "site:github.com \"OpenAI\" \"rusty_v8\" update"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
         "verify the claimed core change against a primary source",
         "verify date precision and label feed metadata separately",
         "compare with recent successful handoffs before retaining or supplementing",
-        "distinguish company policy position from government action",
         "inspect normalization flags before accepting the normalized claim"
       ]
     },
     {
-      "event_id": "evt-51171c14210a7318",
+      "event_id": "evt-898ca3c60ad6b115",
       "review_level": "required",
       "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.13"
+        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15"
       ],
       "normalization_flags": [],
       "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex\" release"
-      ],
-      "required_checks": [
-        "verify source identity and prefer the primary official page",
-        "verify the claimed core change against a primary source",
-        "verify date precision and label feed metadata separately",
-        "compare with recent successful handoffs before retaining or supplementing",
-        "resolve uncertainty or exclude the event"
-      ]
-    },
-    {
-      "event_id": "evt-e623597146f2f6fe",
-      "review_level": "required",
-      "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.12"
-      ],
-      "normalization_flags": [],
-      "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"codex\" release"
+        "site:github.com \"OpenAI\" \"Codex\" released"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
