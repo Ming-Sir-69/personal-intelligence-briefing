@@ -1406,5 +1406,55 @@
     ],
     "status": "duplicate",
     "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.16",
+    "core_change": "rust-v0.146.0-alpha.16",
+    "discovered_at": "2026-07-29T15:08:10.589335+08:00",
+    "event_at": "2026-07-29T07:32:04+08:00",
+    "event_id": "evt-1400bd7a977791c4",
+    "event_phase": "alpha",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "1663678cc1b7ecb4e511cc4d6f995ee461969c4a01c26fb7194cee4a27a2e79b",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "codex",
+    "published_at": "2026-07-29T07:32:04+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.16"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI"
+  },
+  {
+    "action": "release",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15",
+    "core_change": "Codex Rust release rust-v0.146.0-alpha.15 published",
+    "discovered_at": "2026-07-29T15:08:10.589335+08:00",
+    "event_at": "2026-07-29T04:42:41+08:00",
+    "event_id": "evt-eea8acbbd6f64adf",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "ddabedfcdf7f33550c1f831dc3e3d282650214b0968d3ee78992f57e343e4ce2",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex Rust CLI",
+    "published_at": "2026-07-29T04:42:41+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15"
+    ],
+    "status": "duplicate",
+    "subject": "OpenAI"
   }
 ]
