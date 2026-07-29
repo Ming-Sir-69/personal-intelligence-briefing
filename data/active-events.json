@@ -1456,5 +1456,30 @@
     ],
     "status": "duplicate",
     "subject": "OpenAI"
+  },
+  {
+    "action": "released",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1",
+    "core_change": "Codex release 0.146.0-alpha.9.1",
+    "discovered_at": "2026-07-30T07:17:38.394696+08:00",
+    "event_at": "2026-07-30T07:00:21+08:00",
+    "event_id": "evt-a154dc39efad4fa5",
+    "event_phase": "announced",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "1c2f5b3ff7e8f5394bd4ab944ec544f7748a1b0c079b189a56f40dadcf186884",
+    "importance": "minor",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-30T07:00:21+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI"
   }
 ]

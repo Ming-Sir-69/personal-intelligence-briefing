@@ -1,5 +1,57 @@
 [
   {
+    "action": "release",
+    "batch_id": "noon-20260729T150810+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0",
+    "core_change": "Version 0.146.0 of Codex released",
+    "discovered_at": "2026-07-29T15:08:10.589335+08:00",
+    "event_at": null,
+    "event_id": "evt-55b8c4cb3c8b8bbf",
+    "event_phase": "announced",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "088d2bfa682b113eac615b8cd15f29d227b23bcf2306808b076c0e82fc6938a2",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "Codex",
+    "published_at": "2026-07-29T09:44:34+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-29T15:08:10.589335+08:00"
+  },
+  {
+    "action": "release",
+    "batch_id": "noon-20260729T150810+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.16",
+    "core_change": "rust-v0.146.0-alpha.16",
+    "discovered_at": "2026-07-29T15:08:10.589335+08:00",
+    "event_at": "2026-07-29T07:32:04+08:00",
+    "event_id": "evt-1400bd7a977791c4",
+    "event_phase": "alpha",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "1663678cc1b7ecb4e511cc4d6f995ee461969c4a01c26fb7194cee4a27a2e79b",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "codex",
+    "published_at": "2026-07-29T07:32:04+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.16"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-29T15:08:10.589335+08:00"
+  },
+  {
     "action": "publishes analysis on",
     "batch_id": "morning-20260729T072610+0800",
     "canonical_url": "https://openai.com/index/scientific-computing-agentic-ai",
