@@ -4,14 +4,14 @@
 
 ```json
 {
-  "batch_id": "morning-20260729T072610+0800",
+  "batch_id": "morning-20260730T071738+0800",
   "kind": "morning",
-  "started_at": "2026-07-29T07:26:10.981428+08:00",
-  "completed_at": "2026-07-29T07:26:10.981428+08:00",
+  "started_at": "2026-07-30T07:17:38.394696+08:00",
+  "completed_at": "2026-07-30T07:17:38.394696+08:00",
   "data_range": {
-    "start": "2026-07-28T14:44:46.997148+08:00",
-    "end": "2026-07-29T07:10:00+08:00",
-    "lookback_start": "2026-07-28T08:44:46.997148+08:00"
+    "start": "2026-07-29T15:08:10.589335+08:00",
+    "end": "2026-07-30T07:10:00+08:00",
+    "lookback_start": "2026-07-29T09:08:10.589335+08:00"
   },
   "trigger_type": "schedule"
 }
@@ -26,33 +26,7 @@
 ## 其他有效新增
 
 ```json
-[
-  {
-    "event_id": "evt-0ee2a57813e0c81e",
-    "status": "new_event",
-    "subject": "OpenAI",
-    "object_name": "rusty_v8",
-    "action": "update",
-    "core_change": "rusty_v8 updated to version 150.4.0",
-    "event_at": "2026-07-29T05:21:45+08:00",
-    "published_at": "2026-07-29T05:21:45+08:00",
-    "discovered_at": "2026-07-29T07:26:10.981428+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rusty-v8-v150.4.0",
-    "fingerprint": "e1497db537321d52f145814de28870ebe2992c0c7361dff265901bc17742904f",
-    "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rusty-v8-v150.4.0"
-    ],
-    "source_type": "official",
-    "importance": "low",
-    "event_phase": "announced",
-    "fact_type": "software_release",
-    "event_time_precision": "datetime",
-    "event_time_source": "rss",
-    "normalization_flags": [
-      "feed_time_metadata"
-    ]
-  }
-]
+[]
 ```
 
 ## Agentic Coding 与工具链
@@ -72,42 +46,90 @@
 ```json
 [
   {
-    "event_id": "evt-84830d4c0404025b",
+    "event_id": "evt-b5bd90eec60b4289",
     "status": "uncertain",
     "subject": "OpenAI",
-    "object_name": "scientific computing with agentic AI",
-    "action": "publishes analysis on",
-    "core_change": "OpenAI published a company-authored article discussing the role of agentic AI in scientific computing.",
+    "object_name": "ARC-AGI-3 benchmark",
+    "action": "published an article reporting a research result",
+    "core_change": "Enabling two specific settings tripled OpenAI's scores on the ARC-AGI-3 benchmark.",
     "event_at": null,
-    "published_at": "2026-07-29T01:00:00+08:00",
-    "discovered_at": "2026-07-29T07:26:10.981428+08:00",
-    "canonical_url": "https://openai.com/index/scientific-computing-agentic-ai",
-    "fingerprint": "e3f089f5e13a6b344d1c738307cd602c8ad6f4d4c5f7ad9811bf32c498ce455e",
+    "published_at": "2026-07-29T23:00:00+08:00",
+    "discovered_at": "2026-07-30T07:17:38.394696+08:00",
+    "canonical_url": "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores",
+    "fingerprint": "6d88364ce0e741a73da62a8277a371cffe9dec4f40fd9807b5f6a5a38749af46",
     "source_urls": [
-      "https://openai.com/index/scientific-computing-agentic-ai"
+      "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores"
     ],
     "source_type": "official",
-    "importance": "medium",
-    "event_phase": "announcement",
+    "importance": "low",
+    "event_phase": "post_event_reporting",
+    "fact_type": "research_result",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "normalization_flags": []
+  },
+  {
+    "event_id": "evt-9e7740021d1d0fa8",
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "object_name": "ChatGPT for Academic Researchers",
+    "action": "publishes",
+    "core_change": "OpenAI authored an article explaining how ChatGPT for Academic Researchers can be used to accelerate scientific discovery.",
+    "event_at": null,
+    "published_at": "2026-07-29T18:00:00+08:00",
+    "discovered_at": "2026-07-30T07:17:38.394696+08:00",
+    "canonical_url": "https://openai.com/index/chatgpt-for-academic-researchers",
+    "fingerprint": "f91d7f5437f7c5f587a1a8360928e937f02e02cb61d4a35b9e4805e063daa4f8",
+    "source_urls": [
+      "https://openai.com/index/chatgpt-for-academic-researchers"
+    ],
+    "source_type": "official",
+    "importance": "low",
+    "event_phase": "announced",
     "fact_type": "company_policy_position",
     "event_time_precision": "unknown",
     "event_time_source": "unknown",
     "normalization_flags": []
   },
   {
-    "event_id": "evt-898ca3c60ad6b115",
+    "event_id": "evt-a154dc39efad4fa5",
     "status": "uncertain",
     "subject": "OpenAI",
     "object_name": "Codex",
     "action": "released",
-    "core_change": "Rust build rust-v0.146.0-alpha.15",
-    "event_at": null,
-    "published_at": "2026-07-29T04:42:41+08:00",
-    "discovered_at": "2026-07-29T07:26:10.981428+08:00",
-    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15",
-    "fingerprint": "c0719aee44e3f0b73fe5636666c14ace78209bc12b901621f4e3b42c4b8d0138",
+    "core_change": "Codex release 0.146.0-alpha.9.1",
+    "event_at": "2026-07-30T07:00:21+08:00",
+    "published_at": "2026-07-30T07:00:21+08:00",
+    "discovered_at": "2026-07-30T07:17:38.394696+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1",
+    "fingerprint": "1c2f5b3ff7e8f5394bd4ab944ec544f7748a1b0c079b189a56f40dadcf186884",
     "source_urls": [
-      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15"
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1"
+    ],
+    "source_type": "official",
+    "importance": "minor",
+    "event_phase": "announced",
+    "fact_type": "software_release",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ]
+  },
+  {
+    "event_id": "evt-27155bae82caa633",
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "object_name": "Codex (Rust)",
+    "action": "pre-released",
+    "core_change": "0.147.0-alpha.1",
+    "event_at": null,
+    "published_at": "2026-07-29T17:16:59+08:00",
+    "discovered_at": "2026-07-30T07:17:38.394696+08:00",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.1",
+    "fingerprint": "8091833bcf9a5cdcc5b09763b1c8945fb536918099d6ec64046b5d5ce2600d26",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.1"
     ],
     "source_type": "official",
     "importance": "low",
@@ -124,10 +146,10 @@
 
 ```json
 {
-  "input_events": 4,
+  "input_events": 5,
   "duplicate_events": 1,
-  "uncertain_events": 2,
-  "selected_events": 1
+  "uncertain_events": 4,
+  "selected_events": 0
 }
 ```
 
@@ -149,9 +171,9 @@
     "recent successful handoffs"
   ],
   "time_scope": {
-    "start": "2026-07-28T14:44:46.997148+08:00",
-    "end": "2026-07-29T07:10:00+08:00",
-    "lookback_start": "2026-07-28T08:44:46.997148+08:00"
+    "start": "2026-07-29T15:08:10.589335+08:00",
+    "end": "2026-07-30T07:10:00+08:00",
+    "lookback_start": "2026-07-29T09:08:10.589335+08:00"
   },
   "search_budget": {
     "candidate_verification_max_queries": 2,
@@ -180,14 +202,32 @@
   ],
   "candidate_reviews": [
     {
-      "event_id": "evt-84830d4c0404025b",
+      "event_id": "evt-b5bd90eec60b4289",
       "review_level": "required",
       "evidence_urls": [
-        "https://openai.com/index/scientific-computing-agentic-ai"
+        "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores"
       ],
       "normalization_flags": [],
       "search_query_seeds": [
-        "site:openai.com \"OpenAI\" \"scientific computing with agentic AI\" publishes analysis on"
+        "site:openai.com \"OpenAI\" \"ARC-AGI-3 benchmark\" published an article reporting a research result"
+      ],
+      "required_checks": [
+        "verify source identity and prefer the primary official page",
+        "verify the claimed core change against a primary source",
+        "verify date precision and label feed metadata separately",
+        "compare with recent successful handoffs before retaining or supplementing",
+        "resolve uncertainty or exclude the event"
+      ]
+    },
+    {
+      "event_id": "evt-9e7740021d1d0fa8",
+      "review_level": "required",
+      "evidence_urls": [
+        "https://openai.com/index/chatgpt-for-academic-researchers"
+      ],
+      "normalization_flags": [],
+      "search_query_seeds": [
+        "site:openai.com \"OpenAI\" \"ChatGPT for Academic Researchers\" publishes"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
@@ -199,34 +239,35 @@
       ]
     },
     {
-      "event_id": "evt-0ee2a57813e0c81e",
+      "event_id": "evt-a154dc39efad4fa5",
       "review_level": "required",
       "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rusty-v8-v150.4.0"
+        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1"
       ],
       "normalization_flags": [
         "feed_time_metadata"
       ],
       "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"rusty_v8\" update"
+        "site:github.com \"OpenAI\" \"Codex\" released"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
         "verify the claimed core change against a primary source",
         "verify date precision and label feed metadata separately",
         "compare with recent successful handoffs before retaining or supplementing",
+        "resolve uncertainty or exclude the event",
         "inspect normalization flags before accepting the normalized claim"
       ]
     },
     {
-      "event_id": "evt-898ca3c60ad6b115",
+      "event_id": "evt-27155bae82caa633",
       "review_level": "required",
       "evidence_urls": [
-        "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.15"
+        "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.1"
       ],
       "normalization_flags": [],
       "search_query_seeds": [
-        "site:github.com \"OpenAI\" \"Codex\" released"
+        "site:github.com \"OpenAI\" \"Codex (Rust)\" pre-released"
       ],
       "required_checks": [
         "verify source identity and prefer the primary official page",
