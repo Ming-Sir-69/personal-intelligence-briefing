@@ -1,31 +1,31 @@
 {
   "counts": {
     "duplicate_events": 1,
-    "input_events": 5,
+    "input_events": 2,
     "selected_events": 0,
-    "uncertain_events": 4
+    "uncertain_events": 1
   },
   "data_range": {
-    "end": "2026-07-30T07:10:00+08:00",
-    "lookback_start": "2026-07-29T09:08:10.589335+08:00",
-    "start": "2026-07-29T15:08:10.589335+08:00"
+    "end": "2026-07-31T07:10:00+08:00",
+    "lookback_start": "2026-07-30T08:45:29.460329+08:00",
+    "start": "2026-07-30T14:45:29.460329+08:00"
   },
   "duplicate_audit": [
     {
-      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0",
+      "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.2",
       "event_at": null,
-      "event_id": "evt-29230e2197f04722",
-      "fingerprint": "e068e10e4da9f31ac8f8f6e5923d2ad00cf0f6d0f1a250594b4683e6893402c9",
-      "object_name": "Codex",
+      "event_id": "evt-ec17e9dab57394cb",
+      "fingerprint": "de801698dc52db80d93f828d0456703cecf1526a71dc79c6ca56ba9feff3f134",
+      "object_name": "OpenAI Codex",
       "subject": "OpenAI"
     }
   ],
   "gpt_review_plan": {
     "candidate_reviews": [
       {
-        "event_id": "evt-b5bd90eec60b4289",
+        "event_id": "evt-ad5a0db517429c8f",
         "evidence_urls": [
-          "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores"
+          "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6"
         ],
         "normalization_flags": [],
         "required_checks": [
@@ -37,65 +37,7 @@
         ],
         "review_level": "required",
         "search_query_seeds": [
-          "site:openai.com \"OpenAI\" \"ARC-AGI-3 benchmark\" published an article reporting a research result"
-        ]
-      },
-      {
-        "event_id": "evt-9e7740021d1d0fa8",
-        "evidence_urls": [
-          "https://openai.com/index/chatgpt-for-academic-researchers"
-        ],
-        "normalization_flags": [],
-        "required_checks": [
-          "verify source identity and prefer the primary official page",
-          "verify the claimed core change against a primary source",
-          "verify date precision and label feed metadata separately",
-          "compare with recent successful handoffs before retaining or supplementing",
-          "resolve uncertainty or exclude the event",
-          "distinguish company policy position from government action"
-        ],
-        "review_level": "required",
-        "search_query_seeds": [
-          "site:openai.com \"OpenAI\" \"ChatGPT for Academic Researchers\" publishes"
-        ]
-      },
-      {
-        "event_id": "evt-a154dc39efad4fa5",
-        "evidence_urls": [
-          "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1"
-        ],
-        "normalization_flags": [
-          "feed_time_metadata"
-        ],
-        "required_checks": [
-          "verify source identity and prefer the primary official page",
-          "verify the claimed core change against a primary source",
-          "verify date precision and label feed metadata separately",
-          "compare with recent successful handoffs before retaining or supplementing",
-          "resolve uncertainty or exclude the event",
-          "inspect normalization flags before accepting the normalized claim"
-        ],
-        "review_level": "required",
-        "search_query_seeds": [
-          "site:github.com \"OpenAI\" \"Codex\" released"
-        ]
-      },
-      {
-        "event_id": "evt-27155bae82caa633",
-        "evidence_urls": [
-          "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.1"
-        ],
-        "normalization_flags": [],
-        "required_checks": [
-          "verify source identity and prefer the primary official page",
-          "verify the claimed core change against a primary source",
-          "verify date precision and label feed metadata separately",
-          "compare with recent successful handoffs before retaining or supplementing",
-          "resolve uncertainty or exclude the event"
-        ],
-        "review_level": "required",
-        "search_query_seeds": [
-          "site:github.com \"OpenAI\" \"Codex (Rust)\" pre-released"
+          "site:openai.com \"OpenAI\" \"GPT-5.6\" announced"
         ]
       }
     ],
@@ -163,9 +105,9 @@
       "time attribution is explicit and its precision is disclosed"
     ],
     "time_scope": {
-      "end": "2026-07-30T07:10:00+08:00",
-      "lookback_start": "2026-07-29T09:08:10.589335+08:00",
-      "start": "2026-07-29T15:08:10.589335+08:00"
+      "end": "2026-07-31T07:10:00+08:00",
+      "lookback_start": "2026-07-30T08:45:29.460329+08:00",
+      "start": "2026-07-30T14:45:29.460329+08:00"
     },
     "trust_boundary": {
       "candidate_content": "untrusted_public_metadata",
@@ -174,31 +116,22 @@
     }
   },
   "normalization_audit": {
-    "events": [
-      {
-        "event_id": "evt-a154dc39efad4fa5",
-        "flags": [
-          "feed_time_metadata"
-        ]
-      }
-    ],
-    "events_with_flags": 1,
-    "flag_counts": {
-      "feed_time_metadata": 1
-    }
+    "events": [],
+    "events_with_flags": 0,
+    "flag_counts": {}
   },
   "sections": {
     "agentic_coding_and_toolchain": [],
     "batch_state_and_range": {
-      "batch_id": "morning-20260730T071738+0800",
-      "completed_at": "2026-07-30T07:17:38.394696+08:00",
+      "batch_id": "morning-20260731T072846+0800",
+      "completed_at": "2026-07-31T07:28:46.133097+08:00",
       "data_range": {
-        "end": "2026-07-30T07:10:00+08:00",
-        "lookback_start": "2026-07-29T09:08:10.589335+08:00",
-        "start": "2026-07-29T15:08:10.589335+08:00"
+        "end": "2026-07-31T07:10:00+08:00",
+        "lookback_start": "2026-07-30T08:45:29.460329+08:00",
+        "start": "2026-07-30T14:45:29.460329+08:00"
       },
       "kind": "morning",
-      "started_at": "2026-07-30T07:17:38.394696+08:00",
+      "started_at": "2026-07-31T07:28:46.133097+08:00",
       "trigger_type": "schedule"
     },
     "must_know": [],
@@ -206,101 +139,30 @@
     "product_industry_policy": [],
     "quality_metrics": {
       "duplicate_events": 1,
-      "input_events": 5,
+      "input_events": 2,
       "selected_events": 0,
-      "uncertain_events": 4
+      "uncertain_events": 1
     },
     "uncertain_or_late": [
       {
-        "action": "published an article reporting a research result",
-        "canonical_url": "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores",
-        "core_change": "Enabling two specific settings tripled OpenAI's scores on the ARC-AGI-3 benchmark.",
-        "discovered_at": "2026-07-30T07:17:38.394696+08:00",
+        "action": "announced",
+        "canonical_url": "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6",
+        "core_change": "Advancing the price-performance frontier with GPT-5.6",
+        "discovered_at": "2026-07-31T07:28:46.133097+08:00",
         "event_at": null,
-        "event_id": "evt-b5bd90eec60b4289",
-        "event_phase": "post_event_reporting",
-        "event_time_precision": "unknown",
-        "event_time_source": "unknown",
-        "fact_type": "research_result",
-        "fingerprint": "6d88364ce0e741a73da62a8277a371cffe9dec4f40fd9807b5f6a5a38749af46",
-        "importance": "low",
-        "normalization_flags": [],
-        "object_name": "ARC-AGI-3 benchmark",
-        "published_at": "2026-07-29T23:00:00+08:00",
-        "source_type": "official",
-        "source_urls": [
-          "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores"
-        ],
-        "status": "uncertain",
-        "subject": "OpenAI"
-      },
-      {
-        "action": "publishes",
-        "canonical_url": "https://openai.com/index/chatgpt-for-academic-researchers",
-        "core_change": "OpenAI authored an article explaining how ChatGPT for Academic Researchers can be used to accelerate scientific discovery.",
-        "discovered_at": "2026-07-30T07:17:38.394696+08:00",
-        "event_at": null,
-        "event_id": "evt-9e7740021d1d0fa8",
+        "event_id": "evt-ad5a0db517429c8f",
         "event_phase": "announced",
         "event_time_precision": "unknown",
         "event_time_source": "unknown",
-        "fact_type": "company_policy_position",
-        "fingerprint": "f91d7f5437f7c5f587a1a8360928e937f02e02cb61d4a35b9e4805e063daa4f8",
-        "importance": "low",
+        "fact_type": "product_release",
+        "fingerprint": "737d7243b83ac0a28958dfd243dacb5d7b2c638de0732130bcc7922493a5bd46",
+        "importance": "high",
         "normalization_flags": [],
-        "object_name": "ChatGPT for Academic Researchers",
-        "published_at": "2026-07-29T18:00:00+08:00",
+        "object_name": "GPT-5.6",
+        "published_at": "2026-07-30T18:00:00+08:00",
         "source_type": "official",
         "source_urls": [
-          "https://openai.com/index/chatgpt-for-academic-researchers"
-        ],
-        "status": "uncertain",
-        "subject": "OpenAI"
-      },
-      {
-        "action": "released",
-        "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1",
-        "core_change": "Codex release 0.146.0-alpha.9.1",
-        "discovered_at": "2026-07-30T07:17:38.394696+08:00",
-        "event_at": "2026-07-30T07:00:21+08:00",
-        "event_id": "evt-a154dc39efad4fa5",
-        "event_phase": "announced",
-        "event_time_precision": "datetime",
-        "event_time_source": "rss",
-        "fact_type": "software_release",
-        "fingerprint": "1c2f5b3ff7e8f5394bd4ab944ec544f7748a1b0c079b189a56f40dadcf186884",
-        "importance": "minor",
-        "normalization_flags": [
-          "feed_time_metadata"
-        ],
-        "object_name": "Codex",
-        "published_at": "2026-07-30T07:00:21+08:00",
-        "source_type": "official",
-        "source_urls": [
-          "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.1"
-        ],
-        "status": "uncertain",
-        "subject": "OpenAI"
-      },
-      {
-        "action": "pre-released",
-        "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.1",
-        "core_change": "0.147.0-alpha.1",
-        "discovered_at": "2026-07-30T07:17:38.394696+08:00",
-        "event_at": null,
-        "event_id": "evt-27155bae82caa633",
-        "event_phase": "alpha",
-        "event_time_precision": "unknown",
-        "event_time_source": "unknown",
-        "fact_type": "software_release",
-        "fingerprint": "8091833bcf9a5cdcc5b09763b1c8945fb536918099d6ec64046b5d5ce2600d26",
-        "importance": "low",
-        "normalization_flags": [],
-        "object_name": "Codex (Rust)",
-        "published_at": "2026-07-29T17:16:59+08:00",
-        "source_type": "official",
-        "source_urls": [
-          "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.1"
+          "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6"
         ],
         "status": "uncertain",
         "subject": "OpenAI"
