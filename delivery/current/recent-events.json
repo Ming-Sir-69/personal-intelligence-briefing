@@ -1,5 +1,57 @@
 [
   {
+    "action": "release",
+    "batch_id": "noon-20260730T144529+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.2",
+    "core_change": "Released rust-v0.147.0-alpha.2 of Codex",
+    "discovered_at": "2026-07-30T14:45:29.460329+08:00",
+    "event_at": "2026-07-30T09:07:41+08:00",
+    "event_id": "evt-fd88a1e070d47d64",
+    "event_phase": "update",
+    "event_time_precision": "datetime",
+    "event_time_source": "rss",
+    "fact_type": "software_release",
+    "fingerprint": "32597eda7a663da7444113417ebb7823301fbd78d1559bc0d73786ccc3d2fe8f",
+    "importance": "low",
+    "normalization_flags": [
+      "feed_time_metadata"
+    ],
+    "object_name": "Codex",
+    "published_at": "2026-07-30T09:07:41+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.2"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-30T14:45:29.460329+08:00"
+  },
+  {
+    "action": "release",
+    "batch_id": "noon-20260730T144529+0800",
+    "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.2",
+    "core_change": "Released version 0.146.0-alpha.9.2 (rust-v0.146.0-alpha.9.2)",
+    "discovered_at": "2026-07-30T14:45:29.460329+08:00",
+    "event_at": null,
+    "event_id": "evt-bb6b8b45068d8036",
+    "event_phase": "announced",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "software_release",
+    "fingerprint": "9d118e7ae673fcc1cf6fd055099d799bee3e62e121b5d864a0beef408a8f0086",
+    "importance": "low",
+    "normalization_flags": [],
+    "object_name": "OpenAI Codex",
+    "published_at": "2026-07-30T07:57:01+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9.2"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-30T14:45:29.460329+08:00"
+  },
+  {
     "action": "published an article reporting a research result",
     "batch_id": "morning-20260730T071738+0800",
     "canonical_url": "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores",
