@@ -1,5 +1,30 @@
 [
   {
+    "action": "announced",
+    "batch_id": "morning-20260731T072846+0800",
+    "canonical_url": "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6",
+    "core_change": "Advancing the price-performance frontier with GPT-5.6",
+    "discovered_at": "2026-07-31T07:28:46.133097+08:00",
+    "event_at": null,
+    "event_id": "evt-ad5a0db517429c8f",
+    "event_phase": "announced",
+    "event_time_precision": "unknown",
+    "event_time_source": "unknown",
+    "fact_type": "product_release",
+    "fingerprint": "737d7243b83ac0a28958dfd243dacb5d7b2c638de0732130bcc7922493a5bd46",
+    "importance": "high",
+    "normalization_flags": [],
+    "object_name": "GPT-5.6",
+    "published_at": "2026-07-30T18:00:00+08:00",
+    "source_type": "official",
+    "source_urls": [
+      "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6"
+    ],
+    "status": "uncertain",
+    "subject": "OpenAI",
+    "submitted_to_gpt_at": "2026-07-31T07:28:46.133097+08:00"
+  },
+  {
     "action": "release",
     "batch_id": "noon-20260730T144529+0800",
     "canonical_url": "https://github.com/openai/codex/releases/tag/rust-v0.147.0-alpha.2",
